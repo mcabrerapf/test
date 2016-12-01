@@ -1,0 +1,5 @@
+<md-input-container class="md-block" ng-class="{'md-input-has-value':aceOptions}" md-no-float>
+    <label ng-if="label"><span translate="{{label}}">{{label}}</span><span ng-if="required"> *</span></label>
+    <textarea ng-model="value" rows="{{rows}}" aria-label="{{label}}" translate-attr-aria-label="{{label}}" />
+    <field-validation-messages></field-validation-messages>
+</md-input-container>

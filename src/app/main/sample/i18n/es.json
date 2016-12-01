@@ -1,0 +1,11 @@
+{
+    "SAMPLE": {
+        "SAMPLE_NAV": "Sample!"
+    },
+
+    "USER": {
+        "NAME": "Nombre del usuario",
+        "EMAIL": "Correo electrónico",
+        "ACTIVE": "Usuario activo"
+    }
+}

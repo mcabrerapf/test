@@ -1,0 +1,118 @@
+<div id="distribution-detail" class="page-layout simple fullwidth" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="start center">
+        <div class="white-fg" layout="row" layout-align="start center" flex>
+            <md-button class="goto-list-button md-icon-button" aria-label="Go to distributions"
+                       ng-click="vm.gotoList()"
+                       translate translate-attr-aria-label="DISTRIBUTION.GO_TO_DISTRIBUTIONS">
+                <md-icon md-font-icon="icon-arrow-left"></md-icon>
+            </md-button>
+
+            <div layout="row" layout-align="start center">
+
+                <div layout="column" layout-align="start start">
+                    <div class="h2">
+                        {{vm.distribution.name}}
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span translate="DISTRIBUTION.EDIT_TITLE">Distribution Detail</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+            <div layout="row" layout-margin layout-align="space-between start">
+
+                <div layout="column" flex="30" class="form-wrapper form-data-wrapper md-whiteframe-1dp">
+
+                    <kldform name="distributionForm" class="md-inline-form" novalidate mode="edit">
+
+                        <div class="form-title" translate="DISTRIBUTION.BASIC_INFO">Definición</div>
+
+                        <field  type="text"
+                                ng-model="vm.distribution.name"
+                                required 
+                                label="DISTRIBUTION.NAME" />
+
+                        <field  type="note"
+                                ng-model="vm.distribution.description"
+                                rows="1"
+                                label="DISTRIBUTION.DESCRIPTION" />
+
+                        <field  type="text"
+                                ng-model="vm.distribution.type"
+                                label="DISTRIBUTION.TYPE"
+                                required />
+
+                    </kldform>
+
+                </div>
+
+                <div layout="column" flex class="form-wrapper form-data-wrapper md-whiteframe-1dp"> 
+
+                    <div class="form-title" translate="DISTRIBUTION.DISTRIBUTION">Distribución</div>
+
+                    <md-list class="settings-form">
+                        <md-list-item>
+                            <p>Participantes</p>
+                            <input  type="number"
+                                    required
+                                    ng-model="vm.distribution.participants"
+                                    ng-model-options="{debounce:500}" />
+                        </md-list-item>
+
+                        <md-list-item>
+                            <p>Puntos primer clasificado</p>
+                            <input  type="number"
+                                    ng-model="vm.points.first"
+                                    ng-model-options="{debounce:500}" />
+                        </md-list-item>
+
+                        <md-list-item>
+                            <p>Puntos último clasificado</p>
+                            <input  type="number"
+                                    ng-model="vm.points.last"
+                                    ng-model-options="{debounce:500}" />
+                        </md-list-item>
+
+                        <md-list-item>
+                            <p class="text-semibold">Total puntos</p>
+                            <p ng-bind="vm.points.total" class="padding-left-30 text-semibold"></p>
+                        </md-list-item>
+                    </md-list>
+
+                    <div class="k-content wide">
+                        <div kendo-chart="chart"
+                            k-options="vm.options"
+                            style="height: 350px; width: 100%" >
+                        </div>
+                    </div>
+
+<!--
+                    <div>
+                        <nvd3 options="vm.options" data="vm.tableData"></nvd3>
+                    </div>
+
+                            <table>
+
+                                <tr ng-repeat="item in vm.distribution.distributionTable track by $index">
+                                    <td>
+                                        <span class="md-title">{{$index}}</span> <input type="text" ng-model="vm.distribution.distributionTable[$index]" />
+                                    </td>
+                                </tr>
+
+                            </table>
+-->
+                </div>
+
+            </div>
+    </div>
+
+</div>

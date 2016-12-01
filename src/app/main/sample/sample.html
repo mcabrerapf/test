@@ -1,0 +1,158 @@
+
+<div id="sample" class="page-layout simple fullwidth" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between center">
+
+        <!-- APP TITLE -->
+        <div layout="row" layout-align="start center">
+            <div class="logo" layout="row" layout-align="start center">
+                <span class="logo-icon">
+                    <md-icon md-font-icon="icon-account" class="s24"></md-icon>
+                </span>
+                <span class="title">{{vm.user.userName}}</span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content" layout="column">
+
+        <div layout="row" layout-align="space-between center">
+            <div  class="md-title">User FORM</div>
+            <md-switch ng-model="vm.mode" ng-true-value="'edit'" ng-false-value="'display'">Edit</md-switch>
+        </div>
+
+        <kldform name="UserForm" mode="{{vm.mode}}">
+
+            <div layout="row">
+
+                <div layout="column" layout-margin layout-padding flex class="form-wrapper form-data-wrapper md-whiteframe-1dp">
+
+                    <div class="form-title">Título del formulario</div>
+
+                    <div layout="column">
+
+                        <field  type="email" 
+                                name="email" 
+                                ng-model="vm.user.email" 
+                                required 
+                                label="USER.EMAIL" />
+
+                        <field  type="text" 
+                                name="name" 
+                                ng-model="vm.user.userName" 
+                                required 
+                                label="USER.NAME"
+                                md-autofocus />
+
+                        <field  type="select"
+                                name="theme"
+                                ng-model="vm.user.theme"
+                                label="Theme"
+                                required
+                                detail-template="/app/core/layouts/fields/theme-selector.option.html"
+                                items="vm.themes"
+                                value-field="_id"
+                                display-field="name" />
+
+                        <field  type="select"
+                                name="type"
+                                ng-model="vm.user.timelineEventType"
+                                label="Type"
+                                multiple
+                                items="vm.timelineEventTypes" />
+
+                        <field  type="note"
+                                name="descripcion"
+                                ng-model="vm.user.description"
+                                label="Descripción"
+                                rows="1"
+                                maxlength="140"
+                                placeholder="Introduce la descripción" />
+
+
+                        <field  type="boolean"
+                                name="active"
+                                ng-model="vm.user.active"
+                                label="USER.ACTIVE" />
+
+                        <field  type="boolean"
+                                name="status"
+                                ng-model="vm.user.status"
+                                ng-true-value="'Open'"
+                                ng-false-value="'Close'"
+                                class="md-warn"
+                                label="{{vm.user.status}}" />
+
+                        <field  type="note"
+                                code="css"
+                                name="codigo"
+                                ng-model="vm.user.html"
+                                label="Código HTML"
+                                rows="5" />
+
+                        <div flex ng-if="vm.user.userName.indexOf('hola') > 0">
+                            <field  type="text" 
+                                    name="email2" 
+                                    ng-model="vm.user.email"
+                                    ng-minlength="10" 
+                                    required 
+                                    label="Otro correo electronico" />
+                        </div>
+
+<!--
+                        <field type="number"
+                               name="test"
+                               ng-model="vm.user.testNumber"
+                               ng-minlength="1"
+                               ng-maxlength="8"
+                               label="Test number" />
+                               
+-->
+                        <div layout="row" layout-align="space-between center">
+                            <field  type="date" 
+                                    name="modified" 
+                                    ng-model="vm.user.modified" 
+                                    required 
+                                    display-format="date:'fullDate'"
+                                    label="Modificado" />
+
+                            <field  type="date" 
+                                    name="created" 
+                                    ng-model="vm.user.created"
+                                    md-min-date="vm.user.modified" 
+                                    label="Created" />
+                        </div>
+                    </div>
+
+                    <div layout="row">
+                        <md-button type="submit"
+                                class="send-button md-accent md-raised"
+                                ng-disabled="UserForm.$invalid"
+                                aria-label="Add Task">
+                            Aceptar
+                        </md-button>
+
+                    </div>
+
+                </div>
+
+                <div flex layout-margin layout-padding layout="column">
+                    
+                    <div class="form-wrapper form-data-wrapper md-whiteframe-1dp">
+                        <div class="json-data-wrapper">
+                            <pre ng-bind="vm.user | json"></pre>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </kldform>
+
+    </div>
+</div>

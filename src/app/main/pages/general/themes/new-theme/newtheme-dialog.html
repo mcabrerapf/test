@@ -1,0 +1,60 @@
+<!-- DIALOG -->
+<md-dialog class="theme-dialog" aria-label="Nuevo tema" translate-attr-aria-label="THEMES.NEW_TITLE">
+
+    <form name="themeForm" class="md-inline-form" novalidate>
+
+        <!-- DIALOG TOOLBAR -->
+        <md-toolbar class="md-accent md-hue-2">
+
+            <!-- TOOLBAR TOP -->
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+                <span class="title"
+                      translate="THEMES.NEW_TITLE">Nuevo tema</span>
+                <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Cerrar" translate
+                           translate-attr-aria-label="DIALOG.CLOSE">
+                    <md-icon md-font-icon="icon-close"></md-icon>
+                </md-button>
+            </div>
+            <!-- / TOOLBAR TOP -->
+
+        </md-toolbar>
+        <!-- / DIALOG TOOLBAR -->
+
+        <!-- DIALOG CONTENT -->
+        <md-dialog-content ms-scroll>
+
+            <md-input-container class="md-icon-float md-block">
+                <label translate="THEMES.NAME">Nombre del tema</label>
+                <md-icon md-font-icon="icon-theme-light-dark" class="name"></md-icon>
+                <input ng-model="vm.newItem.name" name="name" type="text" required>
+                <div ng-messages="themeForm.name.$error"
+                        role="alert">
+                    <div ng-message="required">
+                        <span translate="FORMS.REQUIRED">Campo requerido</span>
+                    </div>
+                </div>
+            </md-input-container>
+
+        </md-dialog-content>
+        <!-- / DIALOG CONTENT -->
+
+        <!-- DIALOG ACTIONS -->
+        <md-dialog-actions layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-button type="submit" ng-click="vm.addNew()"
+                           class="send-button md-accent md-raised"
+                           ng-disabled="themeForm.$invalid || themeForm.$pristine"
+                           aria-label="Add Task" translate="THEMES.ADD_THEME"
+                           translate-attr-aria-label="THEMES.ADD_THEME">
+                    CREAR Partida
+                </md-button>
+
+            </div>
+
+        </md-dialog-actions>
+        <!-- / DIALOG ACTIONS -->
+
+    </form>
+
+</md-dialog>
+<!-- / DIALOG -->

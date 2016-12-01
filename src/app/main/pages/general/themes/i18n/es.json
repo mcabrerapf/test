@@ -1,0 +1,23 @@
+{
+    "GENERAL": {
+        "SECTION_TITLE": "GENERAL"
+    },
+
+    "THEMES": {
+        "MENU": {
+            "TITLE": "Temas"
+        },
+        "TITLE": "Temas",
+        "SEARCH": "Buscar un tema",
+        "NO_RESULTS": "No se han encontrado temas",
+
+        "NEW_TITLE": "Nuevo tema",
+        "NAME": "Nombre del tema",
+        
+        "SAVE": "Guardar tema",
+        "ADD_THEME": "Crear tema",
+        "DELETE": "Eliminar tema",
+
+        "GO_TO_THEMES": "Ir al listado de temas"
+    }
+}

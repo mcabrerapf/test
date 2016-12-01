@@ -1,0 +1,12 @@
+<md-input-container class="md-block"  md-no-float>
+    <label ng-if="label"><span translate="{{label}}">{{label}}</span><span ng-if="required"> *</span></label>
+    <md-datepicker  class="start-input" 
+                    ng-model="value"
+                    md-min-date="mdMinDate"
+                    md-max-date="mdMaxDate"
+                    md-hide-icons="calendar"
+                    aria-label="{{label}}"
+                    translate-attr-aria-label="{{label}}">
+    </md-datepicker>
+    <field-validation-messages></field-validation-messages>
+</md-input-container>

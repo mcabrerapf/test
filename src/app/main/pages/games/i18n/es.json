@@ -1,0 +1,31 @@
+{
+    "GAMES": {
+        "MENU": {
+            "SECTION_TITLE": "ADMINISTRACIÓN DE PARTIDAS",
+            "TITLE": "Partidas"
+        },
+        "TITLE": "Partidas",
+        "SEARCH": "Buscar una partida",
+        "NO_RESULTS": "No se han encontrado partidas",
+
+        "NEW_TITLE": "Nueva partida",
+        "NAME": "Nombre de la partida",
+        "THEME": "Tema",
+        "STATUS": "Estado de la partida",
+        "START": "Inicio partida",
+        "END": "Final partida",
+        "CUSTOMER": {
+            "NAME": "Cliente",
+            "LOGO": "Logo"
+        },
+        "START_REQUIRED": "Es necesario seleccionar una fecha de inicio de la partida",
+
+        "SAVE": "Guardar partida",
+        "ADD_GAME": "Crear partida",
+        "DELETE": "Eliminar partida"
+    }
+}
+
+
+
+

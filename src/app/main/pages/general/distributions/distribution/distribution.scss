@@ -1,0 +1,31 @@
+#distribution-detail {
+
+    .header {
+        height: 120px;
+        min-height: 120px;
+        max-height: 120px;
+
+        .goto-list-button {
+            margin-right: 16px;
+        }
+
+        .subtitle {
+            margin: 6px 0 0 0;
+        }
+    }
+
+    .content {
+
+        .settings-form {
+
+            md-list-item {
+
+                min-height: 0;
+
+                &::before {
+                    min-height: 0;
+                }
+            }
+        }
+    }
+}

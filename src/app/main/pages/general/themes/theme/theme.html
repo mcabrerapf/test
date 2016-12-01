@@ -1,0 +1,103 @@
+
+<div id="theme" class="page-layout simple tabbed" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="start center">
+        <div class="white-fg" layout="row" layout-align="start center" flex>
+            <md-button class="goto-themes-button md-icon-button" aria-label="Go to themes"
+                       ng-click="vm.gotoThemes()"
+                       translate translate-attr-aria-label="THEMES.GO_TO_THEMES">
+                <md-icon md-font-icon="icon-arrow-left"></md-icon>
+            </md-button>
+
+            <div layout="row" layout-align="start center">
+                <div class="theme-image" hide-xs ng-if="vm.theme.thumbnail">
+                    <img ng-src="{{vm.theme.thumbnail}}">
+                </div>
+
+                <div layout="column" layout-align="start start">
+                    <div class="h2">
+                        {{vm.theme.name}}
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span translate="THEMES.THEME_DETAIL">Theme Detail</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <md-tabs md-dynamic-height>
+
+            <!-- Description -->
+
+            <md-tab>
+                <md-tab-label>
+                    <span translate="THEME.BASIC_INFO">Basic Info</span>
+                </md-tab-label>
+
+                <md-tab-body>
+                    <div class="theme-detail-form-container md-background-bg md-whiteframe-1dp">
+                        Detail goes here!
+                    </div>
+                </md-tab-body>
+            </md-tab>
+
+            <!-- Contents -->
+
+            <md-tab>
+                <md-tab-label>
+                    <span translate="THEME.CONTENTS">Contents</span>
+                </md-tab-label>
+
+                <md-tab-body>
+                    <div class="theme-detail-form-container md-background-bg md-whiteframe-1dp">
+
+                        <h3>{{vm.theme.name}}</h3>
+                        <h5>Created by {{vm.theme.createdBy}} @ {{vm.theme.created}}</h5>
+                        <h5>Modified by {{vm.theme.modifiedBy}} @ {{vm.theme.modified}}</h5>
+
+                        <!-- BEGIN: kendo-ui treeview -->
+
+						<div id="treeview"
+							kendo-tree-view="vm.treeView.tree"
+							k-options="vm.treeView.options"
+							k-data-source="vm.treeView.dataSource"
+						>
+							<!-- k-on-change="vm.treeview.onChange" -->
+
+							<!-- <span k-template ng-click='vm.treeView.click(dataItem)'> -->
+							<!--
+							<span k-template>
+								{{dataItem.text}}
+							</span>
+							-->
+						</div>
+
+						<!--
+						<div class="box-col" ng-show="selectedItem">
+							<h4>Selected: {{selectedItem.text}}</h4>
+						</div>
+						-->
+
+						<div class="box-col" ng-show="true">
+							<h4>Tree: {{vm.theArray.toJSON()}}</h4>
+						</div>
+
+                        <!-- END: kendo-ui treeview -->
+                    </div>
+
+                </md-tab-body>
+            </md-tab>
+
+        </md-tabs>
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

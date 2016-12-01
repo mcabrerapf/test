@@ -1,0 +1,22 @@
+<md-input-container class="md-block" md-no-float>
+
+    <label ng-if="label" translate="{{label}}">{{label}}</label>
+
+
+	<md-select 	ng-model="value"
+				aria-label="{{label}}"
+				translate-attr-aria-label="{{label}}">
+
+		<md-option ng-if="!required" value="" md-option-empty>(none)</md-option>
+		<md-option ng-repeat="item in items" value="{{valueField ? item[valueField] : item}}">
+			<!--
+			<div ng-if="detailTemplate" ng-include="detailTemplate"></div>
+			<div ng-if="!detailTemplate">{{displayField ? item[displayField] : item}}</div>
+			-->
+			{{displayField ? item[displayField] : item}}
+		</md-option>
+	</md-select>
+
+    <field-validation-messages></field-validation-messages>
+
+</md-input-container>

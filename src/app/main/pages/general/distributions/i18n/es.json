@@ -1,0 +1,21 @@
+{
+    "DISTRIBUTION": {
+        "MENU": {
+            "TITLE": "Distribución"
+        },
+        "TITLE": "Distribución de Puntos y Premios",
+        "GO_TO_DISTRIBUTIONS": "Volver a la lista",
+
+        "NO_RESULTS": "No se han encontrado elementos. Pulsa sobre el botón añadir para crear una nueva distribución.",
+        "NEW_TITLE": "Nueva distribución",
+        "EDIT_TITLE": "Detalle de la distribución",
+        "BASIC_INFO": "Definición",
+        "DISTRIBUTION": "Distribución",
+
+        "NAME": "Nombre de la distribución",
+        "DESCRIPTION": "Descripción",
+        "TYPE": "Tipo de distribución",
+        "PARTICIPANTS": "Número de participantes",
+        "VALUES": "Reparto de valores"
+    }
+}

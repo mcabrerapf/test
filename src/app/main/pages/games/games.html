@@ -1,0 +1,65 @@
+<div id="games" class="page-layout simple left-sidenav inner-sidenav">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between center">
+
+        <!-- APP TITLE -->
+        <div layout="row" layout-align="start center">
+            <div class="logo" layout="row" layout-align="start center">
+                <span class="logo-icon">
+                    <md-icon md-font-icon="icon-gamepad-variant" class="s24"></md-icon>
+                </span>
+                <span class="logo-text" translate="GAMES.TITLE">Partidas</span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- SEARCH -->
+        <div class="search-input-wrapper" layout="row" layout-align="start center">
+            <label for="search">
+                <md-icon md-font-icon="icon-magnify"></md-icon>
+            </label>
+            <md-input-container md-no-float class="m-0">
+                <input id="search" placeholder="Buscar una partida" type="text" ng-model="vm.search" translate
+                       translate-attr-placeholder="GAMES.SEARCH">
+            </md-input-container>
+        </div>
+        <!-- / SEARCH -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content" md-background-bg layout="row" layout-align="start start">
+
+        <!-- MAIN -->
+        <div class="main scrollable" ms-scroll>
+
+            <!-- GAMES LIST -->
+
+            <div class="games-list" ng-show="vm.filteredItems.length !== 0">
+                <ms-card class="game-card" template="'app/core/directives/ms-card/templates/template-1/template-1.html'" ng-model="game" ng-repeat="game in vm.filteredItems"></ms-card>
+            </div>
+
+            <!-- / GAMES LIST -->
+
+            <!-- NO RESULTS -->
+            <md-list-item class="no-results md-white-bg" ng-show="vm.filteredItems.length === 0">
+                <p translate="GAMES.NO_RESULTS">No results..</p>
+            </md-list-item>
+            <!-- / NO RESULTS -->
+
+        </div>
+        <!-- / MAIN -->
+
+    </div>
+    <!-- / CONTENT -->
+
+    <!-- ADD CONTACT BUTTON -->
+    <md-button class="md-fab md-accent md-icon-button" id="add-game-button" ng-click="vm.createNew($event)"
+               aria-label="add contact" translate translate-attr-aria-label="GAMES.ADD_GAME">
+        <md-icon md-font-icon="icon-plus"></md-icon>
+    </md-button>
+    <!-- / ADD CONTACT BUTTON -->
+
+</div>

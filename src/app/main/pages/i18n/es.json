@@ -1,0 +1,38 @@
+{
+    "DIALOG": {
+        "CLOSE": "Cerrar"
+    },
+
+    "FORMS": {
+        "REQUIRED": "Es necesario introducir un valor en este campo",
+        "SAVE": "Guardar",
+        "ADD": "Crear",
+        "DELETE": "Eliminar",
+		"CANCEL": "Cancelar",
+		"OK": "Ok",
+		"DELETECONFIRMATION": {
+			"TITLE": "Estas seguro de que deseas eliminar este registro?",
+			"DETAIL": "<b>Este elemento</b> será eliminado permanentemente.",
+			"ARIAL": "Eliminar"
+		}
+	},
+
+	"true": "Si",
+	"false": "No",
+	
+    "DateTime": {
+		"unknown":			"en fecha desconocida",
+		"secondFormat":		"hace un segundo",
+		"secondsFormat":	"hace __tiempo__ segundos",
+		"minuteFormat":		"hace un minuto",
+		"minutesFormat":	"hace __tiempo__ minutos",
+		"hourFormat":		"hace una hora",
+		"hoursFormat":		"hace __tiempo__ horas",
+		"dayFormat":		"hace un día",
+		"daysFormat":		"hace __tiempo__ días",
+		"fullDateTime":		"el dd/MM/yyyy HH:mm",
+		"titleFormat":		"dd/MM/yyyy HH:mm",
+		"defaultFormat":	"dd/MM/yyyy",
+		"newDefaultFormat":	"dd/MM/yyyy"
+	}
+}

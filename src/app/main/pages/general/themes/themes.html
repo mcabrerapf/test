@@ -1,0 +1,94 @@
+<div id="themes" class="page-layout simple left-sidenav inner-sidenav">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between center">
+
+        <!-- APP TITLE -->
+        <div layout="row" layout-align="start center">
+            <div class="logo" layout="row" layout-align="start center">
+                <span class="logo-icon">
+                    <md-icon md-font-icon="icon-theme-light-dark" class="s24"></md-icon>
+                </span>
+                <span class="logo-text" translate="THEMES.TITLE">Temas</span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- SEARCH -->
+        <div class="search-input-wrapper" layout="row" layout-align="start center">
+            <label for="search">
+                <md-icon md-font-icon="icon-magnify"></md-icon>
+            </label>
+            <md-input-container md-no-float class="m-0">
+                <input id="search" placeholder="Buscar un tema" type="text" ng-model="vm.search" translate
+                       translate-attr-placeholder="THEMES.SEARCH">
+            </md-input-container>
+        </div>
+        <!-- / SEARCH -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content" md-background-bg layout="row" layout-align="start start">
+
+        <!-- MAIN -->
+        <div class="main scrollable" ms-scroll>
+
+            <!-- THEMES LIST -->
+
+            <div class="themes-list" ng-show="vm.filteredItems.length !== 0">
+
+                <div class="theme-card template-8" ng-repeat="theme in vm.filteredItems">
+
+                    <div class="media">
+                        <img class="image" ng-src="{{theme.thumbnail}}" ng-show="theme.thumbnail">
+                    </div>
+
+                    <div class="content pv-24 ph-16">
+                        <div class="title h1" ng-if="theme.name">
+                            {{theme.name}}
+                        </div>
+
+                        <div class="subtitle secondary-text" ng-if="theme.created">
+                            {{theme.created | date}}
+                        </div>
+
+                        <div class="buttons pt-16">
+                            <md-button class="m-0" ng-click="vm.showTheme($event, theme)" translate="THEMES.SHOW_DETAIL">Ver detalle</md-button>
+                        </div>
+
+                        <div class="text pt-16" ng-if="theme.description">
+                            {{theme.description}}
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--
+                <ms-card class="theme-card" template="'app/core/directives/ms-card/templates/template-1/template-1.html'" ng-model="theme" ng-repeat="theme in vm.filteredItems"></ms-card>
+                -->
+            </div>
+
+            <!-- / THEMES LIST -->
+
+            <!-- NO RESULTS -->
+            <md-list-item class="no-results md-white-bg" ng-show="vm.filteredItems.length === 0">
+                <p translate="THEMES.NO_RESULTS">No results..</p>
+            </md-list-item>
+            <!-- / NO RESULTS -->
+
+        </div>
+        <!-- / MAIN -->
+
+    </div>
+    <!-- / CONTENT -->
+
+    <!-- ADD CONTACT BUTTON -->
+    <md-button class="md-fab md-accent md-icon-button" id="add-theme-button" ng-click="vm.createNew($event)"
+               aria-label="add contact" translate translate-attr-aria-label="THEMES.ADD_THEME">
+        <md-icon md-font-icon="icon-plus"></md-icon>
+    </md-button>
+    <!-- / ADD CONTACT BUTTON -->
+
+</div>
