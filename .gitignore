@@ -17,3 +17,4 @@ e2e
 
 # Optional npm cache directory
 .npm
+npm-debug.log
