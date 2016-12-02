@@ -10,8 +10,10 @@
     "gulp2": "node node_modules/gulp/bin/gulp serve"
   },
   "directories": {},
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
+    "q": "^1.4.1",
     "body-parser": "^1.15.1",
     "browser-sync": "~2.9.11",
     "browser-sync-spa": "~1.0.3",
