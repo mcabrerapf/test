@@ -9,6 +9,7 @@
         "ADD": "Crear",
         "DELETE": "Eliminar",
 		"CANCEL": "Cancelar",
+		"EDIT": "Editar",
 		"OK": "Ok",
 		"DELETECONFIRMATION": {
 			"TITLE": "Estas seguro de que deseas eliminar este registro?",
