@@ -7,7 +7,7 @@
 
 
 module.exports = {
-	getStructureFolder: getStructureFolder,
+	//getStructureFolder: getStructureFolder,
 
 	createItemFolder: 	createItemFolder,
 	removeItemFolder:   removeItemFolder,
