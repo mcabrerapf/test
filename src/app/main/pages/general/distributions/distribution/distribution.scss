@@ -16,6 +16,16 @@
 
     .content {
 
+        #save-definition {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        textarea: {
+        }
+        
         .settings-form {
 
             md-list-item {
