@@ -18,7 +18,9 @@ module.exports = {
 	getCollectionFolder: 		getCollectionFolder,
 	getCollectionFolderByName:	getCollectionFolderByName,
 	getItemFolder: 				getItemFolder,
-	getArrayFiles: 				getArrayFiles
+	getSubFolder: 				getSubFolder,
+	getArrayFiles: 				getArrayFiles,
+	getQueryParam: 				getQueryParam
 };
 
 
@@ -69,3 +71,16 @@ function getArrayFiles (req) {
 	return ( Array.isArray(files[0]) ? files[0] : files );
 };
 
+function getQueryParam (req, parName) {
+	return req.query[parName] || '';
+};
+
+function getSubFolder(req, res) {
+	const 	collectionName 	= getCollectionName(req),
+			itemID 			= getItemID(req, res),
+			subfolder 		= getQueryParam(req, 'path') || null
+
+	if (subfolder === null) return null;
+
+	return Path.join( DATA_DIR, collectionName, itemID, subfolder );
+};
