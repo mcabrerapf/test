@@ -7,7 +7,7 @@
 
 
 module.exports = {
-	//getStructureFolder: getStructureFolder,
+	getStructureFolder: getStructureFolder,
 
 	createItemFolder: 	createItemFolder,
 	removeItemFolder:   removeItemFolder,
@@ -27,6 +27,7 @@ module.exports = {
 
 
 var Fs 					= require('fs');
+var Path 				= require('path');
 var Q 					= require('q');
 var Exec 				= require('./exec.js');
 var ParseReqRes			= require('./parsereqres.js');
@@ -36,7 +37,6 @@ var E_ENOENT 	= 34;	// errno, cuando entrada no existe (man 2)
 
 // --------------------------------------------------------------------------------------
 
-/***
 function getStructureFolder (req, res, next) {
 
 	var fullPath = ParseReqRes.getSubFolder(req, res);
@@ -45,117 +45,45 @@ function getStructureFolder (req, res, next) {
 
 	if (fullPath === null) return res.status(500).send({msg: "invalid folder name"});
 
-	return res.status(200).send( getFolderStructure( itemId, fullPath, baseUrl ) );
-};
-***/
-
-/***
-function folderStructure (req, res, next) {
-	var baseUrl 		= req.path.toLowerCase();
-	var collectionName 	= req.params.collectionName.toLowerCase();
-	var itemId 			= (req.params.item || '').toLowerCase();
-
-	var fullPath 		= Path.join( DATA_DIR, collectionName );
-
-	//console.log('DEBUG (INFO): folderStructure:', collectionName, itemId);
-
-	return res.send(200, getFolderStructure( itemId, fullPath, baseUrl ));
+	return res.status(200).send( dumpDirectory( fullPath ) );
 };
 
-
-function getFolderStructure (folderName, path, baseUrl) {
-
-	var folderSize		= 0;
-	var folderNFiles	= 0;
-
-	var structure = {
-		name: 		folderName || Path.basename(path),	// itemId || collectionName
-		type: 		'folder',
-		size: 		0,			// Tamaño en bytes del contenido (recursivamente)
-		nfiles: 	0,			// Número de archivos (no directorios) contenidos (recursivamente)
-		path: 		baseUrl,
-		entries: 	[]
-	};
-
-	path = path + '/' + folderName;
-
-	if (FS.existsSync(path)) {
-
-		var files = FS.readdirSync(path);
-
-		for (var r = 0; r < files.length; r++) {
-
-			var fileName = files[r];
-
-			// Filtramos los archivos por inclusión:
-			// Enumeramos todo aquello que SÍ nos interesa.
-			// included: el fileName cumple uno de los patrones listados
-			var included = [
-				/^pag[0-9]+\.(html|jpg)$/,			// PDF
-				/^output\.(mp4|jpg|png)$/,			// Video | Image
-				/^portada\.(png|jpg)$/,				// Thumbnail
-//				/^clip\.[^\.]+\.(pn|jpe?|sv)g$/i, 	// RSS Feeds Images
-				/^clip\..+$/i, 						// RSS Feeds Images
-				/^[0-9a-fA-F]{24}$/					// Directorio (itemId)
-			].some(function(regex){
-				return regex.test(fileName);
-			});
-
-			if (!included) continue;
-
-			var stats = FS.statSync(path + '/' + fileName);
-			if (stats.isDirectory()) {
-
-				var folderStructure = getFolderStructure(fileName, path, baseUrl + '/' + fileName);
-				structure.entries.push( folderStructure );
-
-				folderSize += folderStructure.size;
-				folderNFiles += folderStructure.nfiles;
-
-			} else {
-
-				var fileSize = stats.size;
-
-				structure.entries.push({
-					name: fileName,
-					type: 'file',
-					size: fileSize,
-					path: baseUrl + '/' + fileName
-				});
-
-				folderSize += fileSize;
-				folderNFiles++;
-
-			}
-		};
-	}
-	else {
-		console.log('DEBUG (ERR): getFolderStructure: No existe path:', path);
-	};
-
-	structure.size = folderSize;
-	structure.nfiles = folderNFiles;
-
-	return structure;
-};
-
-***/
 
 // --------------------------------------------------------------------------------------
 
-function getStructure (folder) {
-	var fname = 'getStructure';
-	var defer = Q.defer();
+function dumpDirectory (fullPath) {
+	console.log('DEBUG (INFO): dumpDirectory: [%s]', fullPath);
 
-	Fs.rename( oldFullPath, newFullPath,
-		function (error, result) {
-			defer.notify(fname + ': ' + oldFullPath + ' -> ' + newFullPath);
-			
-			if (error)	defer.reject({f:fname, e:error});
-			else		defer.resolve(result);
-		}
-	);
-	return defer.promise;
+	var dump = [];
+
+	if (Fs.existsSync( fullPath )) {
+		const entries = Fs.readdirSync( fullPath );
+
+		entries.forEach(function(entry){
+			if (entry == '.' || entry == '..') return;
+
+			const 	entryFullPath	= Path.join( fullPath, entry )
+			,		stats 			= Fs.statSync( entryFullPath )
+
+			var		fileProperties	= {
+										name: 		entry,
+										mtime: 		stats.mtime,
+										fullPath: 	entryFullPath
+									  }
+
+			if (stats.isDirectory()) {
+				fileProperties.type = 'directory';
+				fileProperties.contents = dumpDirectory( entryFullPath );	// Explora recursivamente
+			} else {
+				fileProperties.type = 'file';
+				fileProperties.size = stats.size;
+			};
+
+			dump.push( fileProperties );
+		});
+	};
+
+	return dump;
 };
 
 

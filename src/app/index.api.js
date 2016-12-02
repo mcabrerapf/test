@@ -198,8 +198,9 @@
             update:				{ method: 'PUT',	params: {},	isArray: false },
             remove: 			{ method: 'DELETE',	params: {},	isArray: false },
 
-            createFolder:       { method: 'GET',    params: {id: 'id', action: 'createfolder'}, isArray: false },
-            removeFolder:       { method: 'GET',    params: {id: 'id', action: 'removefolder'}, isArray: false }
+            structureFolder:    { method: 'GET',    params: {id: 'id', action: 'structurefolder'},  isArray: true },
+            createFolder:       { method: 'GET',    params: {id: 'id', action: 'createfolder'},     isArray: false },
+            removeFolder:       { method: 'GET',    params: {id: 'id', action: 'removefolder'},     isArray: false }
 
         });
 

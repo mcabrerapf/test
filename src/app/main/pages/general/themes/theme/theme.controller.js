@@ -10,6 +10,29 @@
     function ThemeController($document, $state, theme, api)
     {
 
+        var nodeId = 1;
+
+        function dumpStructureToTreeView (dump) {
+            return dump.map(function(entry){
+                var node = {
+                    id:     nodeId++,
+                    text:   entry.name
+                };
+
+                if (entry.type == 'directory') {
+                    node.spriteCssClass = "folder";
+                    node.expanded = true;
+                    node.items = dumpStructureToTreeView( entry.contents );
+                } else if (entry.type == 'file') {
+                    node.spriteCssClass = "html";
+                } else {
+                    console.log('dumpStructureToTreeView: incorrect type !!!');
+                };
+
+                return node;
+            });
+        };
+
 /***
         var theArray_0 = [
 			{ id: 1, text: "Item 1", expanded: true, spriteCssClass: "rootfolder", items: [
@@ -34,11 +57,33 @@
         // TreeView model
         vm.treeView = {
 
+            // tree: {},
+
         	options: {
+                loadOnDemand: true,
 				dragAndDrop: true
         	},
 
         	dataSource: vm.observableStructureFolder,
+
+            refresh: function() {
+                console.log('refresh folders');
+                api.themes.structureFolder(
+                    {
+                        id:     vm.theme._id,
+                        path:   '.'
+                    },
+
+                    function (result) {
+                        console.log('refresh: dump:', result);
+                        vm.observableStructureFolder[0].items = dumpStructureToTreeView( result );
+                        // vm.treeView.tree.setDataSource( vm.observableStructureFolder );
+                    },
+                    function (error) {
+                        console.log('refresh: ERROR', error);
+                    }                    
+                );
+            },
 
             add: function(type) {
                 if (type == 'folder') {

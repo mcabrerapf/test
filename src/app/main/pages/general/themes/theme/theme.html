@@ -65,13 +65,14 @@
                         <!-- BEGIN: kendo-ui treeview -->
 
 						<div id="treeview"
-							kendo-tree-view
+							kendo-tree-view="vm.treeView.tree"
 							k-options="vm.treeView.options"
 							k-data-source="vm.treeView.dataSource"
 						>
 						</div>
 
                         <div>
+                            <button ng-click="vm.treeView.refresh()">[Refresh folder]</button>
                             <button ng-click="vm.treeView.add('folder')">[New folder]</button>
                             <button ng-click="vm.treeView.add('file')">[New file]</button>
                             <button ng-click="vm.treeView.delete()">[Delete]</button>
