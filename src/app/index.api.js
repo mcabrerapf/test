@@ -191,12 +191,16 @@
 
 
         // THEMES
-        api.themes = $resource(api.baseUrl + 'themes/:id', {}, {
+        api.themes = $resource(api.baseUrl + 'themes/:id/:action', {}, {
             find: 				{ method: 'GET',	params: {},	isArray: true },
             findOne:			{ method: 'GET',	params: {}, isArray: false },
             save: 				{ method: 'POST',	params: {},	isArray: false },
             update:				{ method: 'PUT',	params: {},	isArray: false },
-            remove: 			{ method: 'DELETE',	params: {},	isArray: false }
+            remove: 			{ method: 'DELETE',	params: {},	isArray: false },
+
+            createFolder:       { method: 'GET',    params: {id: 'id', action: 'createfolder'}, isArray: false },
+            removeFolder:       { method: 'GET',    params: {id: 'id', action: 'removefolder'}, isArray: false }
+
         });
 
 

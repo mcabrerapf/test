@@ -65,28 +65,20 @@
                         <!-- BEGIN: kendo-ui treeview -->
 
 						<div id="treeview"
-							kendo-tree-view="vm.treeView.tree"
+							kendo-tree-view
 							k-options="vm.treeView.options"
 							k-data-source="vm.treeView.dataSource"
 						>
-							<!-- k-on-change="vm.treeview.onChange" -->
-
-							<!-- <span k-template ng-click='vm.treeView.click(dataItem)'> -->
-							<!--
-							<span k-template>
-								{{dataItem.text}}
-							</span>
-							-->
 						</div>
 
-						<!--
-						<div class="box-col" ng-show="selectedItem">
-							<h4>Selected: {{selectedItem.text}}</h4>
-						</div>
-						-->
+                        <div>
+                            <button ng-click="vm.treeView.add('folder')">[New folder]</button>
+                            <button ng-click="vm.treeView.add('file')">[New file]</button>
+                            <button ng-click="vm.treeView.delete()">[Delete]</button>
+                        </div>
 
 						<div class="box-col" ng-show="true">
-							<h4>Tree: {{vm.theArray.toJSON()}}</h4>
+							<h4>Tree: {{vm.observableStructureFolder.toJSON()}}</h4>
 						</div>
 
                         <!-- END: kendo-ui treeview -->

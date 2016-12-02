@@ -7,7 +7,7 @@
         .controller('ThemeController', ThemeController);
 
     /** @ngInject */
-    function ThemeController($scope, $document, $state, theme)
+    function ThemeController($document, $state, theme, api)
     {
 
 /***
@@ -24,13 +24,12 @@
 
         var vm = this;
 
-//		var theArray = [{ id: 0, text: "Root", expanded: true, spriteCssClass: "rootfolder", items: [] }];
-		vm.theArray = new kendo.data.ObservableArray(
-			[{ id: 0, text: "Root", expanded: true, spriteCssClass: "rootfolder", items: [] }]
-		);
-
         // Data
         vm.theme = theme;
+
+        vm.observableStructureFolder = new kendo.data.ObservableArray( [
+            { id: 0, text: vm.theme._id, expanded: true, spriteCssClass: "rootfolder", items: [] }
+        ] );
 
         // TreeView model
         vm.treeView = {
@@ -39,14 +38,43 @@
 				dragAndDrop: true
         	},
 
-        	//dataSource: new kendo.data.ObservableArray( theArray )
-        	dataSource: vm.theArray
+        	dataSource: vm.observableStructureFolder,
+
+            add: function(type) {
+                if (type == 'folder') {
+                    console.log('add: create folder inside');
+
+                    api.themes.createFolder(
+                        {
+                            id:     vm.theme._id,
+                            path:   'x'
+                        },
+
+                        function (result) {
+                            console.log('add: OK', result);
+                        },
+                        function (error) {
+                            console.log('add: ERROR', error);
+                        }
+                    );
+
+                } else if (type == 'file') {
+                    console.log('add: create file inside');
+
+                } else {
+                    console.log('add: incorrect type', type);
+                };
+            },
+
+            delete: function() {
+                console.log('delete:');
+            }
 
         };
 
-        vm.theArray.bind("change", function(e) {
-        //vm.treeView.dataSource.bind("change", function(e) {
+        vm.observableStructureFolder.bind("change", function(e) {
     		console.log("changed", e.action, e.index, e.items, e.field);
+
     		switch (e.action) {
     			case 'itemchange':
     				e.items.forEach(function(item){
