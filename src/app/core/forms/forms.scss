@@ -1,0 +1,10 @@
+md-input-container {
+
+    &.display-mode {
+        margin-bottom: 20px;
+
+        div.ng-binding {
+            min-height: 10px;
+        }
+    }
+}

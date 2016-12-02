@@ -354,7 +354,6 @@
 			},
 			link: function($scope, $element, $attrs, controllers) {
 
-				$scope.rows = 3;
 				if ($attrs.rows) $scope.rows = $attrs.rows;
 
 				$scope.$watch('value', function(newValue, oldValue) {
