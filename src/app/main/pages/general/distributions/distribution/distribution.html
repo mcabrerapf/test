@@ -22,20 +22,32 @@
             </div>
         </div>
 
+        <md-button  class="md-icon-button"
+                    aria-label="delete"
+                    ng-click="vm.deleteDistributionConfirm()"
+                    translate-attr-aria-label="FORMS.DELETE">
+            <md-icon md-font-icon="icon-delete" class="md-default-theme" aria-label="delete" translate-attr-aria-label="FORMS.DELETE"></md-icon>
+        </md-button>
+
     </div>
     <!-- / HEADER -->
 
     <!-- CONTENT -->
-    <div class="content">
+    <div class="content widget-group" layout="row" layout-align="start" layout-wrap>
 
-            <div layout="row" layout-margin layout-align="space-between start">
+        <ms-widget flippable="true" flex="30" flipped="vm.flipped.definition">
 
-                <div layout="column" flex="30" class="form-wrapper form-data-wrapper md-whiteframe-1dp">
+            <ms-widget-front class="md-white-bg">
 
-                    <kldform name="distributionForm" class="md-inline-form" novalidate mode="edit">
+                <div layout="row" layout-align="space-between center" class="h-55 ph-16">
+                    <div class="h2" translate="DISTRIBUTION.BASIC_INFO">Definición</div>
+                    <md-button class="md-icon-button" ng-click="vm.editDefinition()" aria-label="edit" translate-attr-aria-label="FORMS.EDIT">
+                        <md-icon class="s16" md-font-icon="icon-pencil"></md-icon>
+                    </md-button>
+                </div>
 
-                        <div class="form-title" translate="DISTRIBUTION.BASIC_INFO">Definición</div>
-
+                <div layout="column" class="ph-16">
+                    <kldform class="md-inline-form" novalidate mode="display">
                         <field  type="text"
                                 ng-model="vm.distribution.name"
                                 required 
@@ -52,10 +64,52 @@
                                 required />
 
                     </kldform>
+                </div>
+            </ms-widget-front>
 
+            <ms-widget-back class="md-white-bg">
+
+                <div layout="row" layout-align="space-between center" class="h-55 ph-16">
+                    <div class="h2" translate="DISTRIBUTION.BASIC_INFO">Definición</div>
+                    <div class="flip-to-front">
+                        <md-button class="md-icon-button" ng-click="vm.flipped.definition=false" aria-label="Cancel" translate-attr-aria-label="FORMS.CANCEL">
+                            <md-icon md-font-icon="icon-close" class="s16"></md-icon>
+                        </md-button>
+                    </div>
                 </div>
 
-                <div layout="column" flex class="form-wrapper form-data-wrapper md-whiteframe-1dp"> 
+                <div layout="column" class="ph-16">
+                    <kldform name="distributionForm" class="md-inline-form" novalidate mode="edit">
+                        <field  type="text"
+                                ng-model="vm.distributionCopy.name"
+                                required 
+                                label="DISTRIBUTION.NAME" />
+
+                        <field  type="note"
+                                ng-model="vm.distributionCopy.description"
+                                rows="7"
+                                label="DISTRIBUTION.DESCRIPTION" />
+
+                        <field  type="text"
+                                ng-model="vm.distributionCopy.type"
+                                label="DISTRIBUTION.TYPE"
+                                required />
+                    </kldform>
+                </div>
+
+                <div id="save-definition" class="p-16 grey-50-bg border-top" layout="row" layout-align="start center">
+                    <md-button  class="send-button md-accent md-raised"
+                                ng-disabled="distributionForm.$invalid"
+                                ng-click="vm.saveDefinition()" 
+                                translate="FORMS.SAVE">Save</md-button>
+                </div>
+
+            </ms-widget-back>
+
+        </ms-widget>
+
+        <ms-widget flippable="false" flex>
+            <div layout="column" flex class="form-wrapper form-data-wrapper md-whiteframe-1dp"> 
 
                     <div class="form-title" translate="DISTRIBUTION.DISTRIBUTION">Distribución</div>
 
@@ -84,7 +138,7 @@
 
                         <md-list-item>
                             <p class="text-semibold">Total puntos</p>
-                            <p ng-bind="vm.points.total" class="padding-left-30 text-semibold"></p>
+                            <p ng-bind="vm.points.total" class="text-semibold"></p>
                         </md-list-item>
                     </md-list>
 
@@ -112,7 +166,8 @@
 -->
                 </div>
 
-            </div>
+        </ms-widget>
+
     </div>
 
 </div>

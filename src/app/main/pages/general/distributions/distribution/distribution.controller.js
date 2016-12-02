@@ -18,11 +18,17 @@
             last:  distribution.distributionTable[distribution.distributionTable.length - 1],
             total: getTotalPoints()
         }
+
+        vm.flipped = {
+            definition: false
+        };
         
         // Methods
         vm.gotoList = gotoList;
         vm.saveDistribution = saveDistribution;
         vm.deleteDistributionConfirm = deleteDistributionConfirm;
+        vm.editDefinition = editDefinition;
+        vm.saveDefinition = saveDefinition;
 
 
         /////////////////
@@ -120,6 +126,24 @@
 
 
         /**
+         * Edit definition
+         */
+        function editDefinition() {
+            // se hace una copia
+            vm.distributionCopy = angular.copy(vm.distribution);
+            vm.flipped.definition = true;
+        }
+
+        /** 
+         * Save definition 
+         * */
+        function saveDefinition() {
+
+            vm.distribution = angular.extend(vm.distribution, vm.distributionCopy);
+            vm.saveDistribution();
+        }
+
+        /**
          * Save distribution
          */
         function saveDistribution()
@@ -130,12 +154,9 @@
             api.distributions.update({id: id}, vm.distribution,
                 function(updatedDistribution) {
 
-                    var idx = findIndex(updatedDistribution._id, vm.distributions);
-                    if (idx > -1) {
-                        angular.extend(vm.distributions[idx], vm.distribution);
-                    }
-
-                    closeDialog(updatedDistribution);
+                    angular.forEach(vm.flipped, function(value, key) {
+                        vm.flipped[key] = false;
+                    });
                 },
                 function(error) {
                     alert(error.data.msg);
@@ -169,8 +190,7 @@
                     api.distributions.delete({id: vm.distribution._id}, 
                         function() {
 
-                            vm.distributions.splice(findIndex(vm.distribution._id, vm.distributions), 1);
-                            closeDialog();
+                            vm.gotoList();
 
                         }, function(error) {
                             alert(error.data.msg);
