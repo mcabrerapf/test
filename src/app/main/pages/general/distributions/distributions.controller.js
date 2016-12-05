@@ -7,50 +7,44 @@
         .controller('DistributionsController', DistributionsController);
 
     /** @ngInject */
-    function DistributionsController(distributions, api, $mdDialog, $state, $filter, $timeout)
+    function DistributionsController($scope, translateValues, api, $mdDialog, $state, $filter, $timeout)
     {
         var vm = this;
 
-        vm.distributions = distributions;
+        api.distributions.find(function(distributions) {
 
-        vm.gridOptions = {
-            dataSource: {
-                data: vm.distributions,
-                /*
-                schema: {
-                    model: {
-                        fields: {
-                            name:               { type: 'string' },
-                            description:        { type: 'string' },
-                            type:               { type: 'string' },
-                            participants:       { type: 'number' },
-                            formula:            { type: 'string' },
-                            distributionTable:  { type: 'array' }
-                        }
-                    }
+            vm.distributions = distributions;
+
+            vm.gridOptions = {
+                dataSource: {
+                    data: vm.distributions,
+                    pageSize: 20
                 },
-                */
-                pageSize: 20
-            },
-//            height: 550,
-            scrollable: true,
-            sortable: true,
-            filterable: true,
-            navigatable: true,
-            navigate: function(e) {
-                var id = this.dataItem(e.element.parent())._id;
-                $state.go('app.distributions.detail', {'id': id});
-            },
-            selectable: false, // 'single row',
-            pageable: {
-                input: true,
-                numeric: false
-            },
-            columns: [
-                { field: "name", title: "Name" },
-                { field: "type", title: "Type", filterable: { multi: true, search: false }}
-            ]
-        };
+                scrollable: true,
+                sortable: true,
+                filterable: true,
+                navigatable: true,
+                navigate: function(e) {
+                    var id = this.dataItem(e.element.parent())._id;
+                    $state.go('app.distributions.detail', {'id': id});
+                },
+                selectable: false, // 'single row',
+                pageable: {
+                    input: true,
+                    numeric: false
+                },
+                columns: [
+                    { field: "name", title: translateValues['DISTRIBUTION.NAME'] },
+                    { field: "type", title: translateValues['DISTRIBUTION.TYPE'], filterable: { multi: true, search: false }},
+                    { field: "participants", title: translateValues['DISTRIBUTION.PARTICIPANTS'], filterable: true },
+                    {
+                        field: null,
+                        title: translateValues['DISTRIBUTION.TOTAL_POINTS'],
+                        template: '#= distributionTable.reduce(function(a,b) { return a+b; }, 0) #'
+                    }
+                ]
+            };
+        });
         
         // Methods
         vm.createNew = createNew;
