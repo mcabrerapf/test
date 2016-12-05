@@ -5,7 +5,7 @@ dist
 data
 .tmp
 e2e
-
+.idea
 .DS_Store
 ._.DS_Store
 ._*
