@@ -21,12 +21,6 @@
                 },
                 data: {
                     roles: ['Admin']
-                },
-                resolve: {
-                    themes: function (apiResolver)
-                    {
-                        return apiResolver.resolve('themes@find');
-                    }
                 }
             })
             .state('app.themes.detail', {

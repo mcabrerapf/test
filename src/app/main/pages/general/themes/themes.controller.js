@@ -7,12 +7,10 @@
         .controller('ThemesController', ThemesController);
 
     /** @ngInject */
-    function ThemesController(themes, api, $mdDialog, $state, $filter, $timeout)
+    function ThemesController(api, $mdDialog, $state, $filter, $timeout)
     {
         var vm = this;
 
-        vm.themes = themes;
-        vm.filteredItems = themes;
         
         // Methods
         vm.createNew = createNew;
@@ -22,21 +20,27 @@
 
         function init() {
 
-            var searchBox = angular.element('body').find('#search');
+            api.themes.find(function(themes) {
 
-            if ( searchBox.length > 0 )
-            {
-                searchBox.on('keyup', function (event)
+                vm.themes = themes;
+                vm.filteredItems = themes;
+
+                var searchBox = angular.element('body').find('#search');
+
+                if ( searchBox.length > 0 )
                 {
-                    $timeout(function() {
-                        if (event.target.value === '') {
-                            vm.filteredItems = vm.themes;
-                        } else {
-                            vm.filteredItems = $filter('filter')(vm.themes, {"name": event.target.value});
-                        }
+                    searchBox.on('keyup', function (event)
+                    {
+                        $timeout(function() {
+                            if (event.target.value === '') {
+                                vm.filteredItems = vm.themes;
+                            } else {
+                                vm.filteredItems = $filter('filter')(vm.themes, {"name": event.target.value});
+                            }
+                        });
                     });
-                });
-            }
+                }
+            });
         }
 
 
