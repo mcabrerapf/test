@@ -1,0 +1,35 @@
+<div class="assets-view-container md-background-bg md-whiteframe-1dp">
+
+    <div layout="row" layout-align="center">
+
+        <div id="treeview"
+             flex
+             class="p-24"
+             kendo-tree-view="vm.tree"
+             k-options="vm.treeView.options"
+             k-data-source="vm.treeView.dataSource">
+        </div>
+
+        <div flex="30" layout="column" class="md-background-bg md-hue-3 bl p-24">
+            
+            <div>
+                <strong>{{vm.selectedItem.text}}</strong>
+            </div>
+
+            <div>
+                <button ng-click="vm.treeView.addFolder($event)">[New folder]</button>
+                <button ng-click="vm.treeView.addFile($event)">[New file]</button>
+                <button ng-click="vm.treeView.delete($event)">[Delete]</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!--
+    <div class="md-background-bg md-hue-3 b p-24 box-col json-data-wrapper" ng-show="true">
+        <h4>Tree:</h4>
+        <pre ng-bind="vm.observableStructureFolder | json"</pre>
+    </div>
+    -->
+
+</div>

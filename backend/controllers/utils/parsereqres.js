@@ -80,7 +80,7 @@ function getSubFolder(req, res) {
 			itemID 			= getItemID(req, res),
 			subfolder 		= getQueryParam(req, 'path') || null
 
-	if (subfolder === null) return null;
+	if (subfolder === null) return '/';
 
 	return Path.join( DATA_DIR, collectionName, itemID, subfolder );
 };
