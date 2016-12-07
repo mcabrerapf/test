@@ -109,6 +109,11 @@ var team = {
     name:                       { type: String, required: true },
     alias:                      { type: String, required: false },
     manager:                    { type: String, required: true },
+    parent:                     { type: String, required: false, default: '' },           // id del team superior
+    players:                    {
+        user:                   { type: String, required: true },                         // id del usuario (users collection)
+        employeeId:             { type: String, required: true }
+    }
 }
 
 
@@ -138,7 +143,7 @@ var schemas = {
     'kpi': kpi,
 
     'distribution': {   // de reparto de puntos y premios
-        name:               { type: String, required: false },
+        name:               { type: String, required: false, unique: true },
         description:        { type: String, required: false },
         type:               { type: String, required: true, enum: ['Points', 'Prize'], default: 'Points'},
         participants:       { type: Number, required: true },
@@ -151,10 +156,6 @@ var schemas = {
     },
 
     'premios': {
-        name:       { type: String, required: false }
-    },
-
-    'team': {
         name:       { type: String, required: false }
     },
 
@@ -175,7 +176,8 @@ var schemas = {
     'customer': {
         name:           { type: String, required: true },
         logo:           { type: String, required: false },
-        admin:          { type: String, required: false }           // ??? Id del usuario
+        admin:          { type: String, required: false },           // ??? Id del usuario
+        teams:          [ team, { _id: true }]
     },
 
     'user': {
@@ -185,8 +187,9 @@ var schemas = {
         active:         { type: Boolean, required: true, default: true },
         photo:          { type: String, required: false },
         role:           { type: [String], required: false },            // admin | player | manager | mentor
-        customer:       { type: String, required: false },
-        mentor:         { type: String, required: false }               // id del mentor
+        customer:       { type: String, required: false },              // id del customer
+        mentor:         { type: String, required: false },               // id del mentor
+        data:           { type: Schema.Types.Mixed, required: false}
     }
 }
 
