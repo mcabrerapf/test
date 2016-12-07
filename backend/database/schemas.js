@@ -143,7 +143,7 @@ var schemas = {
     'kpi': kpi,
 
     'distribution': {   // de reparto de puntos y premios
-        name:               { type: String, required: false },
+        name:               { type: String, required: false, unique: true },
         description:        { type: String, required: false },
         type:               { type: String, required: true, enum: ['Points', 'Prize'], default: 'Points'},
         participants:       { type: Number, required: true },

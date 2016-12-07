@@ -23,10 +23,19 @@
                     roles: ['Admin']
                 },
                 resolve: {
+                    translateValues: function($translate) {
+                        return $translate([
+                            'DISTRIBUTION.NAME',
+                            'DISTRIBUTION.TYPE',
+                            'DISTRIBUTION.PARTICIPANTS',
+                            'DISTRIBUTION.TOTAL_POINTS']);
+                    }
+                    /*
                     distributions: function (apiResolver)
                     {
                         return apiResolver.resolve('distributions@find');
                     }
+                    */
                 }
             })
             .state('app.distributions.detail', {

@@ -37,7 +37,7 @@
                     closeDialog(newDistribution);
                 },
                 function(error) {
-                    alert(error.data.msg);
+                    alert(error.data.errmsg);
                     console.error(error);
                 });
         }
@@ -46,9 +46,9 @@
         /**
          * Close dialog
          */
-        function closeDialog()
+        function closeDialog(returnValue)
         {
-            $mdDialog.hide();
+            $mdDialog.hide(returnValue);
         }
 
     }
