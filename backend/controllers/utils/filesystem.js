@@ -7,8 +7,13 @@
 
 
 module.exports = {
+	getStructureFolder: getStructureFolder,
+
 	createItemFolder: 	createItemFolder,
 	removeItemFolder:   removeItemFolder,
+
+	createSubFolder: 	createSubFolder,
+	removeSubFolder: 	removeSubFolder,
 
 	blank2hyphen: 		blank2hyphen,
 	normalize: 			normalize,
@@ -22,11 +27,114 @@ module.exports = {
 
 
 var Fs 					= require('fs');
+var Path 				= require('path');
 var Q 					= require('q');
 var Exec 				= require('./exec.js');
 var ParseReqRes			= require('./parsereqres.js');
 
 var E_ENOENT 	= 34;	// errno, cuando entrada no existe (man 2)
+
+
+// --------------------------------------------------------------------------------------
+
+function getStructureFolder (req, res, next) {
+
+	var fullPath = ParseReqRes.getSubFolder(req, res);
+
+	console.log('DEBUG (INFO): getStructureFolder: [%s]', fullPath);
+
+	if (fullPath === null) return res.status(500).send({msg: "invalid folder name"});
+
+	return res.status(200).send( dumpDirectory( fullPath ) );
+};
+
+
+// --------------------------------------------------------------------------------------
+
+function dumpDirectory (fullPath) {
+	console.log('DEBUG (INFO): dumpDirectory: [%s]', fullPath);
+
+	var dump = [];
+
+	if (Fs.existsSync( fullPath )) {
+		const entries = Fs.readdirSync( fullPath );
+
+		entries.forEach(function(entry){
+			if (entry == '.' || entry == '..') return;
+
+			const 	entryFullPath	= Path.join( fullPath, entry )
+			,		stats 			= Fs.statSync( entryFullPath )
+
+			var		fileProperties	= {
+										name: 		entry,
+										mtime: 		stats.mtime,
+										fullPath: 	entryFullPath
+									  }
+
+			if (stats.isDirectory()) {
+				fileProperties.type = 'directory';
+				fileProperties.contents = dumpDirectory( entryFullPath );	// Explora recursivamente
+			} else {
+				fileProperties.type = 'file';
+				fileProperties.size = stats.size;
+			};
+
+			dump.push( fileProperties );
+		});
+	};
+
+	return dump;
+};
+
+
+// --------------------------------------------------------------------------------------
+
+function createSubFolder (req, res, next) {
+
+	var fullPath = ParseReqRes.getSubFolder(req, res);
+
+	console.log('DEBUG (INFO): createSubFolder: [%s]', fullPath);
+
+	if (fullPath === null) return res.status(500).send({msg: "invalid folder name"});
+
+	createDir( fullPath ).done(
+
+		function (result) {
+			//return next();
+			return res.status(201).send(result);
+		},
+		function (error) {
+			console.log('DEBUG (ERR): createSubFolder:', error);
+			return res.status(500).send(error);
+		}
+	);
+};
+
+
+// --------------------------------------------------------------------------------------
+
+function removeSubFolder (req, res, next) {
+
+	var fullPath = ParseReqRes.getSubFolder(req, res);
+
+	console.log('DEBUG (INFO): removeSubFolder: [%s]', fullPath);
+
+	if (fullPath === null) return res.status(500).send({msg: "invalid folder name"});
+
+	removeDir( fullPath ).done(
+		
+		function (result) {
+			//return next();
+			return res.status(204).send(result);
+		},
+		function (error) {
+			console.log('DEBUG (WARN): removeSubFolder:', error);
+			//return res.send(500, error);
+			return res.status(200).send(result);
+		}
+	);
+};
+
 
 // --------------------------------------------------------------------------------------
 // createItemFolder: crea el directorio para almacenar el item de la collection.
@@ -35,7 +143,7 @@ function createItemFolder (req, res, next) {
 
 	var folder = ParseReqRes.getItemFolder(req, res);
 
-	console.log('filesystem.js:::: \n DEBUG (INFO): createItemFolder:', folder);
+	console.log('DEBUG (INFO): createItemFolder:', folder);
 
 	createDir(folder).done(
 
@@ -44,7 +152,7 @@ function createItemFolder (req, res, next) {
 		},
 		function (error) {
 			console.log('DEBUG (ERR): createItemFolder:', error);
-			return res.send(500, error);
+			return res.status(500).send(error);
 		}
 	);
 };
