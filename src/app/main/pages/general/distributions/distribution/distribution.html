@@ -108,52 +108,99 @@
 
         </ms-widget>
 
-        <ms-widget flippable="false" flex>
-            <div layout="column" flex class="form-wrapper form-data-wrapper md-whiteframe-1dp"> 
+        <ms-widget flippable="true" flex flipped="vm.flipped.distribution" class="settings-form">
 
-                    <div class="form-title" translate="DISTRIBUTION.DISTRIBUTION">Distribución</div>
+            <ms-widget-front class="md-white-bg">
 
-                    <md-list class="settings-form">
-                        <md-list-item>
-                            <p>Participantes</p>
-                            <input  type="number"
-                                    required
-                                    ng-model="vm.distribution.participants"
-                                    ng-model-options="{debounce:500}" />
-                        </md-list-item>
+                <div layout="row" layout-align="space-between center" class="h-55 ph-16">
+                    <div class="h2" translate="DISTRIBUTION.DISTRIBUTION">Distribución</div>
+                    <md-button class="md-icon-button" ng-click="vm.editDistributionParams()" aria-label="edit" translate-attr-aria-label="FORMS.EDIT">
+                        <md-icon class="s16" md-font-icon="icon-pencil"></md-icon>
+                    </md-button>
+                </div>
 
-                        <md-list-item>
-                            <p>Puntos primer clasificado</p>
-                            <input  type="number"
-                                    ng-model="vm.points.first"
-                                    ng-model-options="{debounce:500}" />
-                        </md-list-item>
+                <md-list class="display-list ph-16">
+                    <md-list-item>
+                        <p translate="DISTRIBUTION.PARTICIPANTS">Participantes</p>
+                        <p class="md-secondary" ng-bind="vm.distribution.participants"></p>
+                    </md-list-item>
 
-                        <md-list-item>
-                            <p>Puntos último clasificado</p>
-                            <input  type="number"
-                                    ng-model="vm.points.last"
-                                    ng-model-options="{debounce:500}" />
-                        </md-list-item>
+                    <md-list-item>
+                        <p translate="DISTRIBUTION.POINTS_FIRST">Puntos primer clasificado</p>
+                        <p class="md-secondary" ng-bind="vm.points.first"></p>
+                    </md-list-item>
 
-                        <md-list-item>
-                            <p class="text-semibold">Total puntos</p>
-                            <p ng-bind="vm.points.total" class="text-semibold"></p>
-                        </md-list-item>
-                    </md-list>
+                    <md-list-item>
+                        <p translate="DISTRIBUTION.POINTS_LAST">Puntos último clasificado</p>
+                        <p class="md-secondary" ng-bind="vm.points.last"></p>
+                    </md-list-item>
 
-                    <div class="k-content wide">
-                        <div kendo-chart="chart"
-                            k-options="vm.options"
-                            style="height: 350px; width: 100%" >
-                        </div>
+                    <md-list-item>
+                        <p translate="DISTRIBUTION.TOTAL_POINTS" class="text-semibold">Total puntos</p>
+                        <p class="md-secondary" ng-bind="vm.points.total"></p>
+                    </md-list-item>
+                </md-list>
+
+                <div class="ph-16 k-content wide">
+                    <div kendo-chart="vm.chart"
+                        k-options="vm.options"
+                        style="height: 350px; width: 100%" >
                     </div>
+                </div>
+                
+            </ms-widget-front>
 
-<!--
-                    <div>
-                        <nvd3 options="vm.options" data="vm.tableData"></nvd3>
+            <ms-widget-back class="md-white-bg">
+
+                <div layout="row" layout-align="space-between center" class="h-55 ph-16">
+                    <div class="h2" translate="DISTRIBUTION.DISTRIBUTION">Definición</div>
+                    <div class="flip-to-front">
+                        <md-button class="md-icon-button" ng-click="vm.flipped.distribution=false" aria-label="Cancel" translate-attr-aria-label="FORMS.CANCEL">
+                            <md-icon md-font-icon="icon-close" class="s16"></md-icon>
+                        </md-button>
                     </div>
+                </div>
 
+                <md-list class="edit-list">
+                    <md-list-item>
+                        <p translate="DISTRIBUTION.PARTICIPANTS">Participantes</p>
+                        <input  type="number"
+                                required
+                                ng-model="vm.distributionCopy.participants" />
+                    </md-list-item>
+
+                    <md-list-item>
+                        <p translate="DISTRIBUTION.POINTS_FIRST">Puntos primer clasificado</p>
+                        <input  type="number"
+                                ng-model="vm.pointsEdit.first" />
+                    </md-list-item>
+
+                    <md-list-item>
+                        <p translate="DISTRIBUTION.POINTS_LAST">Puntos último clasificado</p>
+                        <input  type="number"
+                                ng-model="vm.pointsEdit.last" />
+                    </md-list-item>
+
+                    <md-list-item>
+                        <p translate="DISTRIBUTION.TOTAL_POINTS" class="text-semibold">Total puntos</p>
+                        <input  type="number"
+                                ng-model="vm.points.total" 
+                                disabled />
+                    </md-list-item>
+                </md-list>
+
+                <div class="p-16 grey-50-bg border-top" layout="row" layout-align="start center">
+                    <md-button  class="send-button md-accent md-raised"
+                                ng-click="vm.saveDistributionParams()" 
+                                translate="FORMS.APPLY">Aplicar</md-button>
+                </div>
+
+            </ms-widget-back>
+        
+        </ms-widget>
+
+
+                            <!--
                             <table>
 
                                 <tr ng-repeat="item in vm.distribution.distributionTable track by $index">
@@ -163,10 +210,7 @@
                                 </tr>
 
                             </table>
--->
-                </div>
-
-        </ms-widget>
+                            -->
 
     </div>
 

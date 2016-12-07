@@ -7,20 +7,21 @@
         .controller('DistributionController', DistributionController);
 
     /** @ngInject */
-    function DistributionController($scope, $state, distribution, api, $translate, $mdDialog)
+    function DistributionController($scope, $state, distribution, api, $translate, $mdDialog, $timeout)
     {
         var vm = this;
 
         // Data
         vm.distribution = distribution;
         vm.points = {
-            first: distribution.distributionTable[0],
-            last:  distribution.distributionTable[distribution.distributionTable.length - 1],
+            first: distribution.distributionTable[0] | 0,
+            last:  distribution.distributionTable[distribution.distributionTable.length - 1] | 0,
             total: getTotalPoints()
         }
 
         vm.flipped = {
-            definition: false
+            definition: false,
+            distribution: false
         };
         
         // Methods
@@ -29,6 +30,8 @@
         vm.deleteDistributionConfirm = deleteDistributionConfirm;
         vm.editDefinition = editDefinition;
         vm.saveDefinition = saveDefinition;
+        vm.editDistributionParams = editDistributionParams;
+        vm.saveDistributionParams = saveDistributionParams;
 
 
         /////////////////
@@ -40,54 +43,37 @@
          */
         function init()
         {
-        }
+            generateTableData();
+            fillTableData()
 
-
-        generateTableData();
-
-        vm.options = {
-            series: vm.tableData,
-            legend: {
-                visible: false
-            },
-            categoryAxis: {
-                visible: true,
-                categories: generateCategoryAxisArray(),
-                line: {
+            vm.options = {
+                series: vm.tableData,
+                legend: {
                     visible: false
+                },
+                categoryAxis: {
+                    visible: true,
+                    categories: generateCategoryAxisArray(),
+                    line: {
+                        visible: false
+                    }
+                },
+                tooltip: {
+                    visible: true,
+                    format: "{0}%",
+                    template: "#= dataItem.index #: #= dataItem.value #"
                 }
-            },
-            tooltip: {
-                visible: true,
-                format: "{0}%",
-                template: "#= dataItem.index #: #= dataItem.value #"
-            }
-        };
+            };
+
+            $timeout(function() {
+                vm.chart.resize();
+            }, 200);
+        }
 
         $(window).on("resize", function() {
             // $scope.chart.resize();
             kendo.resize($(".k-content"));
         });
-
-
-        $scope.$watch(function() { return vm.distribution.participants; }, function(newValue, oldValue) {
-            
-            if (newValue === undefined) return;
-
-            var actualLength = vm.distribution.distributionTable.length;
-
-            if (actualLength < newValue) {
-                for(var r=0; r < newValue - actualLength; r++) {
-                    vm.distribution.distributionTable.push(0);
-                }
-            }
-            if (actualLength > newValue) {
-                vm.distribution.distributionTable.splice(newValue, actualLength - newValue);
-            }
-
-            generateTableData();
-        });
-
 
         
         function getTotalPoints() {
@@ -109,27 +95,79 @@
         function generateTableData() {
             vm.tableData = [{
                 name: 'reparto',
-                data: vm.distribution.distributionTable.map(function(v, i) {
-                    return { index: i+1, value: v }; //parseInt(v);
-                })
+                data: new kendo.data.ObservableArray([])
             }];
         }
 
 
-        //////////
-        function findIndex(id, array) {
-            for(var r=0; r < array.length; r++) {
-                if (array[r]._id === id) return r;
+        function fillTableData() {
+
+            // clean data 
+            vm.tableData[0].data.splice(0, vm.tableData[0].data.length);
+
+            // populate new data
+            for(var r=0; r < vm.distribution.distributionTable.length; r++) {
+                vm.tableData[0].data.push({
+                    index: r+1,
+                    value: vm.distribution.distributionTable[r]
+                })
             }
-            return -1;
-        };
+        }
+
+        //////////
 
 
+
+        /**
+         * Edit distribution
+         */
+        function editDistributionParams() {
+
+            vm.flipped.definition = false;
+            vm.pointsEdit = {
+                first: vm.points.first,
+                last: vm.points.last
+            };
+            vm.distributionCopy = angular.copy(vm.distribution);
+            vm.flipped.distribution = true;
+        }
+
+        /** 
+         * Save distribution 
+         * */
+        function saveDistributionParams() {
+
+            vm.distribution = angular.extend(vm.distribution, vm.distributionCopy);
+            vm.points.first = vm.pointsEdit.first;
+            vm.points.last = vm.pointsEdit.last;
+
+            // Realizamos los cálculos para la nueva definición
+            vm.distribution.distributionTable = [];
+
+            var value = vm.points.first;
+            var delta = (vm.points.first - vm.points.last) / (vm.distribution.participants);
+            delta = Math.round(delta * 100) / 100;
+            for(var r=0; r < vm.distribution.participants -1; r++) {
+
+                vm.distribution.distributionTable.push(value);
+                value = Math.round(value - delta);
+            }
+            vm.distribution.distributionTable.push(vm.points.last);
+
+            vm.points.total = getTotalPoints();
+            vm.options.categoryAxis.categories = generateCategoryAxisArray();
+            fillTableData();
+            vm.chart.refresh();
+
+            vm.saveDistribution();
+        }
+        
         /**
          * Edit definition
          */
         function editDefinition() {
-            // se hace una copia
+
+            vm.flipped.distribution = false;
             vm.distributionCopy = angular.copy(vm.distribution);
             vm.flipped.definition = true;
         }
@@ -154,12 +192,13 @@
             api.distributions.update({id: id}, vm.distribution,
                 function(updatedDistribution) {
 
+                    vm.distribution._id = id;
                     angular.forEach(vm.flipped, function(value, key) {
                         vm.flipped[key] = false;
                     });
                 },
                 function(error) {
-                    alert(error.data.msg);
+                    alert(error.data.errmsg);
                     console.error(error);
                 });
         }
@@ -193,7 +232,7 @@
                             vm.gotoList();
 
                         }, function(error) {
-                            alert(error.data.msg);
+                            alert(error.data.errmsg);
                             console.error(error);
                         });
                 });

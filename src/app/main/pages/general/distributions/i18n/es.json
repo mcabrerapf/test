@@ -16,6 +16,10 @@
         "DESCRIPTION": "Descripción",
         "TYPE": "Tipo de distribución",
         "PARTICIPANTS": "Número de participantes",
-        "VALUES": "Reparto de valores"
+        "VALUES": "Reparto de valores",
+
+        "POINTS_FIRST": "Puntos primer clasificado",
+        "POINTS_LAST": "Puntos último clasificado",
+        "TOTAL_POINTS": "Total puntos"
     }
 }
