@@ -25,6 +25,7 @@
                 filterable: true,
                 navigatable: true,
                 navigate: function(e) {
+                    if (e.element[0].tagName === 'TH') return;
                     var id = this.dataItem(e.element.parent())._id;
                     $state.go('app.distributions.detail', {'id': id});
                 },

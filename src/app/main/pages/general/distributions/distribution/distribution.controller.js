@@ -14,8 +14,8 @@
         // Data
         vm.distribution = distribution;
         vm.points = {
-            first: distribution.distributionTable[0],
-            last:  distribution.distributionTable[distribution.distributionTable.length - 1],
+            first: distribution.distributionTable[0] | 0,
+            last:  distribution.distributionTable[distribution.distributionTable.length - 1] | 0,
             total: getTotalPoints()
         }
 
@@ -198,7 +198,7 @@
                     });
                 },
                 function(error) {
-                    alert(error.data.msg);
+                    alert(error.data.errmsg);
                     console.error(error);
                 });
         }
@@ -232,7 +232,7 @@
                             vm.gotoList();
 
                         }, function(error) {
-                            alert(error.data.msg);
+                            alert(error.data.errmsg);
                             console.error(error);
                         });
                 });
