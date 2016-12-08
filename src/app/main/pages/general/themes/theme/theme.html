@@ -16,7 +16,7 @@
                 </div>
 
                 <div layout="column" layout-align="start start">
-                    <div class="h2">
+                    <div class="h2" editable-text="vm.theme.name" onbeforesave="vm.updateThemeName($data)">
                         {{vm.theme.name}}
                     </div>
                     <div class="subtitle secondary-text">
