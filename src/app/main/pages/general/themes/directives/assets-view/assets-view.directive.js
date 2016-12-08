@@ -143,7 +143,7 @@
         };
 
         /*
-         * Pau: no es necesario bindar la estructura de datos
+         * MLM: no es necesario bindar la estructura de datos
          *      es necesario introducir controles externos (botones) para añadir/eliminar elementos
          *      del treeview.
          *      Estas acciones se aplicarán al elemento seleccionado del árbol.

@@ -7,7 +7,7 @@
         .controller('ThemeController', ThemeController);
 
     /** @ngInject */
-    function ThemeController($document, $state, $mdDialog, $translate, api, theme)
+    function ThemeController($q, $state, $mdDialog, $translate, api, theme)
     {
         var vm = this;
 
@@ -18,6 +18,37 @@
         // Methods
         vm.gotoThemes = gotoThemes;
         vm.deleteConfirm = deleteConfirm;
+        vm.updateThemeName = updateTheme;
+
+
+        /**
+         * Update theme (name)
+         */
+        function updateTheme(newName) {
+
+            var def = $q.defer();
+
+            var id = vm.theme._id;
+            delete vm.theme._id;
+            var originalName = vm.theme.name;
+            vm.theme.name = newName;
+
+            api.themes.update({id:id}, vm.theme,
+                function() {
+                    vm.theme._id = id;
+                    def.resolve();
+                },
+                function(error) {
+                    alert(error.data.errmsg);
+                    console.log(error);
+                    vm.theme._id = id;
+                    vm.theme.name = originalName;
+                    def.reject();
+                }
+            );
+
+            return def.promise;
+        }
 
 
         /**
