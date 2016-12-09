@@ -1,5 +1,4 @@
-(function ()
-{
+(function () {
     'use strict';
 
     angular
@@ -7,8 +6,7 @@
         .factory('api', apiService);
 
     /** @ngInject */
-    function apiService($resource)
-    {
+    function apiService($resource) {
         /**
          * You can use this service to define your API urls. The "api" service
          * is designed to work in parallel with "apiResolver" service which you can
@@ -182,52 +180,60 @@
 
         // USERS
         api.users = $resource(api.baseUrl + 'users/:id', {}, {
-            find: 				{ method: 'GET',	params: {},	isArray: true },
-            findOne:			{ method: 'GET',	params: {}, isArray: false },
-            save: 				{ method: 'POST',	params: {},	isArray: false },
-            update:				{ method: 'PUT',	params: {},	isArray: false },
-            remove: 			{ method: 'DELETE',	params: {},	isArray: false }
+            find: {method: 'GET', params: {}, isArray: true},
+            findOne: {method: 'GET', params: {}, isArray: false},
+            save: {method: 'POST', params: {}, isArray: false},
+            update: {method: 'PUT', params: {}, isArray: false},
+            remove: {method: 'DELETE', params: {}, isArray: false}
         });
 
 
         // THEMES
         api.themes = $resource(api.baseUrl + 'themes/:id', {}, {
-            find: 				{ method: 'GET',	params: {},	isArray: true },
-            findOne:			{ method: 'GET',	params: {}, isArray: false },
-            save: 				{ method: 'POST',	params: {},	isArray: false },
-            update:				{ method: 'PUT',	params: {},	isArray: false },
-            remove: 			{ method: 'DELETE',	params: {},	isArray: false }
+            find: {method: 'GET', params: {}, isArray: true},
+            findOne: {method: 'GET', params: {}, isArray: false},
+            save: {method: 'POST', params: {}, isArray: false},
+            update: {method: 'PUT', params: {}, isArray: false},
+            remove: {method: 'DELETE', params: {}, isArray: false}
         });
 
 
         // GAMES
         api.games = $resource(api.baseUrl + 'games/:id', {}, {
-            find: 				{ method: 'GET',	params: {},	isArray: true },
-            findOne:			{ method: 'GET',	params: {}, isArray: false },
-            save: 				{ method: 'POST',	params: {},	isArray: false },
-            update:				{ method: 'PUT',	params: {},	isArray: false },
-            remove: 			{ method: 'DELETE',	params: {},	isArray: false }
+            find: {method: 'GET', params: {}, isArray: true},
+            findOne: {method: 'GET', params: {}, isArray: false},
+            save: {method: 'POST', params: {}, isArray: false},
+            update: {method: 'PUT', params: {}, isArray: false},
+            remove: {method: 'DELETE', params: {}, isArray: false}
         });
 
 
         // KPIs
         api.kpis = $resource(api.baseUrl + 'kpis/:id', {}, {
-            find: 				{ method: 'GET',	params: {},	isArray: true },
-            findOne:			{ method: 'GET',	params: {}, isArray: false },
-            save: 				{ method: 'POST',	params: {},	isArray: false },
-            update:				{ method: 'PUT',	params: {},	isArray: false },
-            remove: 			{ method: 'DELETE',	params: {},	isArray: false }
+            find: {method: 'GET', params: {}, isArray: true},
+            findOne: {method: 'GET', params: {}, isArray: false},
+            save: {method: 'POST', params: {}, isArray: false},
+            update: {method: 'PUT', params: {}, isArray: false},
+            remove: {method: 'DELETE', params: {}, isArray: false}
         });
 
         // DISTRIBUTIONS
         api.distributions = $resource(api.baseUrl + 'distributions/:id', {}, {
-            find: 				{ method: 'GET',	params: {},	isArray: true },
-            findOne:			{ method: 'GET',	params: {}, isArray: false },
-            save: 				{ method: 'POST',	params: {},	isArray: false },
-            update:				{ method: 'PUT',	params: {},	isArray: false },
-            remove: 			{ method: 'DELETE',	params: {},	isArray: false }
+            find: {method: 'GET', params: {}, isArray: true},
+            findOne: {method: 'GET', params: {}, isArray: false},
+            save: {method: 'POST', params: {}, isArray: false},
+            update: {method: 'PUT', params: {}, isArray: false},
+            remove: {method: 'DELETE', params: {}, isArray: false}
         });
 
+        // COSTUMERS
+        api.costumers = $resource(api.baseUrl + 'costumers/:id', {}, {
+            find: {method: 'GET', params: {}, isArray: true},
+            findOne: {method: 'GET', params: {}, isArray: false},
+            save: {method: 'POST', params: {}, isArray: false},
+            update: {method: 'PUT', params: {}, isArray: false},
+            remove: {method: 'DELETE', params: {}, isArray: false}
+        })
 
 
         return api;

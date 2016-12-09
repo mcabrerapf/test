@@ -20,7 +20,7 @@
                     }
                 },
                 data: {
-                    roles: ['Admin']
+                    roles: ['Admin', 'Manager']
                 },
                 resolve: {
                     players: function (apiResolver)
