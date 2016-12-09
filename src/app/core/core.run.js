@@ -7,7 +7,7 @@
         .run(runBlock);
 
     /** @ngInject */
-    function runBlock(msUtils, fuseGenerator, fuseConfig)
+    function runBlock(msUtils, fuseGenerator, fuseConfig, editableThemes)
     {
         /**
          * Generate extra classes based on registered themes so we
@@ -42,5 +42,14 @@
             var htmlClass = browserInfo.browser + ' ' + browserInfo.version + ' ' + browserInfo.os;
             angular.element('html').addClass(htmlClass);
         }
+
+
+        /**
+         * Inline Edit Configuration
+         * @type {string}
+         */
+        //editableThemes.default.submitTpl = '<md-button class="md-icon-button" type="submit" aria-label="save" translate-attr-aria-label="FORMS.SAVE"><md-icon md-font-icon="icon-checkbox-marked-circle" class="md-accent-fg md-hue-1"></md-icon></md-button>';
+        //editableThemes.default.cancelTpl = '<md-button class="md-icon-button" ng-click="$form.$cancel()" aria-label="cancel" translate-attr-aria-label="FORMS.CANCEL"><md-icon md-font-icon="icon-close-circle" class="icon-cancel"></md-icon></md-button>';
+
     }
 })();

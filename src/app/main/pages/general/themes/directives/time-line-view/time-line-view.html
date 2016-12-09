@@ -1,0 +1,41 @@
+<div class="general-view-container p-24 md-background-bg md-whiteframe-1dp" id="timeline">
+
+    <div ms-timeline="vm.timelineOptions" ms-timeline-load-more="vm.loadNextPage()">
+
+        <div ms-timeline-item
+             layout="column"
+             layout-align="center center"
+             ng-repeat="timelineItem in vm.theme.timeline">
+
+                <!-- fake timeline item -->
+                    <div class="timeline-point md-accent-bg md-whiteframe-2dp">
+                        <md-icon md-font-icon="{{timelineItem.icon}}"></md-icon>
+                    </div>
+
+                    <div class="timeline-detail" flex="50">
+                        <div class="time">
+                            {{timelineItem.time}}
+                        </div>
+                        <div class="event">
+                            {{timelineItem.event}}
+                        </div>
+                    </div>
+
+                    <div class="timeline-card" layout="row" flex="50">
+                        <!-- MS-CARD -->
+                        <ms-card template="timelineItem.card.template" ng-model="timelineItem.card"></ms-card>
+                        <!-- / MS-CARD -->
+                    </div>
+                <!-- end fake -->
+        </div>
+
+    </div>
+
+    <!-- ADD CONTACT BUTTON -->
+    <md-button class="md-fab md-accent md-icon-button" id="add-theme-button" ng-click="vm.createNew($event)"
+               aria-label="add contact" translate translate-attr-aria-label="THEMES.ADD_TIMELINEEVENT">
+        <md-icon md-font-icon="icon-plus"></md-icon>
+    </md-button>
+    <!-- / ADD CONTACT BUTTON -->
+
+</div>

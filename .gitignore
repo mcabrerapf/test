@@ -6,11 +6,16 @@ data
 .tmp
 e2e
 .idea
+.vscode
+
+# Mac
 .DS_Store
 ._.DS_Store
 ._*
 
-# Test master > branch
+# sublime
+gamification.sublime-project
+gamification.sublime-workspace
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt

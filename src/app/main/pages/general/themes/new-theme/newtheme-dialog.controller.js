@@ -30,7 +30,7 @@
                     closeDialog(theme);
                 },
                 function(error) {
-                    alert(error.data.msg);
+                    alert(error.data.errmsg || error.data.data.errmsg);
                     console.error(error);
                 });
         }

@@ -168,7 +168,6 @@ var schemas = {
         name:           { type: String, required: true, unique: true },
         description:    { type: String, required: false },
         timeline:       [ timelineevent, { _id: true }],
-        kpis:           [ kpi, { _id: true } ],
         thumbnail:      { type: String, required: false },
         levels:         [ level, { _id: true }]
     },
