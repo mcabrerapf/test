@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pages.players', [])
+        .module('app.pages.administration.players', ['app.pages.administration'])
         .config(config);
 
     /** @ngInject */
@@ -11,11 +11,11 @@
     {
         // State
         $stateProvider
-            .state('app.players', {
+            .state('app.administration.players', {
                 url    : '/players',
                 views  : {
                     'content@app': {
-                        templateUrl: 'app/main/pages/players/players.html',
+                        templateUrl: 'app/main/pages/administration/players/players.html',
                         controller : 'PlayersController as vm'
                     }
                 },
@@ -31,20 +31,13 @@
             });
 
         // Translation
-        $translatePartialLoaderProvider.addPart('app/main/pages/players');
+        $translatePartialLoaderProvider.addPart('app/main/pages/administration/players');
 
-        // Navigation
-        msNavigationServiceProvider.saveItem('players', {
-            title : 'GESTIÓN DE JUGADORES',
-            group : true,
-            weight: 1,
-            translate: 'PLAYERS.MENU.SECTION_TITLE'
-        });
 
-        msNavigationServiceProvider.saveItem('players.players', {
+        msNavigationServiceProvider.saveItem('administration.players', {
             title    : 'Jugadores',
             icon     : 'icon-account-multiple',
-            state    : 'app.players',
+            state    : 'app.administration.players',
             translate: 'PLAYERS.MENU.TITLE',
             weight   : 1
         });

@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pages.players')
+        .module('app.pages.administration')
         .controller('PlayersController', PlayersController);
 
     /** @ngInject */

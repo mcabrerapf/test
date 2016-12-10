@@ -1,0 +1,41 @@
+<div id="administration" class="page-layout simple left-sidenav inner-sidenav">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between center">
+
+        <!-- APP TITLE -->
+        <div layout="row" layout-align="start center">
+            <div class="logo" layout="row" layout-align="start center">
+                <span class="logo-icon">
+                    <md-icon md-font-icon="icon-account-multiple" class="s24"></md-icon>
+                </span>
+                <span class="logo-text" translate="ADMINISTRATION.TITLE">Partidas</span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content" md-background-bg layout="row" layout-align="start start">
+
+        <!-- MAIN -->
+        <div class="main scrollable" ms-scroll>
+
+            <!-- ADMINISTRATION LIST -->
+
+            <!-- / ADMINISTRATION LIST -->
+
+            <!-- NO RESULTS -->
+            <md-list-item class="no-results md-white-bg" ng-show="vm.filteredItems.length === 0">
+                <p translate="ADMINISTRATION.NO_RESULTS">No results..</p>
+            </md-list-item>
+            <!-- / NO RESULTS -->
+
+        </div>
+        <!-- / MAIN -->
+
+    </div>
+    <!-- / CONTENT -->
+</div>

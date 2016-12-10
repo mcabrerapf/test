@@ -8,7 +8,7 @@
             'app.pages.games',
             'app.pages.general.themes',
             'app.pages.general.distributions',
-            'app.pages.players'
+            'players'
         ])
         .config(config);
 
