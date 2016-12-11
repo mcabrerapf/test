@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pages.administration.players', [])
+        .module('app.pages.administration.users', [])
         .config(config);
 
     /** @ngInject */
@@ -11,19 +11,19 @@
     {
         // State
         $stateProvider
-            .state('app.players', {
-                url    : '/players',
+            .state('app.users', {
+                url    : '/users',
                 views  : {
                     'content@app': {
-                        templateUrl: 'app/main/pages/administration/players/players.html',
-                        controller : 'PlayersController as vm'
+                        templateUrl: 'app/main/pages/administration/users/users.html',
+                        controller : 'UsersController as vm'
                     }
                 },
                 data: {
-                    roles: ['Admin', 'Manager']
+                    roles: ['Admin']
                 },
                 resolve: {
-                    players: function (apiResolver)
+                    users: function (apiResolver)
                     {
                         return apiResolver.resolve('users@find');
                     }
@@ -31,14 +31,14 @@
             });
 
         // Translation
-        $translatePartialLoaderProvider.addPart('app/main/pages/administration/players');
+        $translatePartialLoaderProvider.addPart('app/main/pages/administration/users');
 
         // Navigation
-        msNavigationServiceProvider.saveItem('administration.players', {
+        msNavigationServiceProvider.saveItem('administration.users', {
             title    : 'Jugadores',
             icon     : 'icon-account-multiple',
-            state    : 'app.players',
-            translate: 'PLAYERS.MENU.TITLE',
+            state    : 'app.users',
+            translate: 'USERS.MENU.TITLE',
             weight   : 1
         });
     }

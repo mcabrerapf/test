@@ -1,0 +1,118 @@
+<!-- DIALOG -->
+<md-dialog class="user-dialog" aria-label="Nueva partida" translate-attr-aria-label="GAMES.NEW_TITLE">
+
+    <kldform name="userForm" class="md-inline-form" novalidate mode="edit">
+
+        <!-- DIALOG TOOLBAR -->
+        <md-toolbar class="md-accent md-hue-2">
+
+            <!-- TOOLBAR TOP -->
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+                <span class="title"
+                      translate="GAMES.NEW_TITLE">Nueva partida</span>
+                <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Cerrar" translate
+                           translate-attr-aria-label="DIALOG.CLOSE">
+                    <md-icon md-font-icon="icon-close"></md-icon>
+                </md-button>
+            </div>
+            <!-- / TOOLBAR TOP -->
+
+        </md-toolbar>
+        <!-- / DIALOG TOOLBAR -->
+
+        <!-- DIALOG CONTENT -->
+        <md-dialog-content ms-scroll>
+
+            <div layout="column">
+                <div layout="row">
+                    <div flex="none"><md-icon md-font-icon="icon-userpad-variant"></md-icon></div>
+
+                    <div flex>
+                        <field  type="text"
+                                required 
+                                ng-model="vm.newGame.name"
+                                md-autofocus
+                                label="GAMES.NAME" />
+                    </div>
+                </div>
+
+                <div layout="row">
+                    <div flex="none"><md-icon></md-icon></div>
+    
+                    <div flex>
+                        <field  type="text"
+                                required 
+                                ng-model="vm.newGame.customer.name"
+                                label="GAMES.CUSTOMER.NAME" />
+                    </div>
+                </div>
+
+                <div layout="row">
+                    <div flex="none"><md-icon md-font-icon="icon-theme-light-dark"></md-icon></div>
+
+                    <div flex>
+                        <field  type="select"
+                                ng-model="vm.newGame.theme"
+                                items="vm.themes"
+                                display-field="name"
+                                value-field="_id"
+                                label="GAMES.THEME"
+                                required />
+                    </div>
+                </div>
+
+                <div layout="row">
+                    
+                    <div flex="none"><md-icon md-font-icon="icon-calendar"></md-icon></div>
+
+                    <div flex>
+                        <field  type="date"
+                                ng-model="vm.newGame.start"
+                                md-min-date="vm.minDate"
+                                required 
+                                label="GAMES.START" />
+                    </div>
+
+                    <div flex>
+                        <field  type="date"
+                                ng-model="vm.newGame.end"
+                                md-min-date="vm.newGame.start"
+                                label="GAMES.END" />
+                    </div>
+                </div>
+
+            </div>
+
+        </md-dialog-content>
+        <!-- / DIALOG CONTENT -->
+
+        <!-- DIALOG ACTIONS -->
+        <md-dialog-actions layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-button type="submit" ng-if="vm.newGame" ng-click="vm.addNewGame()"
+                           class="send-button md-accent md-raised"
+                           ng-disabled="userForm.$invalid"
+                           aria-label="Add Task" translate="GAMES.ADD_GAME"
+                           translate-attr-aria-label="GAMES.ADD_GAME">
+                    CREAR Partida
+                </md-button>
+
+            </div>
+
+            <!--
+            <div layout="row">
+                <md-button class="md-icon-button" ng-click="vm.deleteGameConfirm($event)" aria-label="Delete"
+                           translate
+                           translate-attr-aria-label="GAMES.DELETE">
+                    <md-icon md-font-icon="icon-delete"></md-icon>
+                    <md-tooltip><span translate="GAMES.DELETE">DELETE</span></md-tooltip>
+                </md-button>
+            </div>
+            -->
+        </md-dialog-actions>
+        <!-- / DIALOG ACTIONS -->
+
+    </kldform>
+
+</md-dialog>
+<!-- / DIALOG -->

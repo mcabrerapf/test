@@ -3,22 +3,15 @@
     'use strict';
 
     angular
-        .module('app.pages.administration', [])
+        .module('app.pages.administration', [
+            'app.pages.administration.players',
+            'app.pages.administration.users'
+        ])
         .config(config);
 
     /** @ngInject */
-    function config($stateProvider, $translatePartialLoaderProvider, msApiProvider, msNavigationServiceProvider)
+    function config($translatePartialLoaderProvider, msNavigationServiceProvider)
     {
-        // State
-        $stateProvider
-            .state('app.administration', {
-                url    : '/administration',
-                abstract: true,
-                data: {
-                    roles: ['Admin', 'Manager']
-                }
-            });
-
         // Translation
         $translatePartialLoaderProvider.addPart('app/main/pages/administration');
 
@@ -27,7 +20,7 @@
             title : 'GESTIÓN DE CUSTOMERS/USUARIOS',
             group : true,
             weight: 1,
-            translate: 'PLAYERS.MENU.SECTION_TITLE'
+            translate: 'ADMINISTRATION.MENU.SECTION_TITLE'
         });
     }
 })();

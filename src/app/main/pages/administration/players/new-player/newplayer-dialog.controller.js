@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pages.administration')
+        .module('app.pages.administration.players')
         .controller('NewGameDialogController', NewGameDialogController);
 
     /** @ngInject */

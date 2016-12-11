@@ -3,18 +3,18 @@
     'use strict';
 
     angular
-        .module('app.pages.administration.players')
-        .controller('PlayersController', PlayersController);
+        .module('app.pages.administration.users')
+        .controller('UsersController', UsersController);
 
     /** @ngInject */
-    function PlayersController(players, api, $mdDialog, $timeout, $filter)
+    function UsersController(users, api, $mdDialog, $timeout, $filter)
     {
         var vm = this;
 
-        vm.players = players;
-        vm.filteredItems = players;
+        vm.users = users;
+        vm.filteredItems = users;
         
-        console.log(players);
+        console.log(users);
 
         // Methods
         vm.createNew = createNew;
@@ -31,9 +31,9 @@
                 {
                     $timeout(function() {
                         if (event.target.value === '') {
-                            vm.filteredItems = vm.players;
+                            vm.filteredItems = vm.users;
                         } else {
-                            vm.filteredItems = $filter('filter')(vm.players, {"name": event.target.value});
+                            vm.filteredItems = $filter('filter')(vm.users, {"name": event.target.value});
                         }
                     });
                 });
@@ -46,7 +46,7 @@
             $mdDialog.show({
                 controller:         'NewGameDialogController',
                 controllerAs:       'vm',
-                templateUrl:        'app/main/pages/players/new-player/newplayer-dialog.html',
+                templateUrl:        'app/main/pages/users/new-user/newuser-dialog.html',
                 parent:             angular.element(document.body),
                 targetEvent:        event,
                 clickOusideToClose: true
