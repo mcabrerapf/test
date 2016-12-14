@@ -7,7 +7,7 @@
 
 
 module.exports = {
-	getStructureFolder: getStructureFolder,
+	listRootFolder: 	listRootFolder,
 
 	createItemFolder: 	createItemFolder,
 	removeItemFolder:   removeItemFolder,
@@ -25,36 +25,34 @@ module.exports = {
 	removeDir: 			removeDir		// rm -rf dir 			# directorio y su contenido su directorio, recursivamente
 };
 
+const 	E_ENOENT 		= 34	// errno, cuando entrada no existe (man 2)
 
-var Fs 					= require('fs');
-var Path 				= require('path');
-var Q 					= require('q');
-var Exec 				= require('./exec.js');
-var ParseReqRes			= require('./parsereqres.js');
-
-var E_ENOENT 	= 34;	// errno, cuando entrada no existe (man 2)
+,		Fs 				= require('fs')
+,		Path 			= require('path')
+,		Q 				= require('q')
+,		Exec 			= require('./exec.js')
+,		ParseReqRes		= require('./parsereqres.js')
 
 
 // --------------------------------------------------------------------------------------
 
-function getStructureFolder (req, res, next) {
+function listRootFolder (req, res) {
 
-	var fullPath = ParseReqRes.getSubFolder(req, res);
+	const 	folder 	= ParseReqRes.getItemFolder(req, res)
 
-	console.log('DEBUG (INFO): getStructureFolder: [%s]', fullPath);
+	console.log('DEBUG (INFO): listDirectory: [%s]', folder);
 
-	if (fullPath === null) return res.status(500).send({msg: "invalid folder name"});
-
-	return res.status(200).send( dumpDirectory( fullPath ) );
+	return res.status(200).send( dumpDirectory( folder, '/' ) );
 };
 
 
 // --------------------------------------------------------------------------------------
 
-function dumpDirectory (fullPath) {
-	console.log('DEBUG (INFO): dumpDirectory: [%s]', fullPath);
+function dumpDirectory (baseDir, subDir) {
+	//console.log('DEBUG (INFO): dumpDirectory: [%s | %s]', baseDir, subDir);
 
-	var dump = [];
+	const 	fullPath 	= Path.join( baseDir, subDir );
+	var 	dump 		= [];
 
 	if (Fs.existsSync( fullPath )) {
 		const entries = Fs.readdirSync( fullPath );
@@ -62,20 +60,22 @@ function dumpDirectory (fullPath) {
 		entries.forEach(function(entry){
 			if (entry == '.' || entry == '..') return;
 
-			const 	entryFullPath	= Path.join( fullPath, entry )
+			const 	entryPath		= Path.join( subDir, entry )
+			,		entryFullPath 	= Path.join( baseDir, entryPath )
 			,		stats 			= Fs.statSync( entryFullPath )
 
 			var		fileProperties	= {
 										name: 		entry,
-										mtime: 		stats.mtime,
-										fullPath: 	entryFullPath
+										path: 		entryPath,
+										fullPath: 	entryFullPath,	// sólo útil en fase desarrollo
+										mtime: 		stats.mtime
 									  }
 
 			if (stats.isDirectory()) {
-				fileProperties.type = 'directory';
-				fileProperties.contents = dumpDirectory( entryFullPath );	// Explora recursivamente
+				fileProperties.type = 'folder';
+				fileProperties.contents = dumpDirectory( baseDir, entryPath );	// Explora recursivamente
 			} else {
-				fileProperties.type = 'file';
+				fileProperties.type = typeByExtension( entry );
 				fileProperties.size = stats.size;
 			};
 
@@ -89,18 +89,36 @@ function dumpDirectory (fullPath) {
 
 // --------------------------------------------------------------------------------------
 
-function createSubFolder (req, res, next) {
+function typeByExtension (fileName) {
+	const 	ext 	= Path.extname( fileName ).toLowerCase();
+	var		type 	= 'unknown';
+			
+	if ( /^\.(bmp|gif|jpe?g|png|svg)$/i.test( ext ) )		{ type = 'image'; }
+	else if ( /^\.(html?|s?css|sass|xml)$/i.test( ext ) )	{ type = 'html'; }
+	else if ( /^\.pdf$/i.test( ext ) )						{ type = 'pdf'; }
 
-	var fullPath = ParseReqRes.getSubFolder(req, res);
+	return type;
+};
+
+
+// --------------------------------------------------------------------------------------
+
+function createSubFolder (req, res) {
+
+	const 	baseDir 	= ParseReqRes.getItemFolder(req, res)
+	,		subDir 		= ParseReqRes.getPostParam(req, 'path')
+	,		fullPath 	= Path.join( baseDir, subDir )
 
 	console.log('DEBUG (INFO): createSubFolder: [%s]', fullPath);
 
-	if (fullPath === null) return res.status(500).send({msg: "invalid folder name"});
-
 	createDir( fullPath ).done(
 
-		function (result) {
-			//return next();
+		function () {
+			const result = {
+				name: 		Path.basename(subDir),
+				path: 		subDir,
+				fullPath: 	fullPath
+			};
 			return res.status(201).send(result);
 		},
 		function (error) {
@@ -113,23 +131,27 @@ function createSubFolder (req, res, next) {
 
 // --------------------------------------------------------------------------------------
 
-function removeSubFolder (req, res, next) {
+function removeSubFolder (req, res) {
 
-	var fullPath = ParseReqRes.getSubFolder(req, res);
+	const 	baseDir 	= ParseReqRes.getItemFolder(req, res)
+	,		subDir 		= ParseReqRes.getQueryParam(req, 'path')
+	,		fullPath 	= Path.join( baseDir, subDir )
 
+	console.log( 'removeSubFolder.req:', req);
 	console.log('DEBUG (INFO): removeSubFolder: [%s]', fullPath);
 
-	if (fullPath === null) return res.status(500).send({msg: "invalid folder name"});
-
 	removeDir( fullPath ).done(
-		
-		function (result) {
-			//return next();
+
+		function () {
+			const result = {
+				name: 		Path.basename(subDir),
+				path: 		subDir,
+				fullPath: 	fullPath
+			};
 			return res.status(204).send(result);
 		},
 		function (error) {
 			console.log('DEBUG (WARN): removeSubFolder:', error);
-			//return res.send(500, error);
 			return res.status(200).send(result);
 		}
 	);
@@ -230,17 +252,17 @@ function createDir(dirName) {
 
 
 function createDir(dirName) {
-	return Exec.execCommand('/bin/mkdir -p ' + dirName);
+	return Exec.execCommand('/bin/mkdir -p "' + dirName + '"');
 };
 
 
 function cleanDir(dirName) {
-	return Exec.execCommand('/bin/rm -rf ' + dirName + '/*');
+	return Exec.execCommand('/bin/rm -rf "' + dirName + '"/*');
 };
 
 
 function removeDir(dirName) {
-	return Exec.execCommand('/bin/rm -rf ' + dirName);
+	return Exec.execCommand('/bin/rm -rf "' + dirName + '"');
 };
 
 function removeFileGlob(fullPathGlob) {

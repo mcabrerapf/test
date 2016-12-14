@@ -39,13 +39,14 @@
              */
             refresh: function() {
 
-                api.themes.structureFolder(
+                api.themes.folder.list(
                     {
-                        id:     vm.theme._id,
-                        path:   '.'
+                        id:     vm.theme._id
                     },
 
                     function (result) {
+                        console.log('refresh: OK', result);
+
                         var structure = dumpStructureToTreeView( result );
                         angular.forEach(structure, function(node) {
                             vm.observableStructureFolder.push(node);
@@ -83,44 +84,29 @@
                         parentFolder = parentItem.id;
                     } else {
                         parentNode = null;
-                    }
+                    };
 
-                        // Manel, este método no funciona si el nombre de la carpeta tiene espacios.
-                        // Solo tiene en cuenta la primera parte del texto.
-                        // Como se deben cambiar los métodos en las llamdas (este debería ser un POST)
-                        // igual este problema se soluciona.
-                        api.themes.createFolder(
-                            {
-                                id:     vm.theme._id,
-                                // MANEL!!!!
-                                // Como el parentFolder es absoluto dentro del servidor, esta acción
-                                // crea una nueva estructura dentro de la carpeta del thema.
-                                // En lugar de crar:
-                                // /carpeta/del/proyecto/data/theme/xxxxx/folderName
-                                // Crea la siguiente estructura:
-                                // /carpeta/del/proyecto/data/theme/xxxxx/carpeta/del/proyecto/data/theme/xxxxx/folderName
-                                // Ya lo he indicado antes, el path que llega del servidor debe ser relativo al root del thema
-                                path:   parentFolder + '/' + folderName
-                            },
+                    api.themes.folder.save(
+                        {
+                            id:     vm.theme._id,
+                            path:   parentFolder + '/' + folderName
+                        },
 
-                            function (result) {
-                                // LA API NO RETORNA NADA!!!!
-                                // DEBERIA RETORNAR LOS DATOS DE LA NUEVA CARPETA QUE SE 
-                                // HA CREADO!!
-                                console.log('add: OK', result);
+                        function (result) {
+                            console.log('add: OK', result);
 
-                                vm.tree.append({
-                                    id: parentFolder + '/' + folderName, 
-                                    text: folderName, 
-                                    items: [], 
-                                    expanded: false, 
-                                    spriteCssClass:'folder'
-                                }, parentNode);
-                            },
-                            function (error) {
-                                console.log('add: ERROR', error);
-                            }
-                        );
+                            vm.tree.append({
+                                id:                 result.path,
+                                text:               result.name,
+                                items:              [], 
+                                expanded:           false, 
+                                spriteCssClass:     'folder'
+                            }, parentNode);
+                        },
+                        function (error) {
+                            console.log('add: ERROR', error);
+                        }
+                    );
                 });
             },
 
@@ -134,10 +120,33 @@
 
                 var item = vm.tree.dataItem(selectedNode);
 
-                // are you sure??
-                console.log('Remove file: ' + item.id);
+                // !! ES NECESARIO TRADUCIR TODOS ESTOS TEXTOS!!
+                var confirm = $mdDialog.confirm()
+                                       .title('Borrar carpeta?')
+                                       .textContent( item.id )
+                                       .targetEvent(event)
+                                       .ok('Borrar')
+                                       .cancel('Cancelar');
 
-                vm.tree.remove(selectedNode);
+                $mdDialog.show(confirm).then(function() {
+
+                    api.themes.folder.delete(
+                        {
+                            id:     vm.theme._id,
+                            path:   item.id
+                        },
+
+                        function (result) {
+                            console.log('delete: OK', result);
+                            
+                            vm.tree.remove( selectedNode );
+                        },
+                        function (error) {
+                            console.log('delete: ERROR', error);
+                        }
+                    );
+
+                });
             }
 
         };
@@ -147,26 +156,6 @@
          *      es necesario introducir controles externos (botones) para añadir/eliminar elementos
          *      del treeview.
          *      Estas acciones se aplicarán al elemento seleccionado del árbol.
-
-        vm.observableStructureFolder.bind("change", function(e) {
-    		console.log("changed", e.action, e.index, e.items, e.field);
-
-    		switch (e.action) {
-    			case 'itemchange':
-    				e.items.forEach(function(item){
-    					console.log(e.action, ":", item.text, "->", e.field, '=', item[e.field]);
-    				});
-    				break;
-    			case 'add':
-    			case 'remove':
-    				e.items.forEach(function(item){
-    					console.log(e.action, ":", item.text, "->", e.index);
-    				});
-    				break;
-    			default:
-    				console.log('action:', e.action);
-    		}
-    	});
         */
 
 
@@ -190,23 +179,14 @@
         function dumpStructureToTreeView(dump) {
             return dump.map(function(entry){
                 var node = {
-                    // id:     nodeId++,
-                    // Pau: El ID puede ser el path. De este modo podremos
-                    //      lanzar las peticiones al servidor
-                    //      El path no debe ser absoluto!!!!! debería ser relativo
-                    //      a la carpeta del thema.
-                    id:     entry.fullPath,
-                    text:   entry.name
+                    id:             entry.path,
+                    text:           entry.name,
+                    spriteCssClass: entry.type
                 };
 
-                if (entry.type == 'directory') {
-                    node.spriteCssClass = "folder";
-                    node.expanded = false;
-                    node.items = dumpStructureToTreeView( entry.contents );
-                } else if (entry.type == 'file') {
-                    node.spriteCssClass = "html";
-                } else {
-                    console.log('dumpStructureToTreeView: incorrect type !!!');
+                if (entry.type == 'folder') {
+                    node.expanded   = false;
+                    node.items      = dumpStructureToTreeView( entry.contents );
                 };
 
                 return node;
