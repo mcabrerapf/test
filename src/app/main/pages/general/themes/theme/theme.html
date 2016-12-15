@@ -16,7 +16,7 @@
                 </div>
 
                 <div layout="column" layout-align="start start">
-                    <div class="h2">
+                    <div class="h2" editable-text="vm.theme.name" onaftersave="vm.updateThemeName()">
                         {{vm.theme.name}}
                     </div>
                     <div class="subtitle secondary-text">
@@ -25,6 +25,13 @@
                 </div>
             </div>
         </div>
+        
+        <md-button  class="md-icon-button"
+                    aria-label="delete"
+                    ng-click="vm.deleteConfirm()"
+                    translate-attr-aria-label="FORMS.DELETE">
+            <md-icon md-font-icon="icon-delete" class="md-default-theme" aria-label="delete" translate-attr-aria-label="FORMS.DELETE"></md-icon>
+        </md-button>
 
     </div>
     <!-- / HEADER -->
@@ -35,63 +42,46 @@
         <md-tabs md-dynamic-height>
 
             <!-- Description -->
-
             <md-tab>
                 <md-tab-label>
-                    <span translate="THEME.BASIC_INFO">Basic Info</span>
+                    <span translate="THEMES.BASIC_INFO">Basic Info</span>
                 </md-tab-label>
 
                 <md-tab-body>
-                    <div class="theme-detail-form-container md-background-bg md-whiteframe-1dp">
-                        Detail goes here!
-                    </div>
+                    <general-view theme="vm.theme"></general-view>
                 </md-tab-body>
             </md-tab>
 
-            <!-- Contents -->
-
+            <!-- Timeline -->
             <md-tab>
                 <md-tab-label>
-                    <span translate="THEME.CONTENTS">Contents</span>
+                    <span translate="THEMES.TIME_LINE">Time line</span>
                 </md-tab-label>
 
                 <md-tab-body>
-                    <div class="theme-detail-form-container md-background-bg md-whiteframe-1dp">
+                    <time-line-view theme="vm.theme"></time-line-view>
+                </md-tab-body>
+            </md-tab>
 
-                        <h3>{{vm.theme.name}}</h3>
-                        <h5>Created by {{vm.theme.createdBy}} @ {{vm.theme.created}}</h5>
-                        <h5>Modified by {{vm.theme.modifiedBy}} @ {{vm.theme.modified}}</h5>
+            <!-- Progress levels -->
+            <md-tab>
+                <md-tab-label>
+                    <span translate="THEMES.PROGRESS_LEVELS">Progress levels</span>
+                </md-tab-label>
 
-                        <!-- BEGIN: kendo-ui treeview -->
+                <md-tab-body>
+                    <progress-levels-view theme="vm.theme"></progress-levels-view>
+                </md-tab-body>
+            </md-tab>
+            
+            <!-- Assets -->
+            <md-tab>
+                <md-tab-label>
+                    <span translate="THEMES.ASSETS">Assets</span>
+                </md-tab-label>
 
-						<div id="treeview"
-							kendo-tree-view="vm.treeView.tree"
-							k-options="vm.treeView.options"
-							k-data-source="vm.treeView.dataSource"
-						>
-							<!-- k-on-change="vm.treeview.onChange" -->
-
-							<!-- <span k-template ng-click='vm.treeView.click(dataItem)'> -->
-							<!--
-							<span k-template>
-								{{dataItem.text}}
-							</span>
-							-->
-						</div>
-
-						<!--
-						<div class="box-col" ng-show="selectedItem">
-							<h4>Selected: {{selectedItem.text}}</h4>
-						</div>
-						-->
-
-						<div class="box-col" ng-show="true">
-							<h4>Tree: {{vm.theArray.toJSON()}}</h4>
-						</div>
-
-                        <!-- END: kendo-ui treeview -->
-                    </div>
-
+                <md-tab-body>
+                    <assets-view theme="vm.theme"></assets-view>
                 </md-tab-body>
             </md-tab>
 

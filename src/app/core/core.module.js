@@ -16,6 +16,8 @@
                 'ui.router',
                 'kaldeera.forms',
                 'nvd3',
-                'kendo.directives'
+                'kendo.directives',
+                'xeditable',
+                'dndLists'
             ]);
 })();

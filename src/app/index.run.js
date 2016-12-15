@@ -12,8 +12,6 @@
         // Activate loading indicator
         var stateChangeStartEvent = $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams)
         {
-            console.log('$stateChangeStart: ' + toState.name);
-            
             $rootScope.loadingProgress = true;
 
             $rootScope.toState = toState;

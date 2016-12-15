@@ -11,6 +11,7 @@
 		"CANCEL": "Cancelar",
 		"EDIT": "Editar",
 		"OK": "Ok",
+		"APPLY": "Aplicar",
 		"DELETECONFIRMATION": {
 			"TITLE": "Estas seguro de que deseas eliminar este registro?",
 			"DETAIL": "<b>Este elemento</b> será eliminado permanentemente.",

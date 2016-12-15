@@ -1,0 +1,46 @@
+/* Global styles */
+
+.editable-click {
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: none;
+
+    &:hover {
+        color: inherit;
+    }
+}
+
+.editable-wrap {
+    position: relative;
+
+    .editable-controls {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+
+        .editable-input {
+            width: inherit;
+            background-color: white;
+            padding: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+        }
+
+        .editable-buttons {
+            display: inherit;
+
+            .md-button {
+                margin: 0;
+
+                &:first-of-type {
+                    padding-right: 0;
+                }
+
+                .icon-cancel {
+                    color: rgba(0, 0, 0, 0.32);
+                }
+            }
+        }
+    }
+}

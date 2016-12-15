@@ -39,9 +39,9 @@ function checkStatus (req, res, next) {
 	if (isError(status)) {
 
 		console.log('DEBUG (ERR): checkStatus:', dataSend);
-		res.send(status, dataSend);
+		return res.status(status).send(dataSend);
 	} else {
-		next();
+		return next();
 	}
 };
 
@@ -58,7 +58,7 @@ function isError (code) {
 // Asegura que el usuario esté autenticado
 
 function ensureAuthenticated (req, res, next) {
-    return ( req.isAuthenticated() ? next() : res.send(401) );
+    return ( req.isAuthenticated() ? next() : res.sendStatus(401) );
 };
 
 
@@ -68,11 +68,12 @@ function ensureAuthenticated (req, res, next) {
 
 function ensureAuthorized (req, res, next) {
 
-    if (!req.user) return res.send(401);
+    if (!req.user) return res.sendStatus(401);
 
 	return next();
 
 	// NO ESTA IMPLEMENTADO!!!!
+	/***
 	var urlParts = req.url.split('/');
 	if (urlParts.length < 3) return next();
 
@@ -87,9 +88,10 @@ function ensureAuthorized (req, res, next) {
     		definition.methods,
     		{ method: req.method.toLowerCase() }
     	).accessLevel || accessLevel.public;
-    	if (!(accessLevel.bitMask & req.user.role.bitMask)) return res.send(403);
+    	if (!(accessLevel.bitMask & req.user.role.bitMask)) return res.sendStatus(403);
     }
     return next();
+    ***/
 };
 
 

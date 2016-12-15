@@ -25,7 +25,9 @@
     "nvd3": "^1.8.4",
     "kendo-ui": "https://bower.telerik.com/bower-kendo-ui.git#^2016.2.523",
     "angular-dynamic-locale": "^0.1.32",
-    "lodash": "^4.17.2"
+    "lodash": "^4.17.2",
+    "angular-xeditable": "^0.5.0",
+    "angular-drag-and-drop-lists": "https://github.com/marceljuenemann/angular-drag-and-drop-lists.git"
   },
   "devDependencies": {
     "angular-mocks": "1.5.8",

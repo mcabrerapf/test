@@ -22,11 +22,31 @@
 
         //////////
 
+        $scope.$watch('flipped', function(newFlipValue) {
+
+            if (newFlipValue) {
+
+                // si ya está flipped, no hacemos nada
+                if (vm.flipped) return;
+
+                vm.flip();
+
+            } else {
+
+                // si no está flipped, no hacemos nada
+                if (!vm.flipped) return;
+
+                vm.flip();
+            }
+        });
+
         /**
          * Flip the widget
          */
         function flip()
         {
+            // event!!
+
             if ( !isFlippable() )
             {
                 return;
@@ -56,7 +76,8 @@
         return {
             restrict  : 'E',
             scope     : {
-                flippable: '=?'
+                flippable: '=?',
+                flipped: '=?'
             },
             controller: 'MsWidgetController',
             transclude: true,
