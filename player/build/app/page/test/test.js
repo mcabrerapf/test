@@ -1,0 +1,1 @@
+define(["text!./test.html"],function(t){"use strict";var e=["$rootScope","$scope","BGTranslate",function(t,e,n){e.T=n,e.T.addKeys(["COMMON.TITLE"])}];return{template:t,controller:e}});

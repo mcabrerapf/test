@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<base href="/">
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>GAMIFICATION PLAYER</title>
+    	<link rel="stylesheet/less" href="/less/main.less">
+		<script>
+			window.less = {
+				relativeUrls: true,
+				rootpath: '/',
+				env: 'development',
+				logLevel: 1,
+				async: true
+			}
+		</script>
+    	<script src="/bower_components/less/dist/less.min.js"></script>
+	</head>
+	<body>
+		<h1>PLAYER</h1>
+		<ui-view></ui-view>
+		<script src="require.js" data-main="main.js"></script>
+	</body>
+</html>

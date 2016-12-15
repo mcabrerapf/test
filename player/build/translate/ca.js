@@ -1,0 +1,1 @@
+define("text!translate/ca/common.json",[],function(){return'{\r\n\t"COMMON": {\r\n\t\t"TITLE": "Títol"\r\n\t}\r\n}'}),define("text!translate/ca/test.json",[],function(){return'{\r\n\t"TEST": {\r\n\t\t"TITLE": "Prova"\r\n\t}\r\n}'}),define("translate/ca",["./loader","text!./ca/common.json","text!./ca/test.json"],function(t){"use strict";return t(arguments)});
