@@ -11,9 +11,10 @@ module.exports = {
 
 	createItemFolder: 	createItemFolder,
 	removeItemFolder:   removeItemFolder,
-
 	createSubFolder: 	createSubFolder,
-	removeSubFolder: 	removeSubFolder,
+	deleteFolder: 		deleteFolder,
+	deleteFile: 		deleteFile,
+	renameEntryFS: 		renameEntryFS,
 
 	blank2hyphen: 		blank2hyphen,
 	normalize: 			normalize,
@@ -131,28 +132,72 @@ function createSubFolder (req, res) {
 
 // --------------------------------------------------------------------------------------
 
-function removeSubFolder (req, res) {
+function deleteEntryFS (req, res) {
 
 	const 	baseDir 	= ParseReqRes.getItemFolder(req, res)
-	,		subDir 		= ParseReqRes.getQueryParam(req, 'path')
-	,		fullPath 	= Path.join( baseDir, subDir )
+	,		path 		= ParseReqRes.getQueryParam(req, 'path')
+	,		fullPath 	= Path.join( baseDir, path )
 
-	console.log( 'removeSubFolder.req:', req);
-	console.log('DEBUG (INFO): removeSubFolder: [%s]', fullPath);
+	console.log('DEBUG (INFO): deleteEntryFS: [%s]', fullPath);
 
-	removeDir( fullPath ).done(
+	(req.typeEntryFS == 'folder' ? removeDir : removeFile)( fullPath ).done(
 
 		function () {
 			const result = {
-				name: 		Path.basename(subDir),
-				path: 		subDir,
+				name: 		Path.basename( path ),
+				path: 		path,
 				fullPath: 	fullPath
 			};
 			return res.status(204).send(result);
 		},
 		function (error) {
-			console.log('DEBUG (WARN): removeSubFolder:', error);
-			return res.status(200).send(result);
+			console.log('DEBUG (ERR): deleteEntryFS:', error);
+			return res.status(500).send(error);
+		}
+	);
+};
+
+
+// --------------------------------------------------------------------------------------
+
+function deleteFolder (req, res) {
+	req.typeEntryFS = 'folder';
+	deleteEntryFS( req, res );
+};
+
+function deleteFile (req, res) {
+	req.typeEntryFS = 'file';
+	deleteEntryFS( req, res );
+};
+
+
+// --------------------------------------------------------------------------------------
+
+function renameEntryFS (req, res) {
+
+	const 	baseDir 	= ParseReqRes.getItemFolder(req, res)
+	,		oldPath 	= ParseReqRes.getPostParam(req, 'oldpath')
+	,		newPath 	= ParseReqRes.getPostParam(req, 'newpath')
+	,		oldFullPath = Path.join( baseDir, oldPath )
+	,		newFullPath = Path.join( baseDir, newPath )
+
+	console.log('DEBUG (INFO): renameEntryFS: [%s] -> [%s]', oldFullPath, newFullPath);
+
+	renameFile( oldFullPath, newFullPath ).done(
+
+		function () {
+			const result = {
+				name: 		Path.basename( newPath ),
+				path: 		newPath,
+				type: 		typeByExtension( newPath ),
+				fullPath: 	newFullPath
+			};
+			
+			return res.status(201).send(result);
+		},
+		function (error) {
+			console.log('DEBUG (ERR): renameEntryFS:', error);
+			return res.status(500).send(error);
 		}
 	);
 };
@@ -201,10 +246,6 @@ function removeItemFolder (req, res, next) {
 		}
 	);
 };
-
-
-
-
 
 
 function renameFile(oldFullPath, newFullPath) {

@@ -208,6 +208,15 @@
             remove:             { method: 'DELETE', params: {id: '@id'}, isArray: false }
         });
 
+        // THEMES.FILE
+        api.themes.file = $resource(api.baseUrl + 'themes/:id/file', {}, {
+            //save:               { method: 'POST',   params: {id: '@id'}, isArray: false },
+            // update:             { method: 'PUT',    params: {}, isArray: false },
+            rename:             { method: 'PUT',    params: {id: '@id'}, isArray: false },
+            delete:             { method: 'DELETE', params: {id: '@id'}, isArray: false }
+        });
+
+
 
         // GAMES
         api.games = $resource(api.baseUrl + 'games/:id', {}, {
