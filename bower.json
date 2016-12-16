@@ -44,6 +44,15 @@
         "css/perfect-scrollbar.css",
         "js/perfect-scrollbar.js"
       ]
+    },
+    "kendo-ui": {
+      "main": [
+        "js/jszip.min.js",
+        "js/kendo.all.min.js",
+        "styles/kendo.common-material.min.css",
+        "styles/kendo.material.min.css",
+        "styles/kendo.common.min.css"
+      ]
     }
   }
 }

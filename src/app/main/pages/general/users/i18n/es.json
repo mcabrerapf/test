@@ -10,8 +10,11 @@
 
         "NEW_TITLE": "Nuevo usuario",
         "NAME": "Nombre del usuario",
-        "THEME": "Tema",
+        "EMAIL": "Correo del usuario",
+        "PASSWORD": "Contraseña del usuario",
+        "ACTIVE": "Usuario activo",
         "STATUS": "Estado del usuario",
+        "ROLE": "Rol",
         "CUSTOMER": {
             "NAME": "Cliente",
             "LOGO": "Logo"
@@ -22,7 +25,3 @@
         "DELETE": "Eliminar usuario"
     }
 }
-
-
-
-

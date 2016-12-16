@@ -1,0 +1,186 @@
+<div id="import-users" class="page-layout simple fullwidth" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="start center">
+        <div class="white-fg" layout="row" layout-align="start center" flex>
+            <md-button class="goto-list-button md-icon-button" aria-label="Go to distributions"
+                       ng-click="vm.goBack()"
+                       translate translate-attr-aria-label="USERS.GO_TO_USERS">
+                <md-icon md-font-icon="icon-arrow-left"></md-icon>
+            </md-button>
+
+            <div layout="row" layout-align="start center">
+
+                <div layout="column" layout-align="start start">
+                    <div class="h2">
+                        sdssssss
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span translate="USERS.IMPORT_TITLE">Import Users</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content" md-background-bg layout="row" layout-align="start" layout-wrap>
+
+        <!-- MAIN -->
+        <div class="main scrollable" ms-scroll>
+
+            <!-- USERS LIST -->
+            <div layout="column">
+                <div layout="row">
+                    <div class="user-list" flex="60">
+                        <input accept=".xlsx" type="file" class="ng-hide file-input">
+
+                        <md-button ng-click="vm.openFile($event)"
+                                   class="send-button md-accent md-raised"
+                                   aria-label="Import xlsx" translate="USERS.IMPORT.SPREADSHEET"
+                                   translate-attr-aria-label="USERS.IMPORT.SPREADSHEET">
+                            <md-icon md-font-icon="icon-file-excel"></md-icon>
+                        </md-button>
+
+                        <div kendo-spreadsheet id="spreadsheet" k-options="vm.spreadsheetOptions">
+                        </div>
+
+                    </div>
+
+                    <!-- / USERS LIST -->
+                    <div flex="30">
+                        <kldform name="importUsersForm" class="md-inline-form" novalidate mode="edit">
+                            <div layout="column">
+                                <div layout="row">
+                                    <div flex>
+                                        <field type="select"
+                                               ng-model="vm.selectedSheet"
+                                               items="vm.sheets"
+                                               display-field="name"
+                                               value-field="name"
+                                               label="USERS.IMPORT.SHEET"/>
+                                    </div>
+
+                                    <div flex>
+                                        <field type="select"
+                                               ng-model="vm.customer"
+                                               items="vm.customers"
+                                               display-field="name"
+                                               value-field="_id"
+                                               label="USERS.IMPORT.CUSTOMER"/>
+                                    </div>
+                                </div>
+                                <div layout="row">
+
+                                    <div flex>
+                                        <field type="number"
+                                               ng-model="vm.startRow"
+                                               ng-min="1"
+                                               required
+                                               label="USERS.IMPORT.START_ROW"/>
+                                    </div>
+
+                                    <div flex>
+                                        <field type="number"
+                                               ng-model="vm.endRow"
+                                               ng-min="1"
+                                               required
+                                               label="USERS.IMPORT.END_ROW"/>
+                                    </div>
+                                </div>
+
+                                <div layout="row">
+
+                                    <div flex>
+                                        <field type="text"
+                                               ng-model="vm.startColumn"
+                                               ng-pattern="vm.columnPattern"
+                                               required
+                                               label="USERS.IMPORT.START_COLUMN"/>
+                                    </div>
+
+                                    <div flex>
+                                        <field type="text"
+                                               ng-model="vm.endColumn"
+                                               ng-pattern="vm.columnPattern"
+                                               required
+                                               label="USERS.IMPORT.END_COLUMN"/>
+                                    </div>
+
+                                </div>
+
+                                <div layout="row">
+
+                                    <div flex>
+                                        <field type="number"
+                                               ng-model="vm.headerRow"
+                                               ng-min="1"
+                                               label="USERS.IMPORT.HEADER_ROW"/>
+                                    </div>
+
+                                </div>
+
+                                <div layout="row">
+
+                                    <div flex>
+                                        <field type="text"
+                                               ng-model="vm.emailColumn"
+                                               ng-pattern="vm.columnPattern"
+                                               required
+                                               label="USERS.IMPORT.EMAIL_COLUMN"/>
+                                    </div>
+
+                                    <div flex>
+                                        <field type="text"
+                                               ng-model="vm.userNameColumn"
+                                               ng-pattern="vm.columnPattern"
+                                               required
+                                               label="USERS.IMPORT.USER_NAME_COLUMN"/>
+                                    </div>
+
+                                </div>
+
+                                <div layout="row">
+
+                                    <div flex>
+                                        <field type="text"
+                                               ng-model="vm.teamBossColumn"
+                                               ng-pattern="vm.columnPattern"
+                                               required
+                                               label="USERS.IMPORT.TEAM_BOSS_COLUMN"/>
+                                    </div>
+
+                                    <div flex>
+                                        <field type="text"
+                                               ng-model="vm.sellerCodeColumn"
+                                               ng-pattern="vm.columnPattern"
+                                               required
+                                               label="USERS.IMPORT.SELLER_CODE_COLUMN"/>
+                                    </div>
+
+                                </div>
+
+                                <div layout="row" layout-align="space-between center">
+                                    <md-button type="submit" ng-if="vm.sheet" ng-click="vm.importUsers($event)"
+                                               class="send-button md-accent md-raised"
+                                               ng-disabled="importUsersForm.$invalid"
+                                               aria-label="Add Task" translate="USERS.IMPORT.IMPORT"
+                                               translate-attr-aria-label="USERS.IMPORT.IMPORT">
+                                    </md-button>
+
+                                </div>
+                            </div>
+                        </kldform>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- / MAIN -->
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

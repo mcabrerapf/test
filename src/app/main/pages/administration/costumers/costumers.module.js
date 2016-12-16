@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pages.administration.users', [])
+        .module('app.pages.administration.costumers', [])
         .config(config);
 
     /** @ngInject */
@@ -11,27 +11,27 @@
     {
         // State
         $stateProvider
-            .state('app.users', {
-                url    : '/users',
+            .state('app.costumers', {
+                url    : '/costumers',
                 views  : {
                     'content@app': {
-                        templateUrl: 'app/main/pages/administration/users/users.html',
-                        controller : 'UsersController as vm'
+                        templateUrl: 'app/main/pages/administration/costumers/costumers.html',
+                        controller : 'CostumersController as vm'
                     }
                 },
                 data: {
                     roles: ['Admin']
                 },
                 resolve: {
-                    users: function (apiResolver)
+                    costumers: function (apiResolver)
                     {
-                        return apiResolver.resolve('users@find');
+                        return []; // apiResolver.resolve('costumers@find');
                     }
                 }
             });
 
         // Translation
-        $translatePartialLoaderProvider.addPart('app/main/pages/administration/users');
+        $translatePartialLoaderProvider.addPart('app/main/pages/administration/costumers');
 
         // Navigation
         msNavigationServiceProvider.saveItem('administration', {
@@ -41,11 +41,11 @@
             translate: 'ADMINISTRATION.MENU.SECTION_TITLE'
         });
 
-        msNavigationServiceProvider.saveItem('administration.users', {
+        msNavigationServiceProvider.saveItem('administration.costumers', {
             title    : 'Jugadores',
             icon     : 'icon-account-multiple',
-            state    : 'app.users',
-            translate: 'USERS.MENU.TITLE',
+            state    : 'app.costumers',
+            translate: 'COSTUMERS.MENU.TITLE',
             weight   : 1
         });
     }

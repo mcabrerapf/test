@@ -1,0 +1,82 @@
+<!-- DIALOG -->
+<md-dialog class="user-dialog" aria-label="Nuevo tema" translate-attr-aria-label="USERS.NEW_TITLE">
+
+    <kldform name="userForm" class="md-inline-form" novalidate mode="edit">
+
+        <!-- DIALOG TOOLBAR -->
+        <md-toolbar class="md-accent md-hue-2">
+
+            <!-- TOOLBAR TOP -->
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+                <span class="title"
+                      translate="USERS.NEW_TITLE">Distribución</span>
+                <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Cerrar" translate
+                           translate-attr-aria-label="DIALOG.CLOSE">
+                    <md-icon md-font-icon="icon-close"></md-icon>
+                </md-button>
+            </div>
+            <!-- / TOOLBAR TOP -->
+
+        </md-toolbar>
+        <!-- / DIALOG TOOLBAR -->
+
+        <!-- DIALOG CONTENT -->
+        <md-dialog-content ms-scroll>
+
+            <div layout="column">
+                
+                <field  type="email"
+                        ng-model="vm.user.email"
+                        required 
+                        label="USERS.EMAIL" />
+
+                <field  type="text"
+                        ng-model="vm.user.password"
+                        required
+                        mode="edit"
+                        label="PASSWORD" />
+
+                <field  type="text"
+                        ng-model="vm.user.userName"
+                        required
+                        label="USERS.NAME"/>
+
+                <field  type="boolean"
+                        ng-model="vm.user.active"
+                        label="USERS.ACTIVE" />
+
+                <field  type="select"
+                        ng-model="vm.user.customer"
+                        items="vm.customers"
+                        display-field="name"
+                        value-field="_id"
+                        label="USERS.CUSTOMER.NAME" />
+
+                <field  type="select"
+                        ng-model="vm.user.role"
+                        items="vm.roles"
+                        multiple
+                        label="USERS.ROLE" />
+            </div>
+
+        </md-dialog-content>
+        <!-- / DIALOG CONTENT -->
+
+        <!-- DIALOG ACTIONS -->
+        <md-dialog-actions layout="row" layout-align="space-between center">
+
+            <md-button type="submit" ng-click="vm.addNewUser()"
+                        class="send-button md-accent md-raised"
+                        ng-disabled="userForm.$invalid"
+                        aria-label="Add Task" translate="FORMS.ADD"
+                        translate-attr-aria-label="FORMS.ADD">
+                ADD
+            </md-button>
+
+        </md-dialog-actions>
+        <!-- / DIALOG ACTIONS -->
+
+    </kldform>
+
+</md-dialog>
+<!-- / DIALOG -->

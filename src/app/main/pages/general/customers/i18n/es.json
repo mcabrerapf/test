@@ -1,0 +1,20 @@
+{
+    "CUSTOMERS": {
+        "MENU": {
+            "SECTION_TITLE": "ADMINISTRACIÓN DE CLIENTES",
+            "TITLE": "Clientes"
+        },
+        "TITLE": "Clientes",
+        "SEARCH": "Buscar un cliente",
+        "NO_RESULTS": "No se han encontrado clientes",
+
+        "NEW_TITLE": "Nuevo cliente",
+        "NAME": "Nombre del cliente",
+        "ADMIN": "Administrador",
+        "STATUS": "Estado del cliente",
+
+        "SAVE": "Guardar cliente",
+        "ADD_NEW": "Crear cliente",
+        "DELETE": "Eliminar cliente"
+    }
+}

@@ -93,7 +93,10 @@ var level = {
 };
 
 var player = {
-    user:                       { type: String, required: true },
+    user:                       {
+        user:                   { type: String, required: true },                         // id del usuario (users collection)
+        employeeId:             { type: String, required: true }
+    },
     alias:                      { type: String, required: false },
     level:                      { type: String, required: true, default: 0 },
     points:                     { type: Number, required: true, default: 0 },
@@ -102,18 +105,20 @@ var player = {
     agreement:                  {
         accepted:               { type: Boolean, required: true, default: false },
         date:                   { type: Date, required: false }
-    }
+    },
+    team:                       { type: String, required: false }       // id del team
 };
 
 var team = {
     name:                       { type: String, required: true },
     alias:                      { type: String, required: false },
     manager:                    { type: String, required: true },
-    parent:                     { type: String, required: false, default: '' },           // id del team superior
-    players:                    {
-        user:                   { type: String, required: true },                         // id del usuario (users collection)
-        employeeId:             { type: String, required: true }
-    }
+    parent:                     { type: String, required: false, default: '' }         // id del team superior
+}
+
+var code = {
+    sellerCode: { type: String, required: true },
+    teamBoss: { type: String, required: false }
 }
 
 
@@ -176,7 +181,7 @@ var schemas = {
         name:           { type: String, required: true },
         logo:           { type: String, required: false },
         admin:          { type: String, required: false },           // ??? Id del usuario
-        teams:          [ team, { _id: true }]
+        teams:          {type: [String], required: false}
     },
 
     'user': {
@@ -188,7 +193,32 @@ var schemas = {
         role:           { type: [String], required: false },            // admin | player | manager | mentor
         customer:       { type: String, required: false },              // id del customer
         mentor:         { type: String, required: false },               // id del mentor
-        data:           { type: Schema.Types.Mixed, required: false}
+        code:           {type: [code], required: true},
+        data:           { type: Schema.Types.Mixed, required: false }
+    },
+
+    'player': {
+        user:                       {
+            user:                   { type: String, required: true },                         // id del usuario (users collection)
+            employeeId:             { type: String, required: true }
+        },
+        alias:                      { type: String, required: false },
+        level:                      { type: String, required: true, default: 0 },
+        points:                     { type: Number, required: true, default: 0 },
+        results:                    { type: Schema.Types.Mixed, required: false },
+        lastAccess:                 { type: Date, required: false },
+        agreement:                  {
+            accepted:               { type: Boolean, required: true, default: false },
+            date:                   { type: Date, required: false }
+        },
+        team:                       { type: String, required: false }       // id del team
+    },
+
+    'team': {
+        name:                       { type: String, required: true },
+        alias:                      { type: String, required: false },
+        manager:                    { type: String, required: true },
+        parent:                     { type: String, required: false, default: '' }         // id del team superior
     }
 }
 

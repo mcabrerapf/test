@@ -7,24 +7,12 @@
         <div layout="row" layout-align="start center">
             <div class="logo" layout="row" layout-align="start center">
                 <span class="logo-icon">
-                    <md-icon md-font-icon="icon-account-multiple" class="s24"></md-icon>
+                    <md-icon md-font-icon="icon-chart-line" class="s24"></md-icon>
                 </span>
-                <span class="logo-text" translate="USERS.TITLE">Partidas</span>
+                <span class="logo-text" translate="USERS.TITLE">Temas</span>
             </div>
         </div>
         <!-- / APP TITLE -->
-
-        <!-- SEARCH -->
-        <div class="search-input-wrapper" layout="row" layout-align="start center">
-            <label for="search">
-                <md-icon md-font-icon="icon-magnify"></md-icon>
-            </label>
-            <md-input-container md-no-float class="m-0">
-                <input id="search" placeholder="Buscar una partida" type="text" ng-model="vm.search" translate
-                       translate-attr-placeholder="USERS.SEARCH">
-            </md-input-container>
-        </div>
-        <!-- / SEARCH -->
 
     </div>
     <!-- / HEADER -->
@@ -34,13 +22,32 @@
 
         <!-- MAIN -->
         <div class="main scrollable" ms-scroll>
+            <!-- IMPORT USERS BUTTON -->
+
+            <div layout="row" layout-align="space-between center">
+                <md-button ng-click="vm.importUsers($event)"
+                           class="send-button md-accent md-raised"
+                           ng-disabled="importUsersForm.$invalid"
+                           aria-label="Add Task" translate="USERS.IMPORT.USERS"
+                           translate-attr-aria-label="USERS.IMPORT.USERS">
+                </md-button>
+
+            </div>
+            <!-- / IMPORT USERS BUTTON -->
 
             <!-- USERS LIST -->
+
+            <div class="user-list" ng-show="vm.users.length !== 0">
+
+                <div id="usersGrid" kendo-grid="grid" options="vm.gridOptions">
+                </div>
+
+            </div>
 
             <!-- / USERS LIST -->
 
             <!-- NO RESULTS -->
-            <md-list-item class="no-results md-white-bg" ng-show="vm.filteredItems.length === 0">
+            <md-list-item class="no-results md-white-bg" ng-show="vm.users.length === 0">
                 <p translate="USERS.NO_RESULTS">No results..</p>
             </md-list-item>
             <!-- / NO RESULTS -->
@@ -51,11 +58,11 @@
     </div>
     <!-- / CONTENT -->
 
-    <!-- ADD CONTACT BUTTON -->
+    <!-- ADD USER BUTTON -->
     <md-button class="md-fab md-accent md-icon-button" id="add-user-button" ng-click="vm.createNew($event)"
-               aria-label="add contact" translate translate-attr-aria-label="USERS.ADD_GAME">
+               aria-label="add user" translate translate-attr-aria-label="FORMS.ADD">
         <md-icon md-font-icon="icon-plus"></md-icon>
     </md-button>
-    <!-- / ADD CONTACT BUTTON -->
+    <!-- / ADD USER BUTTON -->
 
 </div>

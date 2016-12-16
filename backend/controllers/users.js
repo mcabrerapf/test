@@ -14,7 +14,8 @@ module.exports = {
     collectionRoutes: 	[
         { path: 'login.get',     middleware: getLogin,   detail: false },
         { path: 'login.post',    middleware: login,      detail: false },
-        { path: 'logout',   	 middleware: logout,     detail: false }
+        { path: 'logout',   	 middleware: logout,     detail: false },
+        { path: 'id.import.post', 	 middleware: importUsers,     detail: false }
     ],
 
     hidePassword: hidePassword,
@@ -109,6 +110,21 @@ function logout(req, res, next) {
 
     req.logout();
     res.status(200).send('Bye bye user!!');
+}
+
+function importUsers (req, res, next) {
+    req.body.users.forEach(function(userData) {
+        var user = Users.findOne({email: userData.email});
+        if(user) {
+            user.update(userData);
+        } else {
+            user = new Users(userData);
+            user.role = ['player'];
+            user.save()
+        }
+
+    });
+    res.status(200).send('users imported')
 }
 
 

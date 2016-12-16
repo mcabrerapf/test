@@ -34,6 +34,13 @@
         $translatePartialLoaderProvider.addPart('app/main/pages/administration/players');
 
         // Navigation
+        msNavigationServiceProvider.saveItem('administration', {
+            title : 'GESTIÓN DE CUSTOMERS/USUARIOS',
+            group : true,
+            weight: 1,
+            translate: 'ADMINISTRATION.MENU.SECTION_TITLE'
+        });
+
         msNavigationServiceProvider.saveItem('administration.players', {
             title    : 'Jugadores',
             icon     : 'icon-account-multiple',

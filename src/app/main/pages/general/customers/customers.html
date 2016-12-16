@@ -1,0 +1,56 @@
+<div id="customers" class="page-layout simple left-sidenav inner-sidenav">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between center">
+
+        <!-- APP TITLE -->
+        <div layout="row" layout-align="start center">
+            <div class="logo" layout="row" layout-align="start center">
+                <span class="logo-icon">
+                    <md-icon md-font-icon="icon-chart-line" class="s24"></md-icon>
+                </span>
+                <span class="logo-text" translate="CUSTOMERS.TITLE">Temas</span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content" md-background-bg layout="row" layout-align="start start">
+
+        <!-- MAIN -->
+        <div class="main scrollable" ms-scroll>
+
+            <!-- CUSTOMERS LIST -->
+
+            <!--<div class="customer-list" ng-show="vm.customers.length !== 0">-->
+
+                <!--<div kendo-grid="grid" options="vm.gridOptions">-->
+                <!--</div>-->
+                <!---->
+            <!--</div>-->
+
+            <!-- / CUSTOMERS LIST -->
+
+            <!-- NO RESULTS -->
+            <md-list-item class="no-results md-white-bg" ng-show="vm.customers.length === 0">
+                <p translate="CUSTOMERS.NO_RESULTS">No results..</p>
+            </md-list-item>
+            <!-- / NO RESULTS -->
+
+        </div>
+        <!-- / MAIN -->
+
+    </div>
+    <!-- / CONTENT -->
+
+    <!-- ADD CONTACT BUTTON -->
+    <md-button class="md-fab md-accent md-icon-button" id="add-customer-button" ng-click="vm.createNew($event)"
+               aria-label="add customer" translate translate-attr-aria-label="FORMS.ADD">
+        <md-icon md-font-icon="icon-plus"></md-icon>
+    </md-button>
+    <!-- / ADD CONTACT BUTTON -->
+
+</div>

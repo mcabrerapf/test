@@ -1,0 +1,96 @@
+#users {
+    position: relative;
+
+    > .header {
+        height: 76px;
+        min-height: 76px;
+        max-height: 76px;
+
+        .logo {
+
+            .logo-icon {
+                margin: 0 16px 0 0;
+            }
+
+            .logo-text {
+                font-size: 24px;
+            }
+        }
+
+        md-icon {
+            color: #FFFFFF;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+
+            label {
+                padding-right: 4px;
+                cursor: pointer;
+
+                md-icon {
+                    color: rgba(255, 255, 255, 0.8);
+                }
+
+            }
+
+            md-input-container {
+
+                .md-errors-spacer {
+                    display: none;
+                }
+
+                input {
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+                    color: rgba(255, 255, 255, 0.8);
+                    width: 240px;
+
+                    &::placeholder {
+                        color: rgba(255, 255, 255, 0.8);
+                    }
+
+                    &:focus {
+                        border-bottom: 1px solid white;
+                        color: white;
+                    }
+                }
+            }
+        }
+
+    }
+
+    > .content {
+        position: absolute;
+        top: 76px;
+        bottom: 0;
+        right: 0;
+        left: 0;
+
+        > md-sidenav {
+            box-shadow: $whiteframe-shadow-1dp;
+            padding: 0;
+        }
+
+        .main {
+            padding: 16px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+            .user-list {
+
+                padding: 10px;
+            }
+
+        }
+    }
+
+    #add-user-button {
+        position: fixed;
+        bottom: 8px;
+        right: 8px;
+        padding: 0;
+    }
+}

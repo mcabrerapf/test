@@ -4,57 +4,24 @@
 
     angular
         .module('app.pages.administration.players')
-        .controller('NewGameDialogController', NewGameDialogController);
+        .controller('NewPlayerDialogController', NewPlayerDialogController);
 
     /** @ngInject */
-    function NewGameDialogController($mdDialog, api)
+    function NewPlayerDialogController($mdDialog, api)
     {
         var vm = this;
 
-        // Data
-        vm.minDate = new Date();
-        
-        vm.newGame = {
-            name: '',
-            status: 'En definición',
-            customer: {
-                name: '',
-                logo: ''
-            }
-        };
-
         // Methods
-        vm.addNewGame = addNewGame;
+        vm.addNewPlayer = addNewPlayer;
         vm.closeDialog = closeDialog;
-        vm.loadThemes = loadThemes;
-
-        vm.loadThemes();
-        
-        //////////
-        function loadThemes() {
-            return api.themes.find(function(themes) {
-                vm.themes = themes;
-            });
-        }
 
         /**
          * Add new game
          */
-        function addNewGame()
+        function addNewPlayer()
         {
-            // api.games.save(vm.newGame,
-            //     function(success) {
-            //         console.log('Yea!');
-            //         console.log(success);
-            //         closeDialog();
-            //     },
-            //     function(error) {
-            //         alert(error.data.msg);
-            //         console.error(error);
-            //     });
+
         }
-
-
 
         /**
          * Close dialog

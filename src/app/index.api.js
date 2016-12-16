@@ -179,12 +179,14 @@
         api.baseUrl = '/api/';
 
         // USERS
-        api.users = $resource(api.baseUrl + 'users/:id', {}, {
+        api.users = $resource(api.baseUrl + 'users/:id/:action', {}, {
             find: {method: 'GET', params: {}, isArray: true},
             findOne: {method: 'GET', params: {}, isArray: false},
             save: {method: 'POST', params: {}, isArray: false},
             update: {method: 'PUT', params: {}, isArray: false},
-            remove: {method: 'DELETE', params: {}, isArray: false}
+            remove: {method: 'DELETE', params: {}, isArray: false},
+
+            import: {method: 'POST', params: {id: 'id', action: 'import'}, isArray: false}
         });
 
 
@@ -232,7 +234,7 @@
         });
 
         // COSTUMERS
-        api.costumers = $resource(api.baseUrl + 'costumers/:id', {}, {
+        api.customers = $resource(api.baseUrl + 'customers/:id', {}, {
             find: {method: 'GET', params: {}, isArray: true},
             findOne: {method: 'GET', params: {}, isArray: false},
             save: {method: 'POST', params: {}, isArray: false},

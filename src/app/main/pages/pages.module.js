@@ -8,7 +8,8 @@
             'app.pages.games',
             'app.pages.general.themes',
             'app.pages.general.distributions',
-            'app.pages.administration'
+            'app.pages.general.users',
+            'app.pages.general.customers'
         ])
         .config(config);
 

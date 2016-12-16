@@ -13,15 +13,6 @@
 
         // Data
         vm.minDate = new Date();
-        
-        vm.newUser = {
-            name: '',
-            status: 'En definición',
-            customer: {
-                name: '',
-                logo: ''
-            }
-        };
 
         // Methods
         vm.addNewUser = addNewUser;

@@ -3,19 +3,17 @@
     'use strict';
 
     angular
-        .module('app.pages.administration.players')
-        .controller('PlayersController', PlayersController);
+        .module('app.pages.administration.teams')
+        .controller('TeamsController', TeamsController);
 
     /** @ngInject */
-    function PlayersController(players, api, $mdDialog, $timeout, $filter)
+    function TeamsController(teams, api, $mdDialog, $timeout, $filter)
     {
         var vm = this;
-        //
-        // vm.players = players;
-        // vm.filteredItems = players;
-        //
-        // console.log(players);
 
+        // vm.teams = teams;
+        // vm.filteredItems = teams;
+        //
         // Methods
         vm.createNew = createNew;
         //
@@ -31,9 +29,9 @@
         //         {
         //             $timeout(function() {
         //                 if (event.target.value === '') {
-        //                     vm.filteredItems = vm.players;
+        //                     vm.filteredItems = vm.teams;
         //                 } else {
-        //                     vm.filteredItems = $filter('filter')(vm.players, {"name": event.target.value});
+        //                     vm.filteredItems = $filter('filter')(vm.teams, {"name": event.target.value});
         //                 }
         //             });
         //         });
@@ -44,9 +42,9 @@
         function createNew(event) {
 
             $mdDialog.show({
-                controller:         'NewPlayerDialogController',
+                controller:         'NewTeamDialogController',
                 controllerAs:       'vm',
-                templateUrl:        'app/main/pages/players/new-player/newplayer-dialog.html',
+                templateUrl:        'app/main/pages/teams/new-team/newteam-dialog.html',
                 parent:             angular.element(document.body),
                 targetEvent:        event,
                 clickOusideToClose: true

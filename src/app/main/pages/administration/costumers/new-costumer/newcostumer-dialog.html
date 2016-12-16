@@ -1,0 +1,118 @@
+<!-- DIALOG -->
+<md-dialog class="costumer-dialog" aria-label="Nueva partida" translate-attr-aria-label="COSTUMERS.NEW_TITLE">
+
+    <!--<kldform name="costumerForm" class="md-inline-form" novalidate mode="edit">-->
+
+        <!--&lt;!&ndash; DIALOG TOOLBAR &ndash;&gt;-->
+        <!--<md-toolbar class="md-accent md-hue-2">-->
+
+            <!--&lt;!&ndash; TOOLBAR TOP &ndash;&gt;-->
+            <!--<div class="md-toolbar-tools" layout="row" layout-align="space-between center">-->
+                <!--<span class="title"-->
+                      <!--translate="COSTUMERS.NEW_TITLE">Nueva partida</span>-->
+                <!--<md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Cerrar" translate-->
+                           <!--translate-attr-aria-label="DIALOG.CLOSE">-->
+                    <!--<md-icon md-font-icon="icon-close"></md-icon>-->
+                <!--</md-button>-->
+            <!--</div>-->
+            <!--&lt;!&ndash; / TOOLBAR TOP &ndash;&gt;-->
+
+        <!--</md-toolbar>-->
+        <!--&lt;!&ndash; / DIALOG TOOLBAR &ndash;&gt;-->
+
+        <!--&lt;!&ndash; DIALOG CONTENT &ndash;&gt;-->
+        <!--<md-dialog-content ms-scroll>-->
+
+            <!--<div layout="column">-->
+                <!--<div layout="row">-->
+                    <!--<div flex="none"><md-icon md-font-icon="icon-costumerpad-variant"></md-icon></div>-->
+
+                    <!--<div flex>-->
+                        <!--<field  type="text"-->
+                                <!--required -->
+                                <!--ng-model="vm.newGame.name"-->
+                                <!--md-autofocus-->
+                                <!--label="COSTUMERS.NAME" />-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div layout="row">-->
+                    <!--<div flex="none"><md-icon></md-icon></div>-->
+    <!---->
+                    <!--<div flex>-->
+                        <!--<field  type="text"-->
+                                <!--required -->
+                                <!--ng-model="vm.newGame.customer.name"-->
+                                <!--label="COSTUMERS.CUSTOMER.NAME" />-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div layout="row">-->
+                    <!--<div flex="none"><md-icon md-font-icon="icon-theme-light-dark"></md-icon></div>-->
+
+                    <!--<div flex>-->
+                        <!--<field  type="select"-->
+                                <!--ng-model="vm.newGame.theme"-->
+                                <!--items="vm.themes"-->
+                                <!--display-field="name"-->
+                                <!--value-field="_id"-->
+                                <!--label="COSTUMERS.THEME"-->
+                                <!--required />-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div layout="row">-->
+                    <!---->
+                    <!--<div flex="none"><md-icon md-font-icon="icon-calendar"></md-icon></div>-->
+
+                    <!--<div flex>-->
+                        <!--<field  type="date"-->
+                                <!--ng-model="vm.newGame.start"-->
+                                <!--md-min-date="vm.minDate"-->
+                                <!--required -->
+                                <!--label="COSTUMERS.START" />-->
+                    <!--</div>-->
+
+                    <!--<div flex>-->
+                        <!--<field  type="date"-->
+                                <!--ng-model="vm.newGame.end"-->
+                                <!--md-min-date="vm.newGame.start"-->
+                                <!--label="COSTUMERS.END" />-->
+                    <!--</div>-->
+                <!--</div>-->
+
+            <!--</div>-->
+
+        <!--</md-dialog-content>-->
+        <!--&lt;!&ndash; / DIALOG CONTENT &ndash;&gt;-->
+
+        <!--&lt;!&ndash; DIALOG ACTIONS &ndash;&gt;-->
+        <!--<md-dialog-actions layout="row" layout-align="space-between center">-->
+            <!--<div layout="row" layout-align="start center">-->
+                <!--<md-button type="submit" ng-if="vm.newGame" ng-click="vm.addNewGame()"-->
+                           <!--class="send-button md-accent md-raised"-->
+                           <!--ng-disabled="costumerForm.$invalid"-->
+                           <!--aria-label="Add Task" translate="COSTUMERS.ADD_GAME"-->
+                           <!--translate-attr-aria-label="COSTUMERS.ADD_GAME">-->
+                    <!--CREAR Partida-->
+                <!--</md-button>-->
+
+            <!--</div>-->
+
+            <!--&lt;!&ndash;-->
+            <!--<div layout="row">-->
+                <!--<md-button class="md-icon-button" ng-click="vm.deleteGameConfirm($event)" aria-label="Delete"-->
+                           <!--translate-->
+                           <!--translate-attr-aria-label="COSTUMERS.DELETE">-->
+                    <!--<md-icon md-font-icon="icon-delete"></md-icon>-->
+                    <!--<md-tooltip><span translate="COSTUMERS.DELETE">DELETE</span></md-tooltip>-->
+                <!--</md-button>-->
+            <!--</div>-->
+            <!--&ndash;&gt;-->
+        <!--</md-dialog-actions>-->
+        <!--&lt;!&ndash; / DIALOG ACTIONS &ndash;&gt;-->
+
+    <!--</kldform>-->
+
+</md-dialog>
+<!-- / DIALOG -->

@@ -1,0 +1,32 @@
+md-dialog {
+
+    &.distribution-dialog {
+
+        width: 550px;
+
+        md-toolbar {
+
+            .title {
+                font-size: 17px;
+            }
+        }
+
+        md-dialog-content {
+
+                    textarea {
+                        max-height: 96px;
+                    }
+        }
+
+
+        md-dialog-actions {
+            position: relative;
+            overflow-y: hidden;
+            overflow-x: auto;
+            justify-content: space-between;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-top: 1px solid rgba(0, 0, 0, 0.12);
+        }
+
+    }
+}

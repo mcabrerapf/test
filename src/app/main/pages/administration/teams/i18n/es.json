@@ -1,0 +1,18 @@
+{
+    "TEAMS": {
+        "MENU": {
+            "SECTION_TITLE": "ADMINISTRACIÓN DE EQUIPOS",
+            "TITLE": "Equipos"
+        },
+        "TITLE": "Equipos",
+        "SEARCH": "Buscar un equipo",
+        "NO_RESULTS": "No se han encontrado equipos",
+
+        "NEW_TITLE": "Nuevo equipo",
+        "NAME": "Nombre del equipo"
+    }
+}
+
+
+
+
