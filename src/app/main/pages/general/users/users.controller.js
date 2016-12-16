@@ -9,7 +9,10 @@
     function UsersController(users, translateValues, api, $mdDialog, $state, $filter, $timeout) {
         var vm = this;
 
-        vm.users = users;
+        vm.users = users.map(function(user){
+            delete user.data;
+            return user;
+        });
 
         var datasource = new kendo.data.DataSource({
             transport: {
@@ -54,19 +57,22 @@
                 numeric: false
             },
             save: function(data) {
-                // data.model.$update({id: data.model._id}, function(user){
-                //     api.users.find(function(users){
-                //         vm.users = users;
-                //         $('#usersGrid').data('kendoGrid').dataSource.read();
-                //         $('#usersGrid').data('kendoGrid').refresh();
-                //     });
-                // });
+                data.model.$update({id: data.model._id}, function(user){
+                    api.users.find(function(users){
+                        vm.users = users;
+                        $('#usersGrid').data('kendoGrid').dataSource.read();
+                        $('#usersGrid').data('kendoGrid').refresh();
+                    });
+                });
             },
             remove: function(data) {
-                console.log(data.model);
-            },
-            edit: function(data) {
-                console.log(data.model);
+                data.model.$delete({id: data.model._id}, function(user){
+                    api.users.find(function(users){
+                        vm.users = users;
+                        $('#usersGrid').data('kendoGrid').dataSource.read();
+                        $('#usersGrid').data('kendoGrid').refresh();
+                    });
+                });
             },
             columns: [
                 {
