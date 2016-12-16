@@ -188,7 +188,7 @@ function renameEntryFS (req, res) {
 		function () {
 			const result = {
 				name: 		Path.basename( newPath ),
-				path: 		newPath,
+				path: 		Path.normalize( newPath ),
 				type: 		typeByExtension( newPath ),
 				fullPath: 	newFullPath
 			};

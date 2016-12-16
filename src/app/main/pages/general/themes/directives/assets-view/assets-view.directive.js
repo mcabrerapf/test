@@ -153,7 +153,8 @@
         vm.rename = function(newName) {
         	console.log('rename:', newName);
 
-			if (!newName) return $q.reject();
+			// No puede ser vacío, ni contener '/' ni '..'
+			if (!newName || /\/|\.\./.test(newName)) return $q.reject();
 
            	var def 		= $q.defer()
            	,	oldType 	= vm.selectedItem.spriteCssClass
