@@ -25,19 +25,19 @@
 
             <!-- CUSTOMERS LIST -->
 
-            <!--<div class="customer-list" ng-show="vm.customers.length !== 0">-->
+            <div class="customer-list">
 
-                <!--<div kendo-grid="grid" options="vm.gridOptions">-->
-                <!--</div>-->
-                <!---->
-            <!--</div>-->
+                <div id="customerGrid" kendo-grid="grid" options="vm.gridOptions">
+                </div>
+
+            </div>
 
             <!-- / CUSTOMERS LIST -->
 
             <!-- NO RESULTS -->
-            <md-list-item class="no-results md-white-bg" ng-show="vm.customers.length === 0">
-                <p translate="CUSTOMERS.NO_RESULTS">No results..</p>
-            </md-list-item>
+            <!--<md-list-item class="no-results md-white-bg" ng-show="vm.customers.length === 0">-->
+                <!--<p translate="CUSTOMERS.NO_RESULTS">No results..</p>-->
+            <!--</md-list-item>-->
             <!-- / NO RESULTS -->
 
         </div>

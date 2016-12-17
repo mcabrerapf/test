@@ -9,7 +9,7 @@
     function UsersController(users, translateValues, api, $mdDialog, $state, $filter, $timeout) {
         var vm = this;
 
-        vm.users = users.map(function(user){
+        vm.users = users.map(function (user) {
             delete user.data;
             return user;
         });
@@ -22,6 +22,9 @@
                     }, function (error) {
                         options.error(error);
                     });
+                },
+                create: function(options) {
+
                 },
                 parameterMap: function (options, operation) {
                     if (operation !== "read" && options.models) {
@@ -44,7 +47,7 @@
         })
 
         vm.gridOptions = {
-            dataSource: vm.users,
+            dataSource: datasource,
             theme: 'common',
             scrollable: true,
             sortable: true,
@@ -56,22 +59,17 @@
                 input: true,
                 numeric: false
             },
-            save: function(data) {
-                data.model.$update({id: data.model._id}, function(user){
-                    api.users.find(function(users){
-                        vm.users = users;
-                        $('#usersGrid').data('kendoGrid').dataSource.read();
-                        $('#usersGrid').data('kendoGrid').refresh();
-                    });
+            save: function (data) {
+                data.model.$update({id: data.model._id}, function () {
+                    $('#usersGrid').data('kendoGrid').dataSource.read();
+                    $('#usersGrid').data('kendoGrid').refresh();
                 });
             },
-            remove: function(data) {
-                data.model.$delete({id: data.model._id}, function(user){
-                    api.users.find(function(users){
-                        vm.users = users;
-                        $('#usersGrid').data('kendoGrid').dataSource.read();
-                        $('#usersGrid').data('kendoGrid').refresh();
-                    });
+            remove: function (data) {
+                console.log(data.model)
+                data.model.$delete({id: data.model._id}, function () {
+                    $('#usersGrid').data('kendoGrid').dataSource.read();
+                    $('#usersGrid').data('kendoGrid').refresh();
                 });
             },
             columns: [

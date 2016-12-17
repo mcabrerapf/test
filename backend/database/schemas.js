@@ -118,7 +118,7 @@ var team = {
 
 var code = {
     sellerCode: { type: String, required: true },
-    teamBoss: { type: String, required: false }
+    teamLeader: { type: String, required: false }
 }
 
 
@@ -193,8 +193,8 @@ var schemas = {
         role:           { type: [String], required: false },            // admin | player | manager | mentor
         customer:       { type: String, required: false },              // id del customer
         mentor:         { type: String, required: false },               // id del mentor
-        code:           {type: [code], required: true},
-        data:           { type: Schema.Types.Mixed, required: false }
+        code:           {type: [code], required: false},
+        extraData:      { type: Schema.Types.Mixed, required: false }
     },
 
     'player': {

@@ -23,9 +23,9 @@
                     roles: ['Admin']
                 },
                 resolve: {
-                    customers: function (apiResolver)
+                    users: function (apiResolver)
                     {
-                        return apiResolver.resolve('customers@find');
+                        return apiResolver.resolve('users@find');
                     }
                 }
             });

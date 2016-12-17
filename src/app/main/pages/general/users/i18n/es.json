@@ -19,6 +19,24 @@
             "NAME": "Cliente",
             "LOGO": "Logo"
         },
+        "GO_TO_USERS": "Volver a administración de usuarios",
+        "IMPORT_TITLE": "IMPORTAR USUARIOS",
+        "IMPORT": {
+            "USERS": "Importar usuarios",
+            "SPREADSHEET": "Abrir archivo",
+            "SHEET": "Hoja",
+            "CUSTOMER": "Cliente",
+            "START_ROW": "Fila inicio de rango",
+            "END_ROW": "Fila final de rango",
+            "START_COLUMN": "Columna inicio de rango",
+            "END_COLUMN": "Columna final de rango",
+            "HEADER_ROW": "Fila cabecera",
+            "EMAIL_COLUMN": "Columna email",
+            "USER_NAME_COLUMN": "Columna nombre de usuario",
+            "TEAM_LEADER_COLUMN": "Columna lider de equipo",
+            "SELLER_CODE_COLUMN": "Columna código de vendedor",
+            "IMPORT": "Importar"
+        },
 
         "SAVE": "Guardar usuario",
         "ADD_GAME": "Crear usuario",

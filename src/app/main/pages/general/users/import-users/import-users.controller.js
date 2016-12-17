@@ -13,16 +13,19 @@
         vm.columnPattern = /^[a-zA-Z]{1,2}$/
 
         $rootScope.$on('$viewContentLoaded', function (event) {
-            setData()
-            vm.input = $('.file-input')
 
-            vm.input.on("change", function () {
-                vm.spreadsheet.fromFile(this.files[0]).then(function (a, b, c) {
-                    console.log(a, b, c)
-                }, function (err) {
-                    console.log(err);
+            if($("#spreadsheet")) {
+                setData()
+                vm.input = $('.file-input')
+
+                vm.input.on("change", function () {
+                    vm.spreadsheet.fromFile(this.files[0]).then(function (a, b, c) {
+                        console.log(a, b, c)
+                    }, function (err) {
+                        console.log(err);
+                    });
                 });
-            });
+            }
         });
 
 
@@ -56,7 +59,7 @@
             var emailIndex = getIndex(vm.emailColumn);
             var userNameIndex = getIndex(vm.userNameColumn);
             var sellerCodeIndex = getIndex(vm.sellerCodeColumn);
-            var teamBossIndex = getIndex(vm.teamBossColumn)
+            var teamLeaderIndex = getIndex(vm.teamLeaderColumn)
 
             var headers = null
             if (vm.headerRow) {
@@ -73,7 +76,7 @@
                 }
 
                 var sellerCode = (sellerCodeIndex > -1) ?  value[sellerCodeIndex] : '';
-                var teamBoss = (teamBossIndex > -1) ?  value[teamBossIndex] : '';
+                var teamLeader = (teamLeaderIndex > -1) ?  value[teamLeaderIndex] : '';
                 var email = (emailIndex > -1) ?  value[emailIndex] : '';
                 var userName = (userNameIndex > -1) ?  value[userNameIndex] : '';
                 var password = generatePasword()
@@ -85,9 +88,8 @@
                 if(user) {
                     user.code.push({
                         sellerCode: sellerCode,
-                        teamBoss: teamBoss
+                        teamLeader: teamLeader
                     });
-                    console.log(user);
                 } else {
                     users.push({
                         email: email,
@@ -95,15 +97,19 @@
                         userName: userName,
                         code: [{
                             sellerCode: sellerCode,
-                            teamBoss: teamBoss
+                            teamLeader: teamLeader
                         }],
                         customer: vm.customer,
-                        data: data
+                        extraData: data
                     });
                 }
             });
-            api.users.import({users: users})
-            console.log(users);
+
+            console.log(users.length)
+            for(var i = 0; i < users.length; i += 50){
+                var chunk = users.slice(i, i+50)
+                api.users.import({users: chunk})
+            }
         }
 
         function formatData(headers, value) {
@@ -128,8 +134,8 @@
             vm.sheet = getSheet(vm.selectedSheet);
             vm.columns = vm.sheet.toJSON().columns;
             vm.rows = vm.sheet.toJSON().rows;
-            vm.startRow = 1;
-            vm.endRow = 1;
+            vm.startRow = '';
+            vm.endRow = '';
             vm.startColumn = '';
             vm.endColumn = '';
             vm.headerRow = null;
@@ -137,6 +143,7 @@
             vm.userNameColumn = '';
             vm.sellerCodeColumn = '';
             vm.customer = '';
+            vm.teamLeaderColumn = '';
             vm.data = {};
         }
 
