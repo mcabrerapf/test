@@ -17,6 +17,7 @@
                 'kaldeera.forms',
                 'nvd3',
                 'kendo.directives',
-                'xeditable'
+                'xeditable',
+                'dndLists'
             ]);
 })();

@@ -8,18 +8,26 @@
         .directive('timeLineView', timeLineViewDirective);
 
     /** @ngInject */
-    function timeLineViewController($scope, $mdDialog, api)
+    function timeLineViewController($scope, $translate, $mdDialog, api)
     {
         var vm = this;
         vm.theme = $scope.theme;
 
-        vm.timelineOptions = {
-            scrollEl: '#timeline'
-        };
 
         // Methods
-        vm.createNew = createNew;
-        vm.loadNextPage = loadNextPage;
+        vm.openNewMenu = openNewMenu;
+        vm.openElementDialog = openElementDialog;
+        vm.createNewGoal = createNewGoal;
+        vm.createNewMessage = createNewMessage;
+        vm.createNewPost = createNewPost;
+        vm.movedItem = movedItem;
+        vm.dropedItem = dropedItem;
+        vm.dragstartItem = dragstartItem;
+        vm.getEventIcon = getEventIcon;
+        vm.deleteConfirm = deleteConfirm;
+
+
+
         //////////
 
         init();
@@ -32,52 +40,159 @@
         }
 
 
-        function loadNextPage() {
+        function openNewMenu($mdOpenMenu, ev) {
+            // originatorEv = ev;
+            $mdOpenMenu(ev);
+        }
 
+
+        /**
+         * Drag & drop functions for timeline elements
+         */
+        function dragstartItem(timelineEvent) {
+
+            angular.forEach(vm.theme.timeline, function(item) {
+                delete item.selected;
+            });
+            timelineEvent.selected = true;
+        }
+
+        function dropedItem(index, item) {
+
+            vm.theme.timeline = vm.theme.timeline.slice(0, index)
+                                .concat(item)
+                                .concat(vm.theme.timeline.slice(index));
+
+            // server update!!
             return true;
         }
 
+        function movedItem(index, timelineEvent) {
+            vm.theme.timeline = vm.theme.timeline.filter(function(item) {
+                return !item.selected;
+            });
+        }
+
+
+
+
         /**
-         * Create new (event)
+         * Create new Step
          */
-        function createNew() {
+        function openElementDialog(ev, type, element) {
 
-            vm.theme.timeline.push({
-                "card": {
-                    "template": "app/core/directives/ms-card/templates/template-3/template-3.html",
-                    "title":"Poison",
-                    "subtitle":"Alice Cooper",
-                    "cta":"LISTEN NOW",
-                    "media": {
-                        "image":{
-                            "src":"assets/images/etc/alice-cooper-poison.jpg",
-                            "alt":"Alice Cooper - Poison"
-                        }
-                    }
-                },
-                "icon": "icon-music-note",
-                "time": "July 22, 2015, 12:33AM",
-                "event": "Duke shared a song with public"
+            $mdDialog.show({
+                controller         : 'StepDialogController',
+                controllerAs       : 'vm',
+                templateUrl        : 'app/main/dialogs/step/step-dialog.html',
+                parent             : angular.element(document.body),
+                targetEvent        : ev,
+                clickOutsideToClose: true,
+                locals             : {
+                    Element: element,
+                    Container: vm.theme.timeline
+                }
             });
+        }
 
-            vm.theme.timeline.push({
-                card: {
-                    template: 'app/core/directives/ms-card/templates/template-3/template-3.html',
-                    title: 'titulo',
-                    subtitle: 'Subtítulo',
-                    cta: 'Este nose',
-                    media: {
-                        image: {
-                            src: 'assets/images/etc/alice-cooper-poison.jpg',
-                            alt: 'texto alternativo'
-                        }
-                    }
-                },
-                text: "hola que tla",
-                icon: 'icon-person',
-                time: 'Segunda semana',
-                event: 'Inicio de etapa'
+        /**
+         * Create new Goal
+         */
+        function createNewGoal() {
+            var newItem = {
+                _id: new Date().valueOf(),
+                type: 'Goal',
+                start: new Date(),
+                end: new Date(),
+                data: {}
+            }
+            vm.theme.timeline.push(newItem);
+        }
+
+        /**
+         * Create new Message
+         */
+        function createNewMessage() {
+            var newItem = {
+                _id: new Date().valueOf(),
+                type: 'Message',
+                start: new Date(),
+                end: new Date(),
+                data: {}
+            }
+            vm.theme.timeline.push(newItem);
+        }
+
+        /**
+         * Create new Post
+         */
+        function createNewPost() {
+            var newItem = {
+                _id: new Date().valueOf(),
+                type: 'Post',
+                start: new Date(),
+                end: new Date(),
+                data: {}
+            }
+            vm.theme.timeline.push(newItem);
+        }
+
+
+        /**
+         * Delete Confirm Dialog
+         */
+        function deleteConfirm(ev, index, item)
+        {
+            $translate([
+                'FORMS.DELETECONFIRMATION.TITLE',
+                'FORMS.DELETECONFIRMATION.DETAIL',
+                'FORMS.DELETECONFIRMATION.ARIAL',
+                'FORMS.CANCEL',
+                'FORMS.OK']).then(function (translationValues) {
+
+                var confirm = $mdDialog.confirm()
+                    .title(translationValues['FORMS.DELETECONFIRMATION.TITLE'])
+                    .htmlContent(translationValues['FORMS.DELETECONFIRMATION.DETAIL'])
+                    .ariaLabel(translationValues['FORMS.DELETECONFIRMATION.ARIAL'])
+                    .targetEvent(ev)
+                    .ok(translationValues['FORMS.OK'])
+                    .cancel(translationValues['FORMS.CANCEL']);
+
+                $mdDialog.show(confirm).then(function ()
+                {
+                    vm.theme.timeline.splice(index, 1);
+                    /*
+                    api.themes.timeline.delete({id: item._id},
+                        function() {
+
+                            vm.theme.timeline.slice(index, 1);
+
+                        }, function(error) {
+                            alert(error.data.errmsg);
+                            console.error(error);
+                        });
+                    */
+                });
+
             });
+        }
+
+
+        /**
+         * Returns the envet icon
+         */
+        function getEventIcon(eventType) {
+
+            switch(eventType.toLowerCase()) {
+                case 'step':
+                    return 'icon-apple-safari';
+                case 'goal':
+                    return'icon-alarm-check';
+                case 'message':
+                    return 'icon-email';
+                case 'post':
+                    return 'icon-message-text';
+            }
         }
         //////////
 

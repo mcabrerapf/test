@@ -32,7 +32,6 @@ var kpi = {
 };
 
 var step = {
-    name:           { type: String, required: true },
     description:    { type: String, required: false },
     location:       {
         address:    { type: String, required: false },
@@ -48,7 +47,6 @@ var notification = {
 };
 
 var goal = {
-    name:           { type: String, required: true },
     description:    { type: String, required: false },
     notifications:  [ notification, { _id: true }],
     metric:         { type: String, required: true },       // id de la métrica a la que va asociada el reto
@@ -73,13 +71,20 @@ var goal = {
 };
 
 
-var message = {};
-var post = {};
+var message = {
+    to:             { type: String, required: true },
+    subject:        { type: String, required: true },
+    body:           { type: String, required: true }
+};
+
+var post = {
+    body:           { type: String, required: true }
+};
 
 var timelineevent = {
+    name:                       { type: String, required: true },
     type:                       { type: String, required: true, enum: ['Step', 'Goal', 'Message', 'Post', 'Quiz', 'Game']},
     start:                      { type: Date, required: true },
-    end:                        { type: Date, required: true },
     data:                       { type: Schema.Types.Mixed, required: true }
 };
 

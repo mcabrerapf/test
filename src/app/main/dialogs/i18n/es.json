@@ -1,0 +1,14 @@
+{
+    "STEP": {
+        "NEW_TITLE": "Nueva etapa",
+        "EDIT_TITLE": "Editar etapa",
+        "ADD_THEME": "Añadir etapa",
+        "DEFINITION": "Definición",
+        "TITLE": "Nombre de la etapa",
+        "DESCRIPTION": "Descripción de la etapa",
+        "LOCATION": "Localización de la etapa",
+        "ADDRESS": "Dirección",
+        "LONGITUDE": "Longitud",
+        "LATITUDE": "Latitud"
+    }
+}
