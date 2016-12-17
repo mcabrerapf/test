@@ -1,4 +1,5 @@
 #timeline {
+
     position: relative;
     height: auto;
     padding-bottom: 64px;
@@ -22,6 +23,14 @@
         list-style: none;
         z-index: 20;
 
+        .dndPlaceholder {
+            height: 1px;
+            border-style: dotted;
+            border-width: 0 0 2px 0;
+            border-color: material-color('light-blue');
+            margin: 0;
+        }
+
         .ms-timeline-item {
 
             border:1px solid rgba(0, 0, 0, 0.08);
@@ -33,8 +42,7 @@
                 background-color: white;
 
                 .drag-handle {
-                    visibility: hidden;
-                    margin: 16px;
+                    margin: 8px;
                     cursor: pointer;
                 }
 
@@ -45,9 +53,13 @@
                 }
             }
 
-            &:hover {
+            &.dndDraggingSource {
+                display: none;
+            }
 
-                .drag-handle,
+
+
+            &:hover {
                 .actions {
                     visibility: visible;
                 }

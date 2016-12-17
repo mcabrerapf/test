@@ -51,7 +51,7 @@
             $mdDialog.show({
                 controller:         'NewThemeDialogController',
                 controllerAs:       'vm',
-                templateUrl:        'app/main/pages/general/themes/new-theme/newtheme-dialog.html',
+                templateUrl:        'app/main/pages/general/themes/dialogs/new-theme/newtheme-dialog.html',
                 parent:             angular.element(document.body),
                 targetEvent:        event,
                 clickOusideToClose: false
