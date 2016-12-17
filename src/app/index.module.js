@@ -20,6 +20,12 @@
             // Quick Panel
             'app.quick-panel',
 
+            // Dialogs
+            'app.dialogs',
+            
+            // Filters
+            'app.filters',
+            
             // Pages
             'app.pages',
 

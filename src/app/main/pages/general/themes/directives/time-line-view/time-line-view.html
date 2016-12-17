@@ -1,41 +1,101 @@
 <div class="general-view-container p-24 md-background-bg md-whiteframe-1dp" id="timeline">
 
-    <div ms-timeline="vm.timelineOptions" ms-timeline-load-more="vm.loadNextPage()">
+    <div layout="column" layout-align="none center">
 
-        <div ms-timeline-item
-             layout="column"
-             layout-align="center center"
-             ng-repeat="timelineItem in vm.theme.timeline">
+        <ul class="ms-timeline"
+            dnd-list="vm.theme.timeline"
+            dnd-drop="vm.dropedItem(index, item)">
+            
+            <li class="ms-timeline-item md-3-line"
+                ng-repeat="item in vm.theme.timeline"
+                dnd-draggable="item"
+                dnd-dragstart="vm.dragstartItem(item)"
+                dnd-effect-allowed="move"
+                dnd-moved="vm.movedItem($index, item)">
+            
+                <div layout="column" dnd-nodrag>
 
-                <!-- fake timeline item -->
-                    <div class="timeline-point md-accent-bg md-whiteframe-2dp">
-                        <md-icon md-font-icon="{{timelineItem.icon}}"></md-icon>
-                    </div>
+                    <div flex layout="row" layout-align="center start">
 
-                    <div class="timeline-detail" flex="50">
-                        <div class="time">
-                            {{timelineItem.time}}
+                        <div flex layout="row" layout-align="none center">
+                            <md-icon flex="none" class="m-16 s40 md-accent-fg" md-font-icon="{{item.type | timelineIcon}}"></md-icon>
+                            <div flex class="md-list-item-text" layout="column" layout-align="start start">
+                                <h3>{{item.title}}</h3>
+                                <div>{{item.type}}</div>
+
+
+                            </div>
                         </div>
-                        <div class="event">
-                            {{timelineItem.event}}
-                        </div>
+
+                        <md-icon flex="none" class="drag-handle" md-font-icon="icon-drag-vertical" dnd-handle></md-icon>
                     </div>
 
-                    <div class="timeline-card" layout="row" flex="50">
-                        <!-- MS-CARD -->
-                        <ms-card template="timelineItem.card.template" ng-model="timelineItem.card"></ms-card>
-                        <!-- / MS-CARD -->
+                    <div class="actions" layout="row" layout-align="center center">
+
+                        <md-button  class="md-icon-button"
+                                    aria-label="edit"
+                                    ng-click="vm.openElementDialog($event, item.type, item)"
+                                    translate-attr-aria-label="FORMS.EDIT">
+                            <md-icon md-font-icon="icon-pencil" class="md-default-theme" translate-attr-aria-label="FORMS.DELETE"></md-icon>
+                        </md-button>
+
+                        <md-button  class="md-icon-button"
+                                    aria-label="delete"
+                                    ng-click="vm.deleteConfirm($event, $index, item)"
+                                    translate-attr-aria-label="FORMS.DELETE">
+                            <md-icon md-font-icon="icon-delete" class="md-default-theme" translate-attr-aria-label="FORMS.DELETE"></md-icon>
+                        </md-button>
                     </div>
-                <!-- end fake -->
-        </div>
+                </div>
+            </li>
+
+        </ul>
+
+
+        <!-- ADD NEW BUTTON -->
+        <md-menu>
+            <md-button class="md-fab md-accent md-icon-button" ng-click="vm.openNewMenu($mdOpenMenu, $event)"
+                    aria-label="add contact" translate translate-attr-aria-label="THEMES.ADD_TIMELINEEVENT">
+                <md-icon md-font-icon="icon-plus"></md-icon>
+            </md-button>
+
+            <md-menu-content>
+                <md-menu-item>
+                    <md-button  ng-click="vm.openElementDialog($event, 'Step')"
+                                aria-label="New step" translate 
+                                translate-attr-aria-label="THEMES.NEW_STEP">
+                        <md-icon md-font-icon="icon-apple-safari"></md-icon>
+                        <span translate="THEMES.NEW_STEP">Step</span>
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button  ng-click="vm.createNewGoal($event)"
+                                aria-label="New goal" translate 
+                                translate-attr-aria-label="THEMES.NEW_GOAL">
+                        <md-icon md-font-icon="icon-alarm-check"></md-icon>
+                        <span translate="THEMES.NEW_GOAL">Goal</span>
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button  ng-click="vm.createNewMessage($event)"
+                                aria-label="New message" translate 
+                                translate-attr-aria-label="THEMES.NEW_MESSAGE">
+                        <md-icon md-font-icon="icon-email"></md-icon>
+                        <span translate="THEMES.NEW_MESSAGE">Message</span>
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button  ng-click="vm.createNewPost($event)"
+                                aria-label="New post" translate 
+                                translate-attr-aria-label="THEMES.NEW_POST">
+                        <md-icon md-font-icon="icon-message-text"></md-icon>
+                        <span translate="THEMES.NEW_POST">Post</span>
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+        <!-- / ADD NEW BUTTON -->
 
     </div>
-
-    <!-- ADD CONTACT BUTTON -->
-    <md-button class="md-fab md-accent md-icon-button" id="add-theme-button" ng-click="vm.createNew($event)"
-               aria-label="add contact" translate translate-attr-aria-label="THEMES.ADD_TIMELINEEVENT">
-        <md-icon md-font-icon="icon-plus"></md-icon>
-    </md-button>
-    <!-- / ADD CONTACT BUTTON -->
 
 </div>
