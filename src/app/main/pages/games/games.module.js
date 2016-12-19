@@ -21,15 +21,26 @@
                 },
                 data: {
                     roles: ['Admin']
+                }
+            })
+            .state('app.games.detail', {
+                url: '/:id',
+                views  : {
+                    'content@app': {
+                        templateUrl: 'app/main/pages/games/game/game.html',
+                        controller: 'GameController as vm'
+                    }
+                },
+                data: {
+                    roles: ['Admin']
                 },
                 resolve: {
-                    games: function (apiResolver)
+                    game: function (apiResolver, $stateParams)
                     {
-                        return apiResolver.resolve('games@find');
+                        return apiResolver.resolve('games@findOne', {'id': $stateParams.id});
                     }
                 }
             });
-
         // Translation
         $translatePartialLoaderProvider.addPart('app/main/pages/games');
 

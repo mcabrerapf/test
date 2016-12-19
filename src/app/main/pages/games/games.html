@@ -38,7 +38,12 @@
             <!-- GAMES LIST -->
 
             <div class="games-list" ng-show="vm.filteredItems.length !== 0">
-                <ms-card class="game-card" template="'app/core/directives/ms-card/templates/template-1/template-1.html'" ng-model="game" ng-repeat="game in vm.filteredItems"></ms-card>
+                <ms-card class="game-card"
+                         template="'app/core/directives/ms-card/templates/template-1/template-1.html'"
+                         ng-model="game"
+                         ng-repeat="game in vm.filteredItems"
+                         ng-click="vm.showGame($event, game)">
+                </ms-card>
             </div>
 
             <!-- / GAMES LIST -->

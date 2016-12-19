@@ -7,7 +7,7 @@ router.get('/kk', function(req, res) {
 
 router.get('/*', function(req, res, next) {
 
-  if (req.url.startsWith('/themeassets')) {
+  if (req.url.startsWith('/assets')) {
     // Si el usuario no está logado ... retornar un error!!
     // if (usuarioNoIdentificado) res.send(500, 'Usuario no identificado');
     return next();

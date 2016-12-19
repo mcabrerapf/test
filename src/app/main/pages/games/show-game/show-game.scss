@@ -1,0 +1,85 @@
+.mapa-premios {
+
+    padding: 10px;
+    color: white;
+
+    div {
+        border-top: 1px solid white;
+        border-left: 1px solid white;
+        min-height: 30px;
+        text-align: center;
+        line-height: 30px;
+    }
+}
+
+.mapa-premios2 {
+
+    padding: 10px;
+    color: white;
+
+    div {
+        border-top: 1px solid white;
+        border-right: 1px solid white;
+        min-width: 80px;
+    }
+}
+
+.mapa-premios,
+.mapa-premios2 {
+
+    .layout-column > .flex {
+        min-height: 2px;
+    }
+    
+    .title {
+        background-color: black;
+
+        .title {
+            background-color: rgba(0,0,0,0.8);
+        }
+    }
+
+    .goals {
+
+        .title {
+            background-color: material-color('deep-purple', '800');
+        }
+
+        .goal {
+            background-color: material-color('deep-purple', '200');
+
+            .title {
+                background-color: material-color('deep-purple', '500');
+            }
+        }
+    }
+
+    .rankings {
+        .title {
+            background-color: material-color('green', '800');
+        }
+
+        .ranking {
+            background-color: material-color('green', '200');
+
+            .title {
+                background-color: material-color('green', '500');
+            }
+        }
+    }
+
+    .regular-goals {
+
+        .title {
+            background-color: material-color('blue-grey', '800');
+        }
+
+        .regular-goal {
+            background-color: material-color('blue-grey', '200');
+
+            .title {
+                background-color: material-color('blue-grey', '500');
+            }
+        }
+    }
+}

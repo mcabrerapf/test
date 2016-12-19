@@ -22,7 +22,7 @@
                     newElement.prepend(
                         $compile(
                             angular.element('<div class="title-section" translate>' + title + '</div>')
-                        )($scope));
+                        )(scope));
                 }
                 newElement = 
                     wrap(newElement,

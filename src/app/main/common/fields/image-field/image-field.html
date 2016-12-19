@@ -1,0 +1,8 @@
+<md-input-container class="image-field md-input-has-value md-block" ng-class="currentMode" md-no-float>
+    <label ng-if="label" translate="{{label}}">{{label}}</label>
+    <div class="image-viewer">
+        <div class="noimage" ng-if="!value" translate="IMAGE.NOIMAGE"></div>
+        <img ng-if="value" src="{{'/assets/' + path + '/' + id + '/' + value}}"  />
+        <div class="selector" translate="IMAGE.SELECTIMAGE" ng-click="changeImage($event)"></div>
+    </div>
+</md-input-container>
