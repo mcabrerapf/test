@@ -1,0 +1,102 @@
+
+<div id="game" class="page-layout simple tabbed" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="start center">
+        <div class="white-fg" layout="row" layout-align="start center" flex>
+            <md-button class="goto-games-button md-icon-button" aria-label="Go to games"
+                       ng-click="vm.gotoGames()"
+                       translate translate-attr-aria-label="GAMES.GO_TO_GAMES">
+                <md-icon md-font-icon="icon-arrow-left"></md-icon>
+            </md-button>
+
+            <div layout="row" layout-align="start center">
+                <div layout="column" layout-align="start start">
+                    <div class="h2" editable-text="vm.gameCopy.name" onbeforesave="vm.updateGameName($data)">
+                        {{vm.game.name}}
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span translate="GAMES.GAME_DETAIL">Game Detail</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <md-button  class="md-icon-button"
+                    aria-label="delete"
+                    ng-click="vm.deleteConfirm()"
+                    translate-attr-aria-label="FORMS.DELETE">
+            <md-icon md-font-icon="icon-delete" class="md-default-theme" aria-label="delete" translate-attr-aria-label="FORMS.DELETE"></md-icon>
+        </md-button>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <md-tabs md-dynamic-height>
+
+            <!-- Description -->
+            <md-tab>
+                <md-tab-label>
+                    <span translate="GAMES.BASIC_INFO">Basic Info</span>
+                </md-tab-label>
+
+                <md-tab-body>
+                    <div>General view</div>
+                </md-tab-body>
+            </md-tab>
+
+            <!-- Timeline -->
+            <md-tab>
+                <md-tab-label>
+                    <span translate="GAMES.TIME_LINE">Time line</span>
+                </md-tab-label>
+
+                <md-tab-body>
+                    <time-line-view theme="vm.game"></time-line-view>
+                </md-tab-body>
+            </md-tab>
+
+            <!-- Progress levels -->
+            <md-tab>
+                <md-tab-label>
+                    <span translate="GAMES.PLAYERS">Jugadores y grupos</span>
+                </md-tab-label>
+
+                <md-tab-body>
+                    <div>Jugadores y grupos de jugadores</div>
+                    <players-view game="vm.game"></players-view>
+                </md-tab-body>
+            </md-tab>
+            
+            <!-- Premios -->
+            <md-tab>
+                <md-tab-label>
+                    <span translate="GAMES.PREMIOS">Premios</span>
+                </md-tab-label>
+
+                <md-tab-body>
+                    <h1>Visor de prmios</h1>
+                    <treemap-viewer data="vm.data"></tremap-viewer>
+                </md-tab-body>
+            </md-tab>
+
+            <!-- Resultados -->
+            <md-tab ng-if="vm.game.status!=='En definición'">
+                <md-tab-label>
+                    <span translate="GAMES.RESULTADOS">Resultados</span>
+                </md-tab-label>
+
+                <md-tab-body>
+                    <div>Visor de resultados (solo si la partida está en ejecución</div>
+                </md-tab-body>
+            </md-tab>
+
+        </md-tabs>
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>
