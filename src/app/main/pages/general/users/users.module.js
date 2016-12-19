@@ -24,6 +24,9 @@
                     users: function (apiResolver) {
                         return apiResolver.resolve('users@find');
                     },
+                    customers: function (apiResolver) {
+                        return apiResolver.resolve('customers@find');
+                    },
                     translateValues: function ($translate) {
                         return $translate([
                             'USERS.NAME',

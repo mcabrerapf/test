@@ -6,13 +6,11 @@
         .controller('UsersController', UsersController);
 
     /** @ngInject */
-    function UsersController(users, translateValues, api, $mdDialog, $state, $filter, $timeout) {
+    function UsersController(users, customers, translateValues, api, $mdDialog, $state, $filter, $timeout) {
         var vm = this;
 
-        vm.users = users.map(function (user) {
-            delete user.data;
-            return user;
-        });
+        vm.users = users
+        vm.customers = customers
 
         var datasource = new kendo.data.DataSource({
             transport: {
@@ -23,7 +21,7 @@
                         options.error(error);
                     });
                 },
-                create: function(options) {
+                create: function (options) {
 
                 },
                 parameterMap: function (options, operation) {
@@ -36,11 +34,14 @@
             pageSize: 20,
             schema: {
                 model: {
-                    id: "ProductID",
+                    id: '_id',
                     fields: {
                         userName: {editable: true},
                         email: {editable: true},
                         role: {editable: true},
+                        customer: {editable: true},
+                        active: {editable: true},
+                        code: {editable: false}
                     }
                 }
             }
@@ -86,7 +87,39 @@
                 {
                     field: "role",
                     title: translateValues['USERS.ROLE'],
-                    filterable: {multi: true, search: true}
+                    filterable: {multi: true, search: true},
+                    editor: roleDropDownEditor,
+                    template: function (dataItem) {
+                        return '<span ng-repeat="role in dataItem.role"> {{role}} </span>';
+                    }
+                },
+                {
+                    field: "customer",
+                    // title: translateValues['USERS.ROLE'],
+                    filterable: {multi: true, search: true},
+                    editor: customerDropDownEditor,
+                    template: function (dataItem) {
+                        return '<span ng-repeat="customer in vm.customers | filter: dataItem.customer" ng-if="dataItem.customer"> {{customer.name}} </span>';
+                    }
+                },
+                {
+                    field: "active",
+                    // title: translateValues['USERS.ROLE'],
+                    filterable: {multi: true, search: true},
+                    editor: activeSwitchEditor,
+                },
+                {
+                    field: "code",
+                    // title: translateValues['USERS.ROLE'],
+                    filterable: {multi: true, search: true},
+                    // editor: customerDropDownEditor,
+                    template: function (dataItem) {
+                        return '<div ng-repeat="code in dataItem.code" ng-if="dataItem.code.length">' +
+                            '<span> {{code.sellerCode}} </span>' +
+                            '<span> - </span>' +
+                            '<span> {{code.teamLeader}} </span>' +
+                            '</div>';
+                    }
                 },
                 {
                     command: ["edit", "destroy"],
@@ -126,5 +159,35 @@
             $state.go('app.users.import')
         }
 
+        function roleDropDownEditor(container, options) {
+            $('<input name="' + options.field + '"/>')
+                .appendTo(container)
+                .kendoMultiSelect({
+                    autoBind: false,
+                    dataSource: ['player', 'manager', 'admin']
+                });
+        }
+
+        function customerDropDownEditor(container, options) {
+            $('<input name="' + options.field + '"/>')
+                .appendTo(container)
+                .kendoDropDownList({
+                    autoBind: true,
+                    dataTextField: "name",
+                    dataValueField: "_id",
+                    dataSource: vm.customers
+                });
+        }
+
+        function activeSwitchEditor(container, options) {
+            $('<input name="' + options.field + '"/>')
+                .appendTo(container)
+                .kendoMobileSwitch({
+                    onLabel: "YES",
+                    offLabel: "NO"
+                });
+
+        }
     }
+
 })();

@@ -81,14 +81,14 @@
                     // title: translateValues['USERS.EMAIL'],
                     filterable: {multi: true, search: true},
                     editor: function(container, options) {
-                        var input = $('<input/>');
-                        input.attr('name', options.field);
-                        input.appendTo(container);
-                        input.kendoAutoComplete({
-                            dataTextField: 'userName',
-                            datavaluefield: '_id',
-                            dataSource: vm.users
-                        });
+                        $('<input name="' + options.field + '"/>')
+                            .appendTo(container)
+                            .kendoDropDownList({
+                                autoBind: true,
+                                dataTextField: "userName",
+                                dataValueField: "_id",
+                                dataSource: vm.users
+                            });
                     }
                 },
                 {
