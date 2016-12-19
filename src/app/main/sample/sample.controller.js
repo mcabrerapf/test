@@ -27,7 +27,8 @@
                 function(user) {
                     user.created = new Date(user.created);
                     user.modified = new Date(user.modified);
-                    // user.theme = "580f46a7eb7006f1da6ecaee";
+                    user.thumbnail = 'images/img4.jpg';
+                    user.photo = 'img2.jpg'
                     vm.user = user;
                 },
                 function(error) {

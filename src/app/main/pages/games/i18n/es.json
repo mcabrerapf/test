@@ -14,15 +14,20 @@
         "STATUS": "Estado de la partida",
         "START": "Inicio partida",
         "END": "Final partida",
-        "CUSTOMER": {
-            "NAME": "Cliente",
-            "LOGO": "Logo"
-        },
+        "CUSTOMER": "Cliente",
         "START_REQUIRED": "Es necesario seleccionar una fecha de inicio de la partida",
 
         "SAVE": "Guardar partida",
         "ADD_GAME": "Crear partida",
-        "DELETE": "Eliminar partida"
+        "DELETE": "Eliminar partida",
+
+        "GO_TO_GAMES": "Volver a la lista de partidas",
+        "GAME_DETAIL": "Detalle de la partida",
+        "BASIC_INFO": "Información general",
+        "TIME_LINE": "Linea de tiempo",
+        "PLAYERS": "Jugadores y grupos",
+        "PREMIOS": "Premios",
+        "RESULTADOS": "Resultados"
     }
 }
 

@@ -23,7 +23,6 @@
         vm.movedItem = movedItem;
         vm.dropedItem = dropedItem;
         vm.dragstartItem = dragstartItem;
-        vm.getEventIcon = getEventIcon;
         vm.deleteConfirm = deleteConfirm;
 
 
@@ -178,22 +177,6 @@
         }
 
 
-        /**
-         * Returns the envet icon
-         */
-        function getEventIcon(eventType) {
-
-            switch(eventType.toLowerCase()) {
-                case 'step':
-                    return 'icon-apple-safari';
-                case 'goal':
-                    return'icon-alarm-check';
-                case 'message':
-                    return 'icon-email';
-                case 'post':
-                    return 'icon-message-text';
-            }
-        }
         //////////
 
 

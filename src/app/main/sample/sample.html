@@ -49,6 +49,17 @@
                                 label="USER.NAME"
                                 md-autofocus />
 
+                        <field  type="image"
+                                name="imagen"
+                                path="themes"
+                                allowUpload="false"
+                                allowSelect="true"
+                                id="580f46a3eb7006f1da6ecaed"
+                                ng-model="vm.user.thumbnail"
+                                label="Thumbnail" />
+
+
+<!--
                         <field  type="select"
                                 name="theme"
                                 ng-model="vm.user.theme"
@@ -103,7 +114,6 @@
                                     label="Otro correo electronico" />
                         </div>
 
-<!--
                         <field type="number"
                                name="test"
                                ng-model="vm.user.testNumber"
@@ -111,7 +121,6 @@
                                ng-maxlength="8"
                                label="Test number" />
                                
--->
                         <div layout="row" layout-align="space-between center">
                             <field  type="date" 
                                     name="modified" 
@@ -126,6 +135,7 @@
                                     md-min-date="vm.user.modified" 
                                     label="Created" />
                         </div>
+-->
                     </div>
 
                     <div layout="row">

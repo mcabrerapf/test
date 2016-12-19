@@ -1,0 +1,6 @@
+<md-input-container class="md-input-has-value md-block edit-mode" md-no-float>
+    <label ng-if="label" translate="{{label}}">{{label}}</label>
+    <div class="image-viewer">
+        <img ng-if="value" src="{{'/assets/' + path + '/' + id + '/' + value}}"  />
+    </div>
+</md-input-container>

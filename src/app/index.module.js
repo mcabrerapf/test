@@ -20,6 +20,9 @@
             // Quick Panel
             'app.quick-panel',
 
+            // Common
+            'app.common',
+
             // Dialogs
             'app.dialogs',
             
