@@ -1,21 +1,25 @@
 
+css/normalize.css
+----------------
+css/normalize.css
+
 app/main.js
 ----------------
 requirejs.js
 jquery.js
 angular.js
 angular-router.js
+angular-animate.js
 angular-translate.js
 angular-dynamic-locale.js
 app/module/main.js
 app/service/bg-translate-loader.js
 lodash.js
 app/service/bg-translate.js
-text.js
-text!app/page/home/home.html
-app/page/home/home.js
-text!app/page/test/test.html
-app/page/test/test.js
+app/service/bg-api.js
+scrollFire.js
+materialize.js
+app/page/root/root.js
 app/main.js
 translate/loader.js
 

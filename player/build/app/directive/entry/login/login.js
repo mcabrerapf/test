@@ -1,0 +1,1 @@
+define(["main-module","text!./login.html","text!./dialog.html"],function(e,t,i){"use strict";e.CompileProvider.directive("bgLogin",function(){var e=["$scope",function(e){e.User={Email:"",PWD:""}}];return{restrict:"E",replace:!0,template:t,controller:e}})});

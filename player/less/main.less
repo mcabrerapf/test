@@ -1,4 +1,32 @@
 
-	@import  (css) '/css/normalize.css';
-	@import  'fonts.less';
-	@import  'layout.less';
+	/* Vendors */
+
+	@import (inline) '/bower_components/materialize/dist/css/materialize.css';
+	@import (inline) '../css/normalize.css';
+
+	/* Common */
+
+	@import 'main/variable';
+	@import 'main/mixin';
+	@import 'main/font';
+	@import 'main/background';
+	@import 'main/logo';
+	@import 'main/element';
+
+	/* APP Root */
+
+	@import '../app/app';
+
+	/* UI VIEWS */
+
+	@TransitionTime: 1s;
+
+	.UIView {
+
+		&.ng-enter,
+		&.ng-enter-active,
+		&.ng-leave,
+		&.ng-leave-active { transition: @TransitionTime; }
+	}
+
+	/* HTML Base layout*/

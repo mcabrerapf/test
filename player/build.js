@@ -14,10 +14,12 @@
         'angular-translate': '../bower_components/angular-translate/angular-translate',
         'angular-dynamic-locale': '../bower_components/angular-dynamic-locale/dist/tmhDynamicLocale',
         'angular-animate': '../bower_components/angular-animate/angular-animate',
-        'angular-aria': '../bower_components/angular-aria/angular-aria',
-        'angular-messages': '../bower_components/angular-messages/angular-messages',
-        'angular-material': '../bower_components/angular-material/angular-material',
+        'angular-sanitize': '../bower_components/angular-sanitize/angular-sanitize',
         'lodash': '../bower_components/lodash/dist/lodash.core',
+        'materialize': '../bower_components/materialize/dist/js/materialize',
+        'velocity': '../bower_components/materialize/js/velocity.min',
+        'hammerjs': '../bower_components/materialize/js/hammer.min',
+        'scrollfire': '../bower_components/materialize/js/scrollFire',
         'main-module': 'app/module/main'
     },
     shim: {
@@ -27,11 +29,13 @@
         },
         'angular-router': [ 'angular' ],
         'angular-translate' : ['angular'],
+        'angular-sanitize': [ 'angular' ],
         'angular-dynamic-locale' : ['angular'],
         'angular-animate' : ['angular'],
-        'angular-aria' : ['angular'],
-        'angular-messages' : ['angular'],
-        'angular-material': ['angular', 'angular-aria', 'angular-messages']
+        'materialize': ['jquery', 'hammerjs', 'velocity', 'scrollFire'],
+        'jquery': {
+          exports: '$'
+        }
     },
     modules: [
         {
@@ -40,6 +44,11 @@
                 'requirejs',
                 'translate/loader'
             ],
+            exclude: [
+                'scrollfire',
+                'velocity',
+                'hammerjs'
+            ]
 
             /*
             // Use the *shallow* exclude; otherwise, dependencies of

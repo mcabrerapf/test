@@ -1,1 +1,1 @@
-define(["angular","angular-router","angular-translate","angular-dynamic-locale"],function(a,r,e,l){"use strict";var n=a.module("bgplayer",["ui.router","pascalprecht.translate","tmh.dynamicLocale"]);return n});
+define(["angular","angular-router","angular-animate","angular-translate","angular-dynamic-locale"],function(a){"use strict";var r=a.module("bgplayer",["ui.router","ngAnimate","pascalprecht.translate","tmh.dynamicLocale"]);return r});

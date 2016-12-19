@@ -1,0 +1,51 @@
+
+
+	/* Mixin ------------------------------------------------------------ */
+
+	.boxsizing {
+
+		-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+		-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+		box-sizing: border-box;         /* Opera/IE 8+ */
+	}
+
+	.innerbox {
+
+		display: block;
+		position:absolute;
+		height:auto;
+		bottom:0;
+		top:0;
+		left:0;
+		right:0;
+		margin-top:0;
+		margin-bottom:0;
+		margin-right:0;
+		margin-left:0;
+	}
+
+	.ellipsis() {
+
+	  width: 100%;
+	  white-space: nowrap;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	}
+
+
+	/* Effect ------------------------------------------------------------ */
+
+	.transition (@property: opacity; @time: 1s; @Delay: 0s; @transition-timing-function: ease-in-out) {
+
+	    -webkit-transition: @property @time @transition-timing-function;
+	    transition: @property @time @transition-timing-function;
+	    -webkit-transition-delay: @Delay;
+	    transition-delay: @Delay;
+	}
+
+	.shadow {
+
+		-moz-box-shadow: 0px 0px 5px #000;
+		-webkit-box-shadow: 0px 0px 5px #000;
+		box-shadow: 0px 0px 5px #000;
+	}

@@ -1,0 +1,1 @@
+define(["text!./level.html"],function(e){"use strict";var t=["$scope",function(e){}];return{template:e,controller:t}});

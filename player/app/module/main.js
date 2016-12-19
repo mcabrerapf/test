@@ -2,20 +2,19 @@
 	define([
 		'angular',
 		'angular-router',
+		'angular-animate',
 		'angular-translate',
 		'angular-dynamic-locale'
 	],
 	function(
-		angular,
-		Router,
-		Translate,
-		DynamicLocale
+		A
 	) {
 
 		'use strict';
 
 		var Module = angular.module('bgplayer', [
 			'ui.router',
+    		'ngAnimate',
 			'pascalprecht.translate',
 			'tmh.dynamicLocale'
 		]);
