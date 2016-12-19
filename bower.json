@@ -36,7 +36,9 @@
     "domReady": "requirejs-domready#^2.0.1",
     "angular-i18n": "^1.5.9",
     "three.js": "threejs#*",
-    "less": "^2.7.1"
+    "less": "^2.7.1",
+    "materialize": "^0.97.8",
+    "angular-ui-router-anim-in-out": "^1.0.2"
   },
   "resolutions": {
     "angular": "1.5.8",

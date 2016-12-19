@@ -1,12 +1,21 @@
 
-	@import (inline) '/bower_components/materialize/dist/css/materialize.css';
-	@import (inline) '../css/normalize.css';
-	@import 'main/font.less';
-	@import 'main/color.less';
-	@import 'main/layout.less';
-	@import 'main/background.less';
-	@import 'main/effect.less';
-	@import 'main/logo.less';
-	@import 'main/element.less';
+	/* Vendors */
 
-	@import '../app/app.less';
+	@import (inline) '/bower_components/materialize/dist/css/materialize.css';
+	@import (inline) '/bower_components/angular-ui-router-anim-in-out/css/anim-in-out.css';
+	@import (inline) '../css/normalize.css';
+
+	/* Common */
+
+	@import 'main/variable';
+	@import 'main/mixin';
+	@import 'main/font';
+	@import 'main/background';
+	@import 'main/logo';
+	@import 'main/element';
+
+	/* APP Root */
+
+	@import '../app/app';
+
+	/* HTML Base layout*/

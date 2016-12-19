@@ -3,6 +3,10 @@ css/normalize.css
 ----------------
 css/normalize.css
 
+dist/css/main.css
+----------------
+dist/css/main.css
+
 app/main.js
 ----------------
 requirejs.js
@@ -10,6 +14,7 @@ jquery.js
 angular.js
 angular-router.js
 angular-animate.js
+anim-in-out.js
 angular-translate.js
 angular-dynamic-locale.js
 app/module/main.js

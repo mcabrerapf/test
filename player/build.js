@@ -14,6 +14,7 @@
         'angular-translate': '../bower_components/angular-translate/angular-translate',
         'angular-dynamic-locale': '../bower_components/angular-dynamic-locale/dist/tmhDynamicLocale',
         'angular-animate': '../bower_components/angular-animate/angular-animate',
+        'anim-in-out': '../bower_components/angular-ui-router-anim-in-out/anim-in-out',
         'angular-sanitize': '../bower_components/angular-sanitize/angular-sanitize',
         'lodash': '../bower_components/lodash/dist/lodash.core',
         'materialize': '../bower_components/materialize/dist/js/materialize',
@@ -32,6 +33,7 @@
         'angular-sanitize': [ 'angular' ],
         'angular-dynamic-locale' : ['angular'],
         'angular-animate' : ['angular'],
+        'anim-in-out': ['angular-animate'],
         'materialize': ['jquery', 'hammerjs', 'velocity', 'scrollFire'],
         'jquery': {
           exports: '$'

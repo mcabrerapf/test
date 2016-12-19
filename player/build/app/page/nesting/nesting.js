@@ -1,1 +1,0 @@
-define(["text!./nesting.html"],function(t){"use strict";var e=["$scope",function(t){}];return{template:t,controller:e}});

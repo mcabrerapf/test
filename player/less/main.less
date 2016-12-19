@@ -2,6 +2,7 @@
 	/* Vendors */
 
 	@import (inline) '/bower_components/materialize/dist/css/materialize.css';
+	@import (inline) '/bower_components/angular-ui-router-anim-in-out/css/anim-in-out.css';
 	@import (inline) '../css/normalize.css';
 
 	/* Common */
@@ -16,17 +17,5 @@
 	/* APP Root */
 
 	@import '../app/app';
-
-	/* UI VIEWS */
-
-	@TransitionTime: 1s;
-
-	.UIView {
-
-		&.ng-enter,
-		&.ng-enter-active,
-		&.ng-leave,
-		&.ng-leave-active { transition: @TransitionTime; }
-	}
 
 	/* HTML Base layout*/
