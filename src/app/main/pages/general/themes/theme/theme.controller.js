@@ -13,7 +13,7 @@
 
         // Data
         vm.theme = theme;
-        vm.originalTheme = angular.copy(theme);
+        vm.themeCopy = angular.copy(theme);
 
 
         // Methods
@@ -25,20 +25,23 @@
         /**
          * Update theme (name)
          */
-        function updateTheme() {
+        function updateTheme(newName) {
 
+            if (newName === '') return $q.reject();
             var def = $q.defer();
 
             var id = vm.theme._id;
 
-            api.themes.update({id:id}, vm.theme,
+            api.themes.update({id:id}, {name: newName},
                 function() {
+                    vm.theme.name = newName;
+                    vm.themeCopy.name = newName;
                     def.resolve();
                 },
                 function(error) {
                     alert(error.data.errmsg);
                     console.log(error);
-                    vm.theme.name = vm.originalTheme.name;
+                    vm.themeCopy.name = vm.theme.name;
                     def.resolve();
                 }
             );
