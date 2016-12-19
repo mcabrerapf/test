@@ -12,14 +12,14 @@
 
         <div flex="30" layout="column" class="md-background-bg md-hue-3 bl p-24">
             
-            <div>
-                <strong>{{vm.selectedItem.text}}</strong>
+            <div class="h2" editable-text="vm.selectedItem.text" onbeforesave="vm.rename($data)">
+                {{vm.selectedItem.text}}
             </div>
 
             <div>
-                <button ng-click="vm.treeView.addFolder($event)">[New folder]</button>
-                <button ng-click="vm.treeView.addFile($event)">[New file]</button>
-                <button ng-click="vm.treeView.delete($event)">[Delete]</button>
+                <button ng-click="vm.addFolder($event)">[New folder]</button>
+                <button ng-click="vm.addFile($event)">[New file]</button>
+                <button ng-click="vm.delete($event)">[Delete]</button>
             </div>
         </div>
 

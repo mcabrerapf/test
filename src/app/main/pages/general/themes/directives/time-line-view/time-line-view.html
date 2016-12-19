@@ -4,24 +4,24 @@
 
         <ul class="ms-timeline"
             dnd-list="vm.theme.timeline"
-            dnd-allowed-types="[]">
+            dnd-drop="vm.dropedItem(index, item)">
             
             <li class="ms-timeline-item md-3-line"
-                ng-repeat="timelineevent in vm.theme.timeline"
-                ng-click="null"
-                dnd-dragable="timelineevent"
+                ng-repeat="item in vm.theme.timeline"
+                dnd-draggable="item"
+                dnd-dragstart="vm.dragstartItem(item)"
                 dnd-effect-allowed="move"
-                dnd-moved="vm.movedEvent($event, $index)">
+                dnd-moved="vm.movedItem($index, item)">
             
-                <div layout="column" layout-align="center center">
+                <div layout="column" dnd-nodrag>
 
-                    <div layout="row" layout-align="start start">
+                    <div flex layout="row" layout-align="center start">
 
                         <div flex layout="row" layout-align="none center">
-                            <md-icon flex="none" class="m-16 s40 md-accent-fg" md-font-icon="{{vm.getEventIcon(timelineevent.type)}}"></md-icon>
+                            <md-icon flex="none" class="m-16 s40 md-accent-fg" md-font-icon="{{item.type | timelineIcon}}"></md-icon>
                             <div flex class="md-list-item-text" layout="column" layout-align="start start">
-                                <h3>Timeline event name</h3>
-                                <div>{{timelineevent.type}}</div>
+                                <h3>{{item.title}}</h3>
+                                <div>{{item.type}}</div>
 
 
                             </div>
@@ -34,14 +34,14 @@
 
                         <md-button  class="md-icon-button"
                                     aria-label="edit"
-                                    ng-click="vm.editEvent($event, $index, timelineevent)"
+                                    ng-click="vm.openElementDialog($event, item.type, item)"
                                     translate-attr-aria-label="FORMS.EDIT">
                             <md-icon md-font-icon="icon-pencil" class="md-default-theme" translate-attr-aria-label="FORMS.DELETE"></md-icon>
                         </md-button>
 
                         <md-button  class="md-icon-button"
                                     aria-label="delete"
-                                    ng-click="vm.deleteConfirm($event, $index, timelineevent)"
+                                    ng-click="vm.deleteConfirm($event, $index, item)"
                                     translate-attr-aria-label="FORMS.DELETE">
                             <md-icon md-font-icon="icon-delete" class="md-default-theme" translate-attr-aria-label="FORMS.DELETE"></md-icon>
                         </md-button>
@@ -61,11 +61,11 @@
 
             <md-menu-content>
                 <md-menu-item>
-                    <md-button  ng-click="vm.createNewStep($event)"
+                    <md-button  ng-click="vm.openElementDialog($event, 'Step')"
                                 aria-label="New step" translate 
                                 translate-attr-aria-label="THEMES.NEW_STEP">
                         <md-icon md-font-icon="icon-apple-safari"></md-icon>
-                        <span>Step</span>
+                        <span translate="THEMES.NEW_STEP">Step</span>
                     </md-button>
                 </md-menu-item>
                 <md-menu-item>
@@ -73,7 +73,7 @@
                                 aria-label="New goal" translate 
                                 translate-attr-aria-label="THEMES.NEW_GOAL">
                         <md-icon md-font-icon="icon-alarm-check"></md-icon>
-                        <span>Goal</span>
+                        <span translate="THEMES.NEW_GOAL">Goal</span>
                     </md-button>
                 </md-menu-item>
                 <md-menu-item>
@@ -81,7 +81,7 @@
                                 aria-label="New message" translate 
                                 translate-attr-aria-label="THEMES.NEW_MESSAGE">
                         <md-icon md-font-icon="icon-email"></md-icon>
-                        <span>Message</span>
+                        <span translate="THEMES.NEW_MESSAGE">Message</span>
                     </md-button>
                 </md-menu-item>
                 <md-menu-item>
@@ -89,7 +89,7 @@
                                 aria-label="New post" translate 
                                 translate-attr-aria-label="THEMES.NEW_POST">
                         <md-icon md-font-icon="icon-message-text"></md-icon>
-                        <span>Post</span>
+                        <span translate="THEMES.NEW_POST">Post</span>
                     </md-button>
                 </md-menu-item>
             </md-menu-content>
