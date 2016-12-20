@@ -1,43 +1,43 @@
-<div class="treemap">
+<div class="Game Level treemap">
     <div>{{vm.data.name}}</div>
-
-    <div>
-        <!-- retos -->
-        <div ng-repeat="goal in vm.data.goals">
-            <div>{{goal.name}} - {{goal.budget}}</div>
-            <div>
-                <div ng-repeat="value in goal.distributionTable track by $index">
-                    {{$index + 1}} - {{value}}
+    <div class="Level">
+        <div class="Sector Goals">
+            <div class="Title">GOALS</div>
+            <div ng-repeat="goal in vm.data.goals">
+                <div>{{goal.name}} - {{goal.budget}}</div>
+                <div>
+                    <div ng-repeat="value in goal.distributionTable track by $index">
+                        {{$index + 1}} - {{value}}
+                    </div>
                 </div>
             </div>
         </div>
-
-
-        <!-- regularidad -->
-        <div ng-repeat="regularidad in vm.data.regular">
-            <div>{{regularidad.name}} - {{regularidad.budget}}</div>
-            <div>
-                <div ng-repeat="value in regularidad.distributionTable track by $index">
-                    {{$index + 1}} - {{value}}
+        <div class="Sector Regularity">
+            <div class="Title">REGULARITY</div>
+            <div ng-repeat="regularidad in vm.data.regular">
+                <div>{{regularidad.name}} - {{regularidad.budget}}</div>
+                <div>
+                    <div ng-repeat="value in regularidad.distributionTable track by $index">
+                        {{$index + 1}} - {{value}}
+                    </div>
                 </div>
             </div>
         </div>
-
-
-        <!-- rankings -->
-        <div ng-repeat="ranking in vm.data.rankings">
-            <div>{{ranking.name}} - {{ranking.percentage}}</div>
-            <div>
-                <div ng-repeat="step in ranking.steps">
-                    <div>{{step.name}} - {{step.percentage}}</div>
-                    <div>
-                        <div ng-repeat="value in step.distributionTable track by $index">
-                            {{$index + 1}} - {{value}}
+        <div class="Sector Rankings">
+            <div class="Title">RANKINGS</div>
+            <div ng-repeat="ranking in vm.data.rankings">
+                <div>{{ranking.name}} - {{ranking.percentage}}</div>
+                <div>
+                    <div ng-repeat="step in ranking.steps">
+                        <div>{{step.name}} - {{step.percentage}}</div>
+                        <div>
+                            <div ng-repeat="value in step.distributionTable track by $index">
+                                {{$index + 1}} - {{value}}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>

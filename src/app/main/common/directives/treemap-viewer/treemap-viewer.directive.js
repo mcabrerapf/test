@@ -13,6 +13,8 @@
         var vm = this;
         vm.data = $scope.data;
 
+        console.log($scope.data);
+
         // Methods
 
         //////////
@@ -30,7 +32,7 @@
 
 
     }
-    
+
     /** @ngInject */
     function treemapViewerDirective()
     {

@@ -36,7 +36,7 @@
                         name: 'Reto 1',
                         budget: 1000,               // editable
                         distributionTable: [
-                            40,30,20,10
+                            40,30,20,15
                         ]
                     },
                     {
@@ -220,7 +220,7 @@
                                 ]
                             },
                         ]
-                    }                
+                    }
                 ]
             }
         }
@@ -278,7 +278,7 @@
                 $mdDialog.show(confirm).then(function ()
                 {
 
-                    api.games.delete({id: vm.game._id}, 
+                    api.games.delete({id: vm.game._id},
                         function() {
 
                             vm.gotoGames();

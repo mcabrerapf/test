@@ -1,0 +1,77 @@
+<div class="TreeMap">
+
+	<!-- -->
+
+	<div class="Head">
+		<div class="Title Map">{{ BGTM.Map.name }} ( {{ BGTM.Map.budget }} )</div>
+		<div class="Tools">
+			<button ng-click="save()">Guardar</button>
+			<button ng-click="undo()">Undo</button>
+		</div>
+	</div>
+
+	<!-- -->
+
+	<div class="Data Blocks">
+
+		<!--  -->
+
+		<div ng-repeat="Block in BGTM.Map.blocks"
+			 class="Block {{ Block.className }}"
+			 ng-style="BGTM.getStyle(Block)"
+			 ng-mousedown="BGTM.mousedown($event, BGTM.Map.blocks, $index, false, ($last || $first))">
+
+			<bg-treemap-resizer ng-mousedown="BGTM.mousedown($event, BGTM.Map.blocks, $index, true)"
+								ng-if="!$first"></bg-treemap-resizer>
+
+			<div class="Title"
+				 ng-click="BGTM.toggle($event)">{{ Block.name }}</div>
+
+			<!--  -->
+
+			<div class="BlockBlocks Blocks">
+
+				<!-- -->
+
+				<div ng-repeat="BlockBlock in Block.block"
+					 class="Block {{ BlockBlock.className }}"
+			 		 ng-style="BGTM.getStyle(BlockBlock)"
+			 		 ng-mousedown="BGTM.mousedown($event, Block.block, $index, false, ($last || $first))">
+
+					<bg-treemap-resizer ng-mousedown="BGTM.mousedown($event, Block.block, $index, true)"
+										ng-if="!$first"></bg-treemap-resizer>
+
+					<div class="Title"
+				 		 ng-click="BGTM.toggle($event)">{{ BlockBlock.name }}</div>
+
+					<!-- -->
+
+					<bg-treemap-distributiontable data="BlockBlock.distributionTablePercent"
+						 						  ng-if="!BlockBlock.steps"></bg-treemap-distributiontable>
+
+					<div class="Steps Blocks"
+						 ng-if="BlockBlock.steps">
+
+						<!-- -->
+
+						<div ng-repeat="Step in BlockBlock.steps"
+							 class="Step Block {{ Step.className }}"
+					 		 ng-style="BGTM.getStyle(Step)"
+					 		 ng-mousedown="BGTM.mousedown($event, BlockBlock.steps, $index, false, ($last || $first))">
+
+							<bg-treemap-resizer ng-mousedown="BGTM.mousedown($event, BlockBlock.steps, $index, true)"
+												ng-if="!$first"></bg-treemap-resizer>
+
+							<div class="Title"
+				 				 ng-click="BGTM.toggle($event)">{{ Step.name }} </div>
+
+							<!-- -->
+
+							<bg-treemap-distributiontable data="Step.distributionTablePercent"></bg-treemap-distributiontable>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

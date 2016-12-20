@@ -1,0 +1,8 @@
+<div class="DistributionTable">
+	<div ng-repeat="Sector in data track by $index"
+		 class="Sector"
+		 ng-style="getStyle($index)">
+		<span class="Center"></span>
+		<span class="Bar"
+			 ng-style="getSectorStyle($index)"></span>
+</div>
