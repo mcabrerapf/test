@@ -17,10 +17,7 @@
         vm.newGame = {
             name: '',
             status: 'En definición',
-            customer: {
-                name: '',
-                logo: ''
-            }
+            customer: ''
         };
 
         // Methods
@@ -43,10 +40,8 @@
         function addNewGame()
         {
             api.games.save(vm.newGame,
-                function(success) {
-                    console.log('Yea!');
-                    console.log(success);
-                    closeDialog();
+                function(game) {
+                    closeDialog(game);
                 },
                 function(error) {
                     alert(error.data.msg);
@@ -59,9 +54,9 @@
         /**
          * Close dialog
          */
-        function closeDialog()
+        function closeDialog(result)
         {
-            $mdDialog.hide();
+            $mdDialog.hide(result);
         }
 
     }

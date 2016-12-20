@@ -57,7 +57,7 @@
             vm.stepsContainer.push(vm.step);
 
 
-            closeDialog();
+            closeDialog(vm.step);
         }
 
         /**
@@ -75,7 +75,7 @@
                 }
             }
 
-            closeDialog();
+            closeDialog(vm.step);
         }
 
 
@@ -84,7 +84,7 @@
          */
         function closeDialog()
         {
-            $mdDialog.hide();
+            $mdDialog.hide(vm.step);
         }
 
     }

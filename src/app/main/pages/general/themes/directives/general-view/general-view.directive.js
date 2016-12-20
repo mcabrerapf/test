@@ -4,11 +4,11 @@
 
     angular
         .module('app.pages.general.themes')
-        .controller('generalViewController', generalViewController)
-        .directive('generalView', generalViewDirective);
+        .controller('themeGeneralViewController', themeGeneralViewController)
+        .directive('themeGeneralView', themeGeneralViewDirective);
 
     /** @ngInject */
-    function generalViewController($scope, $mdDialog, api)
+    function themeGeneralViewController($scope, $mdDialog, api)
     {
         var vm = this;
         vm.theme = $scope.theme;
@@ -34,14 +34,14 @@
     }
     
     /** @ngInject */
-    function generalViewDirective()
+    function themeGeneralViewDirective()
     {
         return {
             restrict: 'E',
             scope   : {
                 theme: '=theme'
             },
-            controller: 'generalViewController',
+            controller: 'themeGeneralViewController',
             controllerAs: 'vm',
             templateUrl: 'app/main/pages/general/themes/directives/general-view/general-view.html'
         };

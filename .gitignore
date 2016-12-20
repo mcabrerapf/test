@@ -23,3 +23,6 @@ gamification.sublime-workspace
 # Optional npm cache directory
 .npm
 npm-debug.log
+
+# Archivos temporales
+server.log

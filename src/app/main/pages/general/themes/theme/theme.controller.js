@@ -7,13 +7,14 @@
         .controller('ThemeController', ThemeController);
 
     /** @ngInject */
-    function ThemeController($q, $state, $mdDialog, $translate, api, theme)
+    function ThemeController($q, $state, $stateParams, $mdDialog, $translate, themeService)
     {
         var vm = this;
 
         // Data
-        vm.theme = theme;
-        vm.originalTheme = angular.copy(theme);
+        vm.themeService = themeService;
+        vm.theme = themeService.theme;
+        vm.themeCopy = angular.copy(vm.theme);
 
 
         // Methods
@@ -22,28 +23,19 @@
         vm.updateThemeName = updateTheme;
 
 
+
         /**
          * Update theme (name)
          */
-        function updateTheme() {
+        function updateTheme(newName) {
 
-            var def = $q.defer();
-
-            var id = vm.theme._id;
-
-            api.themes.update({id:id}, vm.theme,
-                function() {
-                    def.resolve();
-                },
-                function(error) {
-                    alert(error.data.errmsg);
-                    console.log(error);
-                    vm.theme.name = vm.originalTheme.name;
-                    def.resolve();
-                }
-            );
-
-            return def.promise;
+            return themeService.rename(newName).then(function() {
+                vm.themeCopy.name = newName;
+                return true;
+            }, function(error) {
+                vm.themeCopy.name = vm.theme.name;
+                return false;
+            });
         }
 
 
@@ -69,16 +61,9 @@
 
                 $mdDialog.show(confirm).then(function ()
                 {
-
-                    api.themes.delete({id: vm.theme._id}, 
-                        function() {
-
-                            vm.gotoThemes();
-
-                        }, function(error) {
-                            alert(error.data.errmsg);
-                            console.error(error);
-                        });
+                    themeService.remove().then(function() {
+                        vm.gotoThemes();
+                    });
                 });
 
             });

@@ -1,26 +1,22 @@
 
-<div id="theme" class="page-layout simple tabbed" layout="column">
+<div id="game" class="page-layout simple tabbed" layout="column">
 
     <!-- HEADER -->
     <div class="header md-accent-bg" layout="row" layout-align="start center">
         <div class="white-fg" layout="row" layout-align="start center" flex>
-            <md-button class="goto-themes-button md-icon-button" aria-label="Go to themes"
-                       ng-click="vm.gotoThemes()"
-                       translate translate-attr-aria-label="THEMES.GO_TO_THEMES">
+            <md-button class="goto-games-button md-icon-button" aria-label="Go to games"
+                       ng-click="vm.gotoGames()"
+                       translate translate-attr-aria-label="GAMES.GO_TO_GAMES">
                 <md-icon md-font-icon="icon-arrow-left"></md-icon>
             </md-button>
 
             <div layout="row" layout-align="start center">
-                <div class="theme-image" hide-xs ng-if="vm.theme.thumbnail">
-                    <img ng-src="{{vm.theme.thumbnail}}">
-                </div>
-
                 <div layout="column" layout-align="start start">
-                    <div class="h2" editable-text="vm.themeCopy.name" onbeforesave="vm.updateThemeName($data)">
-                        {{vm.theme.name}}
+                    <div class="h2" editable-text="vm.gameCopy.name" onbeforesave="vm.updateGameName($data)">
+                        {{vm.game.name}}
                     </div>
                     <div class="subtitle secondary-text">
-                        <span translate="THEMES.THEME_DETAIL">Theme Detail</span>
+                        <span translate="GAMES.GAME_DETAIL">Game Detail</span>
                     </div>
                 </div>
             </div>
@@ -44,45 +40,57 @@
             <!-- Description -->
             <md-tab>
                 <md-tab-label>
-                    <span translate="THEMES.BASIC_INFO">Basic Info</span>
+                    <span translate="GAMES.BASIC_INFO">Basic Info</span>
                 </md-tab-label>
 
                 <md-tab-body>
-                    <theme-general-view theme="vm.theme"></theme-general-view>
+                    <div>General view</div>
                 </md-tab-body>
             </md-tab>
 
             <!-- Timeline -->
             <md-tab>
                 <md-tab-label>
-                    <span translate="THEMES.TIME_LINE">Time line</span>
+                    <span translate="GAMES.TIME_LINE">Time line</span>
                 </md-tab-label>
 
                 <md-tab-body>
-                    <timeline-viewer data-service="vm.themeService"></timeline-viewer>
-                    <time-line-view theme="vm.theme"></time-line-view>
+                    <time-line-view theme="vm.game"></time-line-view>
                 </md-tab-body>
             </md-tab>
 
             <!-- Progress levels -->
             <md-tab>
                 <md-tab-label>
-                    <span translate="THEMES.PROGRESS_LEVELS">Progress levels</span>
+                    <span translate="GAMES.PLAYERS">Jugadores y grupos</span>
                 </md-tab-label>
 
                 <md-tab-body>
-                    <theme-progress-levels-view theme="vm.theme"></theme-progress-levels-view>
+                    <div>Jugadores y grupos de jugadores</div>
+                    <players-view game="vm.game"></players-view>
                 </md-tab-body>
             </md-tab>
             
-            <!-- Assets -->
+            <!-- Premios -->
             <md-tab>
                 <md-tab-label>
-                    <span translate="THEMES.ASSETS">Assets</span>
+                    <span translate="GAMES.PREMIOS">Premios</span>
                 </md-tab-label>
 
                 <md-tab-body>
-                    <theme-assets-view theme="vm.theme"></theme-assets-view>
+                    <h1>Visor de premios</h1>
+                    <treemap-viewer data="vm.data"></tremap-viewer>
+                </md-tab-body>
+            </md-tab>
+
+            <!-- Resultados -->
+            <md-tab ng-if="vm.game.status!=='En definición'">
+                <md-tab-label>
+                    <span translate="GAMES.RESULTADOS">Resultados</span>
+                </md-tab-label>
+
+                <md-tab-body>
+                    <div>Visor de resultados (solo si la partida está en ejecución</div>
                 </md-tab-body>
             </md-tab>
 

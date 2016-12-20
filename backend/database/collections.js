@@ -141,17 +141,9 @@ function setup(app, models) {
 
     for (var name in collections) {
 
-        var collection = collections[name];
+        const   collection  = collections[name]
+        ,       model       = models[collection.model]
 
-        var resource = {
-            modelName: 		collection.model,
-            schemaName:     collection.model,
-            collectionName: name,
-            methods:        collection.methods,
-            routes:         collection.routes
-        };
-
-        var model = models[collection.model];
         makeREST(app, name, collection, model, configuration.apiUrl);
 
     };
@@ -171,20 +163,20 @@ function makeREST(app, name, definition, model, baseUrl) {
     }
 
     if (definition.routes) {
-        definition.routes.forEach(function(route) {
+        definition.routes.forEach(function(route) {          
 
-            if (route.detail !== undefined) {
-                model.route(route.path, {
+            const fnHandler = route.detail === undefined ?
+                route.middleware :
+                {
                     detail:     route.detail,
                     handler:    route.middleware
-                })
-            } else {
-                model.route(route.path, route.middleware);
-            }
+                };
+
+            model.route( route.path, fnHandler );
         });
     }
 
-    var url = baseUrl + '/' + name;
+    const url = baseUrl + '/' + name;
     model.register(app, url);
 
 }

@@ -4,11 +4,11 @@
 
     angular
         .module('app.pages.general.themes')
-        .controller('progressLevelsViewController', progressLevelsViewController)
-        .directive('progressLevelsView', progressLevelsViewDirective);
+        .controller('themeProgressLevelsViewController', themeProgressLevelsViewController)
+        .directive('themeProgressLevelsView', themeProgressLevelsViewDirective);
 
     /** @ngInject */
-    function progressLevelsViewController($scope, $mdDialog, api)
+    function themeProgressLevelsViewController($scope, $mdDialog, api)
     {
         var vm = this;
         vm.theme = $scope.theme;
@@ -34,14 +34,14 @@
     }
     
     /** @ngInject */
-    function progressLevelsViewDirective()
+    function themeProgressLevelsViewDirective()
     {
         return {
             restrict: 'E',
             scope   : {
                 theme: '=theme'
             },
-            controller: 'progressLevelsViewController',
+            controller: 'themeProgressLevelsViewController',
             controllerAs: 'vm',
             templateUrl: 'app/main/pages/general/themes/directives/progress-levels-view/progress-levels-view.html'
         };
