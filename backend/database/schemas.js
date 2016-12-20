@@ -192,7 +192,7 @@ var schemas = {
     },
 
     'customer': {
-        name: {type: String, required: true},
+        name: {type: String, required: true, unique: true},
         logo: {type: String, required: false},
         admin: {type: String, required: false},           // ??? Id del usuario
         teams: {type: [String], required: false}
@@ -204,7 +204,7 @@ var schemas = {
         userName: {type: String, required: true},
         active: {type: Boolean, required: true, default: true},
         photo: {type: String, required: false},
-        role: {type: [String], required: false},            // admin | player | manager | mentor
+        role: {type: [String], required: false},                // admin | player | manager | mentor
         customer: {type: String, required: false},              // id del customer
         mentor: {type: String, required: false},               // id del mentor
         code: {type: [code], required: false},
