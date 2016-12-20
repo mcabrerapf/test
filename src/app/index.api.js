@@ -240,7 +240,16 @@
             save: {method: 'POST', params: {}, isArray: false},
             update: {method: 'PUT', params: {}, isArray: false},
             remove: {method: 'DELETE', params: {}, isArray: false}
-        })
+        });
+
+        // TEAMS
+        api.teams = $resource(api.baseUrl + 'teams/:id', {}, {
+            find: {method: 'GET', params: {}, isArray: true},
+            findOne: {method: 'GET', params: {}, isArray: false},
+            save: {method: 'POST', params: {}, isArray: false},
+            update: {method: 'PUT', params: {}, isArray: false},
+            remove: {method: 'DELETE', params: {}, isArray: false}
+        });
 
 
         return api;

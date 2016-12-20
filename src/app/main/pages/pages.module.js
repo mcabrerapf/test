@@ -9,7 +9,8 @@
             'app.pages.general.themes',
             'app.pages.general.distributions',
             'app.pages.general.users',
-            'app.pages.general.customers'
+            'app.pages.general.customers',
+            'app.pages.general.teams'
         ])
         .config(config);
 

@@ -15,6 +15,7 @@ var kpis                = require('../controllers/kpis.js');
 var users               = require('../controllers/users.js');
 var distributions       = require('../controllers/distributions.js');
 var customers           = require('../controllers/customers.js');
+var teams               = require('../controllers/teams.js');
 
 var collections = {
 
@@ -111,6 +112,18 @@ var collections = {
             { method: 'delete',		before: [common.ensureAuth], accessLevel: accessLevel.admin }
         ],
         routes: customers.collectionRoutes,
+        interfaceRest: 	true
+    },
+
+    'teams': {
+        model: 'team',
+        methods: [
+            { method: 'get', 		before: [common.ensureAuth], accessLevel: accessLevel.public },
+            { method: 'post', 		before: [common.ensureAuth, common.prepareData], accessLevel: accessLevel.admin },
+            { method: 'put', 		before: [common.ensureAuth, common.prepareData], accessLevel: accessLevel.admin },
+            { method: 'delete',		before: [common.ensureAuth], accessLevel: accessLevel.admin }
+        ],
+        routes: teams.collectionRoutes,
         interfaceRest: 	true
     }
 };

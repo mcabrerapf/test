@@ -52,7 +52,8 @@
         "js/kendo.all.min.js",
         "styles/kendo.common-material.min.css",
         "styles/kendo.material.min.css",
-        "styles/kendo.common.min.css"
+        "styles/kendo.common.min.css",
+        "styles/kendo.mobile.all.min.css"
       ]
     }
   }

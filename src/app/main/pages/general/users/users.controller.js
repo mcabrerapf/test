@@ -16,15 +16,29 @@
             transport: {
                 read: function (options) {
                     api.users.find(function (users) {
+                        users.forEach(function(user){
+                            var customer = vm.customers.find(function(customer) {
+                                return customer._id === user.customer;
+                            });
+                            user.customer = customer
+                        });
                         options.success(users);
                     }, function (error) {
                         options.error(error);
                     });
                 },
                 create: function (options) {
-
+                    console.log('create', options);
+                },
+                update: function (options) {
+                    console.log('update', options);
+                },
+                destroy: function (options) {
+                    console.log('destroy', options);
                 },
                 parameterMap: function (options, operation) {
+                    console.log('parameter map');
+                    console.log(options);
                     if (operation !== "read" && options.models) {
                         return {models: kendo.stringify(options.models)};
                     }
@@ -36,6 +50,7 @@
                 model: {
                     id: '_id',
                     fields: {
+                        id: {editable: false},
                         userName: {editable: true},
                         email: {editable: true},
                         role: {editable: true},
@@ -99,7 +114,7 @@
                     filterable: {multi: true, search: true},
                     editor: customerDropDownEditor,
                     template: function (dataItem) {
-                        return '<span ng-repeat="customer in vm.customers | filter: dataItem.customer" ng-if="dataItem.customer"> {{customer.name}} </span>';
+                        return '<span ng-if="dataItem.customer"> {{dataItem.customer.name}} </span>';
                     }
                 },
                 {
