@@ -113,11 +113,11 @@ function logout(req, res, next) {
 }
 
 function importUsers(req, res, next) {
-    console.log('importUsers', req.body.users);
+    var users = [];
     req.body.users.forEach(function (userData) {
         Users.findOne({email: userData.email}, function (err, user) {
             if(err) {
-                res.status(401).send('User not loged');
+               return res.status(401).send(err);
             } else {
                 if (user) {
                     user.update(userData);
@@ -127,9 +127,10 @@ function importUsers(req, res, next) {
                     user.save()
                 }
             }
+            users.push(user)
         });
     });
-    res.status(200).send('users imported')
+    res.status(200).send(users)
 }
 
 

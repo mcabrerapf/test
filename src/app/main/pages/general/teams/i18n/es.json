@@ -11,6 +11,10 @@
         "NEW_TITLE": "Nuevo equipo",
         "NAME": "Nombre del equipo",
         "ADMIN": "Administrador",
+        "NEW": {
+            "NAME": "Nombre del equipo",
+            "ADMIN": "Administrador del equipo"
+        },
 
         "SAVE": "Guardar equipo",
         "ADD_NEW": "Crear equipo",
