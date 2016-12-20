@@ -7,6 +7,5 @@
 
 module.exports = {
 
-    collectionRoutes: 	undefined
-
-};
+    collectionRoutes: undefined
+}

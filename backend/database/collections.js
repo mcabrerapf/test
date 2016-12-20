@@ -113,18 +113,6 @@ var collections = {
         ],
         routes: customers.collectionRoutes,
         interfaceRest: 	true
-    },
-
-    'teams': {
-        model: 'team',
-        methods: [
-            { method: 'get', 		before: [common.ensureAuth], accessLevel: accessLevel.public },
-            { method: 'post', 		before: [common.ensureAuth, common.prepareData], accessLevel: accessLevel.admin },
-            { method: 'put', 		before: [common.ensureAuth, common.prepareData], accessLevel: accessLevel.admin },
-            { method: 'delete',		before: [common.ensureAuth], accessLevel: accessLevel.admin }
-        ],
-        routes: teams.collectionRoutes,
-        interfaceRest: 	true
     }
 };
 

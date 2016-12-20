@@ -110,7 +110,6 @@ var player = {
     level: {type: String, required: true, default: 0},
     points: {type: Number, required: true, default: 0},
     results: {type: Schema.Types.Mixed, required: false},
-    lastAccess: {type: Date, required: false},
     agreement: {
         accepted: {type: Boolean, required: true, default: false},
         date: {type: Date, required: false}
@@ -118,10 +117,12 @@ var player = {
     team: {type: String, required: false}       // id del team
 };
 
+
+
 var team = {
     name: {type: String, required: true},
     alias: {type: String, required: false},
-    manager: {type: String, required: true},
+    admin: {type: String, required: true},      // id d'usuari
     parent: {type: String, required: false, default: ''}         // id del team superior
 }
 
@@ -150,7 +151,7 @@ var schemas = {
         timeline: [timelineevent, {_id: true}],
         thumbnail: {type: String, required: false, default: ''},
         players: [player, {_id: true}],
-        teams: [team, {_id: true}],
+        teams: [team, {_id: true}],                             // teams & rankings
         results: {type: Schema.Types.Mixed, required: false},
         premios: {type: Schema.Types.Mixed, required: false}
     },
@@ -195,7 +196,6 @@ var schemas = {
         name: {type: String, required: true, unique: true},
         logo: {type: String, required: false},
         admin: {type: String, required: false},           // ??? Id del usuario
-        teams: {type: [String], required: false}
     },
 
     'user': {
@@ -206,34 +206,9 @@ var schemas = {
         photo: {type: String, required: false},
         role: {type: [String], required: false},                // admin | player | manager | mentor
         customer: {type: String, required: false},              // id del customer
-        mentor: {type: String, required: false},               // id del mentor
-        code: {type: [code], required: false},
-        extraData: {type: Schema.Types.Mixed, required: false}
-    },
-
-    'player': {
-        user: {
-            user: {type: String, required: true},                         // id del usuario (users collection)
-            employeeId: {type: String, required: true}
-        },
-        alias: {type: String, required: false},
-        level: {type: String, required: true, default: 0},
-        points: {type: Number, required: true, default: 0},
-        results: {type: Schema.Types.Mixed, required: false},
         lastAccess: {type: Date, required: false},
-        agreement: {
-            accepted: {type: Boolean, required: true, default: false},
-            date: {type: Date, required: false}
-        },
-        team: {type: String, required: false}       // id del team
-    },
-
-    'team': {
-        name: {type: String, required: true},
-        alias: {type: String, required: false},
-        admin: {type: String, required: true},                       // id administrador del equipo
-        parent: {type: String, required: false, default: ''},         // id del team superior
-        customer: {type: String, required: true}
+        employeeIdField: {String},                                  // Que campo del extraData contiene el código de empleado
+        extraData: [Schema.Types.Mixed, {_id:true}]
     }
 }
 
