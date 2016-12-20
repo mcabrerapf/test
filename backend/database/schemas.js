@@ -232,7 +232,8 @@ var schemas = {
         name: {type: String, required: true},
         alias: {type: String, required: false},
         admin: {type: String, required: true},                       // id administrador del equipo
-        parent: {type: String, required: false, default: ''}         // id del team superior
+        parent: {type: String, required: false, default: ''},         // id del team superior
+        customer: {type: String, required: true}
     }
 }
 
