@@ -2,11 +2,11 @@
  	var Data = {
         name: 'Partida de test',
         budget: 50000,
-        blocks: [
+        parts: [
             {
                 name: 'Goals',
                 budget: null,
-                block: [
+                blocks: [
                     {
                         id: 'xxxxxxxxxx',
                         name: 'Reto 1',
@@ -36,7 +36,7 @@
             {
                 name: 'regular',
                 budget: null,
-                block: [
+                blocks: [
                     {
                         id: 'xxxxxxxxxx',
                         name: 'Premio regularidad mitad partida',
@@ -58,7 +58,7 @@
             {
                 name: 'rankings',
                 budget: null,
-                block: [
+                blocks: [
                     {
                         id: 'xxxxxxxxxx',
                         name: 'Repartidores',

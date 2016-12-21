@@ -9,6 +9,17 @@
 		<script src="map.js"></script>
 		<script src="main.js"></script>
 		<link rel="stylesheet" type="text/css" media="all" href="main.css" />
+    	<link rel="stylesheet/less" href="main.less">
+		<script>
+			window.less = {
+				relativeUrls: true,
+				rootpath: '/',
+				env: 'development',
+				logLevel: 1,
+				async: true
+			}
+		</script>
+    	<script src="less.min.js"></script>
 	</head>
 	<body>
 		<bg-treemap-map></bg-treemap-map>

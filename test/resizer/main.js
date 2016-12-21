@@ -6,29 +6,34 @@
 
 	function percentualize(Data) {
 
-		_.forEach(Data.blocks, function(Block) {
+		var Budget = Data.budget;
 
-			Block.percent = 100 / Data.blocks.length;
-			Block.className = nameToClass(Block.name);
+		_.forEach(Data.parts, function(Part) {
 
-			_.forEach(Block.block, function(BlockBlock) {
+			Part.percent = 100 / Data.parts.length;
+			Part.budget = Math.floor(Budget / Data.parts.length);
+			Part.className = nameToClass(Part.name);
 
-				BlockBlock.percent = 100 / Block.block.length;
-				BlockBlock.className = nameToClass(BlockBlock.name);
+			_.forEach(Part.blocks, function(Block) {
 
-				if(BlockBlock.distributionTable) {
+				Block.percent = 100 / Part.blocks.length;
+				Block.budget = Math.floor(Part.budget / Part.blocks.length);
+				Block.className = nameToClass(Block.name);
 
-					var Total = _.sum(BlockBlock.distributionTable);
+				if(Block.distributionTable) {
 
-					BlockBlock.distributionTablePercent = _.map(BlockBlock.distributionTable, function(Sector) {
+					var Total = _.sum(Block.distributionTable);
+
+					Block.distributionTablePercent = _.map(Block.distributionTable, function(Sector) {
 
 						return Sector * 100 / Total;
 					});
 				}
 
-				_.forEach(BlockBlock.steps, function(Step) {
+				_.forEach(Block.steps, function(Step) {
 
-					Step.percent = 100 / BlockBlock.steps.length;
+					Step.percent = 100 / Block.steps.length;
+					Step.budget = Math.floor(Block.budget / Block.steps.length);
 					Step.className = nameToClass(Step.name);
 
 					if(Step.distributionTable) {
@@ -74,28 +79,21 @@
 				var TargetLastOrFirst;
 				var Y;
 
-		        BGTM.getStyle = function(Block) {
-
-		        	return {
-		        		'height': Block.percent + '%'
-		        	}
-		        };
-
-				var mousemove = function(event) {
+				function mousemove(event) {
 
 					var DeltaY = event.pageY - Y;
 					Y = event.pageY;
 
 					updateValue(ActualBlocks, ActualBlockIndex, $BlocksContainer.height(), DeltaY)
-				};
+				}
 
-				var mouseup = function() {
+				function mouseup() {
 
 					$document.unbind('mousemove', mousemove);
 					$document.unbind('mouseup', mouseup);
-				};
+				}
 
-				var updateValue = function(Blocks, BlockIndex, Total, Delta) {
+				function updateValue(Blocks, BlockIndex, Total, Delta) {
 
 					var Inc = Delta * 100 / Total;
 
@@ -113,6 +111,7 @@
 
 							Blocks[BlockIndex - 1].percent = UpperVal;
 							Blocks[BlockIndex].percent = LowerVal;
+							calculateData();
 						});
 					} else {
 
@@ -128,9 +127,35 @@
 
 							Blocks[BlockIndex - 1].percent = UpperVal;
 							Blocks[BlockIndex + 1].percent = LowerVal;
+							calculateData();
 						});
 					}
-				};
+				}
+
+				function calculateData(Data) {
+
+					_.forEach(BGTM.Map.parts, function(Part) {
+
+						Part.budget = Math.floor(BGTM.Map.budget * Part.percent / 100);
+
+						_.forEach(Part.blocks, function(Block) {
+
+							Block.budget = Math.floor(Part.budget * Block.percent / 100);
+
+							_.forEach(Block.steps, function(Step) {
+
+								Step.budget = Math.floor(Block.budget * Step.percent / 100);
+							});
+						});
+					});
+				}
+
+		        BGTM.getStyle = function(Block) {
+
+		        	return {
+		        		'height': Block.percent + '%'
+		        	}
+		        };
 
 				BGTM.mousedown = function($event, Blocks, BlockIndex, IsResizer, LastOrFirst) {
 
@@ -141,7 +166,7 @@
 
 					TargetIsResizer = IsResizer;
 					TargetLastOrFirst = LastOrFirst;
-					$BlocksContainer = $($event.currentTarget).parents('.Blocks').eq(0);
+					$BlocksContainer = $($event.currentTarget).parents('.Sections').eq(0);
 					ActualBlocks = Blocks;
 					ActualBlockIndex = BlockIndex;
 					Y = $event.pageY;
@@ -154,7 +179,7 @@
 
 				BGTM.toggle = function($event) {
 
-					var $ParentBlock = $($event.currentTarget).parents('.Block').eq(0);
+					var $ParentBlock = $($event.currentTarget).parents('.Section').eq(0);
 					$ParentBlock.toggleClass('Opened');
 				}
 

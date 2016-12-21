@@ -1,4 +1,4 @@
-<div class="TreeMap">
+<div class="BGTreeMap">
 
 	<!-- -->
 
@@ -12,58 +12,58 @@
 
 	<!-- -->
 
-	<div class="Data Blocks">
+	<div class="Parts Sections">
 
 		<!--  -->
 
-		<div ng-repeat="Block in BGTM.Map.blocks"
-			 class="Block {{ Block.className }}"
-			 ng-style="BGTM.getStyle(Block)"
-			 ng-mousedown="BGTM.mousedown($event, BGTM.Map.blocks, $index, false, ($last || $first))">
+		<div ng-repeat="Part in BGTM.Map.parts"
+			 class="Part Section {{ Part.className }}"
+			 ng-style="BGTM.getStyle(Part)"
+			 ng-mousedown="BGTM.mousedown($event, BGTM.Map.parts, $index, false, ($last || $first))">
 
-			<bg-treemap-resizer ng-mousedown="BGTM.mousedown($event, BGTM.Map.blocks, $index, true)"
+			<bg-treemap-resizer ng-mousedown="BGTM.mousedown($event, BGTM.Map.parts, $index, true)"
 								ng-if="!$first"></bg-treemap-resizer>
 
 			<div class="Title"
-				 ng-click="BGTM.toggle($event)">{{ Block.name }}</div>
+				 ng-click="BGTM.toggle($event)">{{ Part.name }} {{ Part.budget }}</div>
 
 			<!--  -->
 
-			<div class="BlockBlocks Blocks">
+			<div class="Blocks Sections">
 
 				<!-- -->
 
-				<div ng-repeat="BlockBlock in Block.block"
-					 class="Block {{ BlockBlock.className }}"
-			 		 ng-style="BGTM.getStyle(BlockBlock)"
-			 		 ng-mousedown="BGTM.mousedown($event, Block.block, $index, false, ($last || $first))">
+				<div ng-repeat="Block in Part.blocks"
+					 class="Block Section {{ Block.className }}"
+			 		 ng-style="BGTM.getStyle(Block)"
+			 		 ng-mousedown="BGTM.mousedown($event, Part.blocks, $index, false, ($last || $first))">
 
-					<bg-treemap-resizer ng-mousedown="BGTM.mousedown($event, Block.block, $index, true)"
+					<bg-treemap-resizer ng-mousedown="BGTM.mousedown($event, Part.blocks, $index, true)"
 										ng-if="!$first"></bg-treemap-resizer>
 
 					<div class="Title"
-				 		 ng-click="BGTM.toggle($event)">{{ BlockBlock.name }}</div>
+				 		 ng-click="BGTM.toggle($event)">{{ Block.name }} {{ Block.budget }}</div>
 
 					<!-- -->
 
-					<bg-treemap-distributiontable data="BlockBlock.distributionTablePercent"
-						 						  ng-if="!BlockBlock.steps"></bg-treemap-distributiontable>
+					<bg-treemap-distributiontable data="Block.distributionTablePercent"
+						 						  ng-if="!Block.steps"></bg-treemap-distributiontable>
 
-					<div class="Steps Blocks"
-						 ng-if="BlockBlock.steps">
+					<div class="Steps Sections"
+						 ng-if="Block.steps">
 
 						<!-- -->
 
-						<div ng-repeat="Step in BlockBlock.steps"
-							 class="Step Block {{ Step.className }}"
+						<div ng-repeat="Step in Block.steps"
+							 class="Step Section {{ Step.className }}"
 					 		 ng-style="BGTM.getStyle(Step)"
-					 		 ng-mousedown="BGTM.mousedown($event, BlockBlock.steps, $index, false, ($last || $first))">
+					 		 ng-mousedown="BGTM.mousedown($event, Block.steps, $index, false, ($last || $first))">
 
-							<bg-treemap-resizer ng-mousedown="BGTM.mousedown($event, BlockBlock.steps, $index, true)"
+							<bg-treemap-resizer ng-mousedown="BGTM.mousedown($event, Block.steps, $index, true)"
 												ng-if="!$first"></bg-treemap-resizer>
 
 							<div class="Title"
-				 				 ng-click="BGTM.toggle($event)">{{ Step.name }} </div>
+				 				 ng-click="BGTM.toggle($event)">{{ Step.name }} {{ Step.budget }}</div>
 
 							<!-- -->
 
