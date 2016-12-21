@@ -22,11 +22,9 @@
 
 				if(Block.distributionTable) {
 
-					var Total = _.sum(Block.distributionTable);
+					Block.distributionTableBudget = _.map(Block.distributionTable, function(Sector) {
 
-					Block.distributionTablePercent = _.map(Block.distributionTable, function(Sector) {
-
-						return Sector * 100 / Total;
+						return Math.floor(Sector * Block.budget / 100);
 					});
 				}
 
@@ -35,16 +33,10 @@
 					Step.percent = 100 / Block.steps.length;
 					Step.budget = Math.floor(Block.budget / Block.steps.length);
 					Step.className = nameToClass(Step.name);
+					Step.distributionTableBudget = _.map(Step.distributionTable, function(Sector) {
 
-					if(Step.distributionTable) {
-
-						var Total = _.sum(Step.distributionTable);
-
-						Step.distributionTablePercent = _.map(Step.distributionTable, function(Sector) {
-
-							return Sector * 100 / Total;
-						});
-					}
+						return Math.floor(Sector * Step.budget / 100);
+					});
 				});
 			});
 		});
@@ -142,9 +134,21 @@
 
 							Block.budget = Math.floor(Part.budget * Block.percent / 100);
 
+							if(Block.distributionTable) {
+
+								Block.distributionTableBudget = _.map(Block.distributionTable, function(Sector) {
+
+									return Math.floor(Sector * Block.budget / 100);
+								});
+							}
+
 							_.forEach(Block.steps, function(Step) {
 
 								Step.budget = Math.floor(Block.budget * Step.percent / 100);
+								Step.distributionTableBudget = _.map(Step.distributionTable, function(Sector) {
+
+									return Math.floor(Sector * Step.budget / 100);
+								});
 							});
 						});
 					});
@@ -218,8 +222,13 @@
 				$scope.getSectorStyle = function(Index) {
 
 					return {
-						width: $scope.data[Index] + '%'
+						width: ($scope.data[Index]) + 'px'
 					}
+				}
+
+				$scope.getSectorBudget = function(Index) {
+
+					return Math.floor($scope.data[Index]);
 				}
 			};
 
@@ -235,8 +244,7 @@
 		})
 		.directive('bgTreemapResizer', function() {
 
-			var controller =  function($scope, $element, $attrs) {
-			};
+			var controller =  function($scope, $element, $attrs) { };
 
 			return {
 		        restrict: 'E',
