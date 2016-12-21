@@ -1,0 +1,21 @@
+<div class="DistributionTable">
+
+	<div class="Separator"
+		 ng-style="getStyleSeparator($index)"></div>
+
+	<div ng-repeat="Sector in data track by $index"
+		 class="Sector"
+		 ng-style="getStyle($index)"
+		 title="{{ getSectorBudget($index) }}">
+
+		<div class="Up"></div>
+
+		<div class="Bar"
+			  ng-style="getSectorStyle($index)"></div>
+
+		<div class="Down"></div>
+
+	</div>
+	<div class="Separator"
+		 ng-style="getStyleSeparator($index)"></div>
+</div>

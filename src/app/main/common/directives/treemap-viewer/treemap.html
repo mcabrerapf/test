@@ -1,0 +1,76 @@
+<div class="TreeMapViewer">
+
+	<div class="Parts Sections">
+
+		<!--  -->
+
+		<div ng-repeat="Part in vm.Map.parts"
+			 class="Part Section"
+			 ng-style="vm.getStyle(Part)"
+			 ng-mousedown="vm.mousedown($event, vm.Map.parts, $index, false, ($last || $first))">
+
+			<treemap-viewer-resizer ng-mousedown="vm.mousedown($event, vm.Map.parts, $index, true)"
+									ng-if="!$first"></treemap-viewer-resizer>
+
+			<div class="Title"
+				 ng-click="vm.toggle($event)">
+				<div class="Name">
+					{{ Part.name }}
+				</div>
+				<div class="Budget">
+					{{ Part.budget }}
+				</div>
+			</div>
+
+			<div class="Blocks Sections">
+
+				<div ng-repeat="Block in Part.blocks"
+					 class="Block Section"
+			 		 ng-style="vm.getStyle(Block)"
+			 		 ng-mousedown="vm.mousedown($event, Part.blocks, $index, false, ($last || $first))">
+
+					<treemap-viewer-resizer ng-mousedown="vm.mousedown($event, Part.blocks, $index, true)"
+											ng-if="!$first"></treemap-viewer-resizer>
+
+					<div class="Title"
+				 		 ng-click="vm.toggle($event)">
+						<div class="Name">
+							{{ Block.name }}
+						</div>
+						<div class="Budget">
+							{{ Block.budget }}
+						</div>
+					</div>
+
+					<treemap-viewer-distributiontable data="Block.distributionTableBudget"
+						 						  	  ng-if="!Block.steps"></treemap-viewer-distributiontable>
+
+					<div class="Steps Sections"
+						 ng-if="Block.steps">
+
+						<div ng-repeat="Step in Block.steps"
+							 class="Step Section"
+					 		 ng-style="vm.getStyle(Step)"
+					 		 ng-mousedown="vm.mousedown($event, Block.steps, $index, false, ($last || $first))">
+
+							<treemap-viewer-resizer ng-mousedown="vm.mousedown($event, Block.steps, $index, true)"
+													ng-if="!$first"></treemap-viewer-resizer>
+
+							<div class="Title"
+				 				 ng-click="vm.toggle($event)">
+								<div class="Name">
+									{{ Step.name }}
+								</div>
+								<div class="Budget">
+									{{ Step.budget }}
+								</div>
+							</div>
+
+							<treemap-viewer-distributiontable data="Step.distributionTableBudget"></treemap-viewer-distributiontable>
+						</div>
+					</div>
+				</div>
+			</div> -->
+		</div>
+	</div>
+</div>

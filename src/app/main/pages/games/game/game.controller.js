@@ -7,7 +7,7 @@
         .controller('GameController', GameController);
 
     /** @ngInject */
-    function GameController($q, $state, $mdDialog, $translate, gameService)
+    function GameController($scope, $rootScope, $q, $state, $mdDialog, $translate, gameService)
     {
         var vm = this;
 
@@ -37,7 +37,7 @@
                         name: 'Reto 1',
                         budget: 1000,               // editable
                         distributionTable: [
-                            40,30,20,10
+                            40,30,20,15
                         ]
                     },
                     {
@@ -221,7 +221,7 @@
                                 ]
                             },
                         ]
-                    }                
+                    }
                 ]
             }
         }
@@ -263,8 +263,8 @@
                     .ok(translationValues['FORMS.OK'])
                     .cancel(translationValues['FORMS.CANCEL']);
 
-                $mdDialog.show(confirm).then(function ()
-                {
+                $mdDialog.show(confirm).then(function () {
+
                     gameService.remove().then(function() {
                         vm.gotoGames();
                     });
@@ -282,6 +282,13 @@
             $state.go('app.games');
         }
 
+        /**
+         * Advice to treemap-viewer directive
+         */
 
+        $scope.initBudgetManager = function($event) {
+
+            $rootScope.$broadcast('initTreeMapViewer');
+        }
     }
 })();
