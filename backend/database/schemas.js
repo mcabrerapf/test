@@ -77,6 +77,7 @@ var message = {
 };
 
 var post = {
+    description:    { type: String, required: false },
     body:           { type: String, required: true }
 };
 

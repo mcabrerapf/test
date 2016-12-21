@@ -4,36 +4,32 @@
 
     angular
         .module('app.dialogs')
-        .controller('GoalDialogController', GoalDialogController);
+        .controller('MessageDialogController', MessageDialogController);
 
     /** @ngInject */
-    function GoalDialogController($mdDialog, Element, timelineService, msUtils) {
+    function MessageDialogController($mdDialog, Element, timelineService, msUtils) {
 
         var vm = this;
 
         // Data
-        vm.TITLEKEY = 'GOAL.EDIT_TITLE';
-        vm.goal = angular.copy(Element);
+        vm.TITLEKEY = 'MESSAGE.EDIT_TITLE';
+        vm.message = angular.copy(Element);
         vm.newItem = false;
 
-        if ( !vm.goal )
+        if ( !vm.message )
         {
-            vm.goal = {
+            vm.message = {
                 title: '',
-                type: 'Goal',
+                type: 'Message',
                 start: new Date(),
                 data: {
-                    description: '',
-                    type: 'Money',
-                    money: {
-                        budget: 0,
-                        participants: 0,
-                        distributionTable: []
-                    }
+                    to: '',
+                    subject: '',
+                    body: ''
                 }
             };
 
-            vm.TITLEKEY = 'GOAL.NEW_TITLE';
+            vm.TITLEKEY = 'MESSAGE.NEW_TITLE';
             vm.newItem = true;
         }
 
@@ -49,7 +45,8 @@
          */
         function addNew() {
 
-            timelineService.addNew(vm.goal);
+            vm.message.title = vm.message.data.subject;
+            timelineService.addNew(vm.message);
             timelineService.save().then(function() {
                 closeDialog();
             });
@@ -60,7 +57,8 @@
          */
         function saveItem() {
 
-            timelineService.saveItem(vm.goal);
+            vm.message.title = vm.message.data.subject;
+            timelineService.saveItem(vm.message);
             timelineService.save().then(function() {
                 closeDialog();
             });
@@ -72,7 +70,7 @@
          */
         function closeDialog()
         {
-            $mdDialog.hide(vm.goal);
+            $mdDialog.hide(vm.message);
         }
 
     }

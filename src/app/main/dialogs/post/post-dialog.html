@@ -1,0 +1,71 @@
+<!-- DIALOG -->
+<md-dialog class="post-dialog" aria-label="Nuevo paso" translate-attr-aria-label="POST.NEW_TITLE">
+
+    <kldform name="postForm" class="md-inline-form" novalidate mode="edit">
+
+        <!-- DIALOG TOOLBAR -->
+        <md-toolbar class="md-accent md-hue-2">
+
+            <!-- TOOLBAR TOP -->
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+                <span class="title"
+                      translate="{{vm.TITLEKEY}}">Nuevo tema</span>
+                <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Cerrar" translate
+                           translate-attr-aria-label="DIALOG.CLOSE">
+                    <md-icon md-font-icon="icon-close"></md-icon>
+                </md-button>
+            </div>
+            <!-- / TOOLBAR TOP -->
+
+        </md-toolbar>
+        <!-- / DIALOG TOOLBAR -->
+
+        <!-- DIALOG CONTENT -->
+        <md-dialog-content ms-scroll>
+
+            <div layout="column">
+
+                <div ms-icon-wrap="{{vm.post.type | timelineIcon}}" title="POST.DEFINITION">
+
+                    <field  type="text"
+                            ng-model="vm.post.title"
+                            required 
+                            label="POST.TITLE" />
+
+                    <field  type="note"
+                            ng-model="vm.post.data.description"
+                            rows="3"
+                            label="POST.DESCRIPTION" />
+                </div>
+
+            </div>
+
+
+        </md-dialog-content>
+        <!-- / DIALOG CONTENT -->
+
+        <!-- DIALOG ACTIONS -->
+        <md-dialog-actions layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-button type="submit" ng-if="vm.newItem" ng-click="vm.addNew()"
+                           class="send-button md-accent md-raised"
+                           ng-disabled="postForm.$invalid"
+                           translate="POST.ADD"
+                           aria-label="New" translate-attr-aria-label="POST.ADD">
+                    NEW
+                </md-button>
+                <md-button type="submit" ng-if="!vm.newItem" ng-click="vm.saveItem()"
+                           class="send-button md-accent md-raised"
+                           ng-disabled="postForm.$invalid"
+                           aria-label="Save" translate="FORMS.SAVE" translate-attr-aria-label="FORMS.SAVE">
+                    SAVE
+                </md-button>
+            </div>
+
+        </md-dialog-actions>
+        <!-- / DIALOG ACTIONS -->
+
+    </kldform>
+
+</md-dialog>
+<!-- / DIALOG -->

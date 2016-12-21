@@ -4,42 +4,37 @@
 
     angular
         .module('app.dialogs')
-        .controller('StepDialogController', StepDialogController);
+        .controller('PostDialogController', PostDialogController);
 
     /** @ngInject */
-    function StepDialogController($mdDialog, Element, timelineService, msUtils) {
+    function PostDialogController($mdDialog, Element, timelineService, msUtils) {
 
         var vm = this;
 
         // Data
-        vm.TITLEKEY = 'STEP.EDIT_TITLE';
-        vm.step = angular.copy(Element);
-        vm.newStep = false;
+        vm.TITLEKEY = 'POST.EDIT_TITLE';
+        vm.post = angular.copy(Element);
+        vm.newItem = false;
 
-        if ( !vm.step )
+        if ( !vm.post )
         {
-            vm.step = {
+            vm.post = {
                 title: '',
-                type: 'Step',
+                type: 'Post',
                 start: new Date(),
                 data: {
                     description: '',
-                    location: {
-                        address: undefined,
-                        longitud: undefined,
-                        latitud: undefined
-                    },
-                    images: undefined
+                    body: ''
                 }
             };
 
-            vm.TITLEKEY = 'STEP.NEW_TITLE';
-            vm.newStep = true;
+            vm.TITLEKEY = 'POST.NEW_TITLE';
+            vm.newItem = true;
         }
 
         // Methods
         vm.addNew = addNew;
-        vm.saveStep = saveStep;
+        vm.saveItem = saveItem;
         vm.closeDialog = closeDialog;
 
         //////////
@@ -49,7 +44,7 @@
          */
         function addNew() {
 
-            timelineService.addNew(vm.step);
+            timelineService.addNew(vm.post);
             timelineService.save().then(function() {
                 closeDialog();
             });
@@ -58,9 +53,9 @@
         /**
          * Save step
          */
-        function saveStep() {
+        function saveItem() {
 
-            timelineService.saveItem(vm.step);
+            timelineService.saveItem(vm.post);
             timelineService.save().then(function() {
                 closeDialog();
             });
@@ -72,7 +67,7 @@
          */
         function closeDialog()
         {
-            $mdDialog.hide(vm.step);
+            $mdDialog.hide(vm.post);
         }
 
     }
