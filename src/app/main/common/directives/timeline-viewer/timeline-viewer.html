@@ -73,7 +73,7 @@
                     </md-button>
                 </md-menu-item>
                 <md-menu-item>
-                    <md-button  ng-click="vm.createNewGoal($event)"
+                    <md-button  ng-click="vm.openElementDialog($event, 'Goal')"
                                 aria-label="New goal" translate 
                                 translate-attr-aria-label="TIMELINE.NEW_GOAL">
                         <md-icon md-font-icon="icon-alarm-check"></md-icon>
@@ -81,7 +81,7 @@
                     </md-button>
                 </md-menu-item>
                 <md-menu-item>
-                    <md-button  ng-click="vm.createNewMessage($event)"
+                    <md-button  ng-click="vm.openElementDialog($event, 'Message')"
                                 aria-label="New message" translate 
                                 translate-attr-aria-label="TIMELINE.NEW_MESSAGE">
                         <md-icon md-font-icon="icon-email"></md-icon>
@@ -89,7 +89,7 @@
                     </md-button>
                 </md-menu-item>
                 <md-menu-item>
-                    <md-button  ng-click="vm.createNewPost($event)"
+                    <md-button  ng-click="vm.openElementDialog($event, 'Post')"
                                 aria-label="New post" translate 
                                 translate-attr-aria-label="TIMELINE.NEW_POST">
                         <md-icon md-font-icon="icon-message-text"></md-icon>

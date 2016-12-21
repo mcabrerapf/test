@@ -8,18 +8,14 @@
         .directive('timelineViewer', timelineViewerDirective);
 
     /** @ngInject */
-    function timelineViewerController($scope, $translate, $mdDialog)
+    function timelineViewerController($scope, $translate, $mdDialog, timelineService)
     {
         var vm = this;
-        vm.dataService = $scope.dataService;
-        vm.timeline = vm.dataService.getTimeline();
+        vm.timeline = timelineService.timeline;
 
         // Methods
         vm.openNewMenu = openNewMenu;
         vm.openElementDialog = openElementDialog;
-        vm.createNewGoal = createNewGoal;
-        vm.createNewMessage = createNewMessage;
-        vm.createNewPost = createNewPost;
         vm.movedItem = movedItem;
         vm.dropedItem = dropedItem;
         vm.dragstartItem = dragstartItem;
@@ -46,18 +42,19 @@
 
         function dropedItem(index, item) {
 
-            vm.timeline = vm.timeline.slice(0, index)
+            timelineService.timeline = vm.timeline.slice(0, index)
                                 .concat(item)
                                 .concat(vm.timeline.slice(index));
 
-            vm.dataService.saveTimeline(vm.timeline);
             return true;
         }
 
         function movedItem(index, timelineEvent) {
-            vm.timeline = vm.timeline.filter(function(item) {
+            timelineService.timeline = timelineService.timeline.filter(function(item) {
                 return !item.selected;
             });
+            vm.timeline = timelineService.timeline;
+            timelineService.save();
         }
 
 
@@ -69,56 +66,16 @@
         function openElementDialog(ev, type, element) {
 
             $mdDialog.show({
-                controller         : 'StepDialogController',
+                controller         : type  + 'DialogController',
                 controllerAs       : 'vm',
-                templateUrl        : 'app/main/dialogs/step/step-dialog.html',
+                templateUrl        : 'app/main/dialogs/' + type + '/' + type + '-dialog.html',
                 parent             : angular.element(document.body),
                 targetEvent        : ev,
                 clickOutsideToClose: true,
                 locals             : {
-                    Element: element,
-                    Container: vm.timeline
+                    Element:            element
                 }
             });
-        }
-
-        /**
-         * Create new Goal
-         */
-        function createNewGoal() {
-            var newItem = {
-                type: 'Goal',
-                start: new Date(),
-                end: new Date(),
-                data: {}
-            }
-            vm.timeline.push(newItem);
-        }
-
-        /**
-         * Create new Message
-         */
-        function createNewMessage() {
-            var newItem = {
-                type: 'Message',
-                start: new Date(),
-                end: new Date(),
-                data: {}
-            }
-            vm.timeline.push(newItem);
-        }
-
-        /**
-         * Create new Post
-         */
-        function createNewPost() {
-            var newItem = {
-                type: 'Post',
-                start: new Date(),
-                end: new Date(),
-                data: {}
-            }
-            vm.timeline.push(newItem);
         }
 
 
@@ -144,8 +101,8 @@
 
                 $mdDialog.show(confirm).then(function ()
                 {
-                    vm.timeline.splice(index, 1);
-                    vm.dataService.saveTimeline(vm.timeline);
+                    timelineService.deleteItem(item);
+                    timelineService.save();
                     return true;
                 });
 
@@ -160,9 +117,7 @@
     {
         return {
             restrict: 'E',
-            scope: {
-                dataService: '=dataservice'
-            },
+            scope: true,
             controller: 'timelineViewerController',
             controllerAs: 'vm',
             templateUrl: 'app/main/common/directives/timeline-viewer/timeline-viewer.html'
