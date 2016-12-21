@@ -1,9 +1,4 @@
 
-	function nameToClass(Name) {
-
-		return Name.split(' ').join('_');
-	}
-
 	function percentualize(Data) {
 
 		var Budget = Data.budget;
@@ -12,13 +7,11 @@
 
 			Part.percent = 100 / Data.parts.length;
 			Part.budget = Math.floor(Budget / Data.parts.length);
-			Part.className = nameToClass(Part.name);
 
 			_.forEach(Part.blocks, function(Block) {
 
 				Block.percent = 100 / Part.blocks.length;
 				Block.budget = Math.floor(Part.budget / Part.blocks.length);
-				Block.className = nameToClass(Block.name);
 
 				if(Block.distributionTable) {
 
@@ -32,7 +25,6 @@
 
 					Step.percent = 100 / Block.steps.length;
 					Step.budget = Math.floor(Block.budget / Block.steps.length);
-					Step.className = nameToClass(Step.name);
 					Step.distributionTableBudget = _.map(Step.distributionTable, function(Sector) {
 
 						return Math.floor(Sector * Step.budget / 100);
@@ -49,18 +41,19 @@
 		var APP = angular.module('bg-treemap', []);
 
 		APP
-		.directive('bgTreemapMap', function($document) {
+		.directive('treemapViewer', function($window, $document) {
+
+			var $Window = angular.element($window);
 
 			var controller =  function($scope, $element, $attrs) {
 
 				// Namespace
 
-				BGTM = this;
+				var vm = this;
 
 				// Data
 
-				var Map = percentualize(Data);
-				BGTM.Map = angular.copy(Map);
+				vm.Map = angular.copy(percentualize(Data));
 
 				// UI
 
@@ -126,9 +119,9 @@
 
 				function calculateData(Data) {
 
-					_.forEach(BGTM.Map.parts, function(Part) {
+					_.forEach(vm.Map.parts, function(Part) {
 
-						Part.budget = Math.floor(BGTM.Map.budget * Part.percent / 100);
+						Part.budget = Math.floor(vm.Map.budget * Part.percent / 100);
 
 						_.forEach(Part.blocks, function(Block) {
 
@@ -154,14 +147,14 @@
 					});
 				}
 
-		        BGTM.getStyle = function(Block) {
+		        vm.getStyle = function(Block) {
 
 		        	return {
 		        		'height': Block.percent + '%'
 		        	}
 		        };
 
-				BGTM.mousedown = function($event, Blocks, BlockIndex, IsResizer, LastOrFirst) {
+				vm.mousedown = function($event, Blocks, BlockIndex, IsResizer, LastOrFirst) {
 
 					$event.preventDefault();
 					$event.stopPropagation();
@@ -181,7 +174,7 @@
 					return false;
 				};
 
-				BGTM.toggle = function($event) {
+				vm.toggle = function($event) {
 
 					var $ParentBlock = $($event.currentTarget).parents('.Section').eq(0);
 					$ParentBlock.toggleClass('Opened');
@@ -191,33 +184,53 @@
 
 		        $scope.save = function() {
 
-		        	console.log(BGTM.Map);
+		        	console.log(vm.Map);
 		        }
 
 		        $scope.undo = function() {
 
 		        	$scope.Map = angular.copy(Map);
 		        }
+
+		        // Size
+
+		        function resize() {
+
+		        	var PosY = $element.offset().top;
+			        var SpaceLeft = $Window.height() - PosY;
+
+			        $element.css({ height: SpaceLeft + 'px' });
+		        }
+
+		        $Window.on('resize', resize);
+		        resize();
 			};
 
 			return {
 		        restrict: 'E',
 		        replace: true,
 		        controller: controller,
-				controllerAs: 'BGTM',
+				controllerAs: 'vm',
 		        templateUrl: 'treemap.html'
 		    };
 		})
-		.directive('bgTreemapDistributiontable', function() {
+		.directive('treemapViewerDistributiontable', function() {
 
 			var controller =  function($scope, $element, $attrs) {
 
-				$scope.getStyle = function(Index) {
+	            $scope.getStyle = function(Index) {
 
-					return {
-						height: (100 / $scope.data.length) + '%'
-					}
-				}
+	                return {
+	                    height: (100 / ($scope.data.length + 1)) + '%'
+	                }
+	            }
+
+	            $scope.getStyleSeparator = function(Index) {
+
+	                return {
+	                    height: (100 / ($scope.data.length + 1) / 2) + '%'
+	                }
+	            }
 
 				$scope.getSectorStyle = function(Index) {
 
@@ -235,14 +248,12 @@
 			return {
 		        restrict: 'E',
 		        replace: true,
-		        scope: {
-		        	data: '=data'
-		        },
+		        scope: { data: '=data' },
 		        controller: controller,
 		        templateUrl: 'distributiontable.html'
 		    };
 		})
-		.directive('bgTreemapResizer', function() {
+		.directive('treemapViewerResizer', function() {
 
 			var controller =  function($scope, $element, $attrs) { };
 

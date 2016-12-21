@@ -7,7 +7,7 @@
         .controller('GameController', GameController);
 
     /** @ngInject */
-    function GameController($q, $state, $mdDialog, $translate, gameService)
+    function GameController($scope, $rootScope, $q, $state, $mdDialog, $translate, gameService)
     {
         var vm = this;
 
@@ -282,6 +282,13 @@
             $state.go('app.games');
         }
 
+        /**
+         * Advice to treemap-viewer directive
+         */
 
+        $scope.initBudgetManager = function($event) {
+
+            $rootScope.$broadcast('initTreeMapViewer');
+        }
     }
 })();
