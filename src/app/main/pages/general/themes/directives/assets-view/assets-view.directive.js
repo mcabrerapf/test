@@ -4,11 +4,11 @@
 
     angular
         .module('app.pages.general.themes')
-        .controller('assetsViewController', assetsViewController)
-        .directive('assetsView', assetsViewDirective);
+        .controller('themeAssetsViewController', themeAssetsViewController)
+        .directive('themeAssetsView', themeAssetsViewDirective);
 
     /** @ngInject */
-    function assetsViewController($scope, $mdDialog, api, $q)
+    function themeAssetsViewController($scope, $mdDialog, api, $q)
     {
         var vm = this;
         vm.theme = $scope.theme;
@@ -227,14 +227,14 @@
     }
     
     /** @ngInject */
-    function assetsViewDirective()
+    function themeAssetsViewDirective()
     {
         return {
             restrict: 'E',
             scope   : {
                 theme: '=theme'
             },
-            controller: 'assetsViewController',
+            controller: 'themeAssetsViewController',
             controllerAs: 'vm',
             templateUrl: 'app/main/pages/general/themes/directives/assets-view/assets-view.html'
         };

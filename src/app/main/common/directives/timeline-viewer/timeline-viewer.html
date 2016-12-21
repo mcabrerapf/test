@@ -1,4 +1,4 @@
-<div class="general-view-container" id="timeline">
+<div class="timeline">
 
     <div layout="column" layout-align="none center">
 
@@ -7,11 +7,11 @@
         -->
 
         <ul class="ms-timeline"
-            dnd-list="vm.theme.timeline"
+            dnd-list="vm.timeline"
             dnd-drop="vm.dropedItem(index, item)">
             
             <li class="ms-timeline-item md-3-line"
-                ng-repeat="item in vm.theme.timeline"
+                ng-repeat="item in vm.timeline"
                 dnd-draggable="item"
                 dnd-dragstart="vm.dragstartItem(item)"
                 dnd-effect-allowed="move"
@@ -59,7 +59,7 @@
         <!-- ADD NEW BUTTON -->
         <md-menu>
             <md-button class="md-fab md-accent md-icon-button" ng-click="vm.openNewMenu($mdOpenMenu, $event)"
-                    aria-label="add contact" translate translate-attr-aria-label="THEMES.ADD_TIMELINEEVENT">
+                    aria-label="add contact" translate translate-attr-aria-label="TIMELINE.ADD_TIMELINEEVENT">
                 <md-icon md-font-icon="icon-plus"></md-icon>
             </md-button>
 
@@ -67,33 +67,33 @@
                 <md-menu-item>
                     <md-button  ng-click="vm.openElementDialog($event, 'Step')"
                                 aria-label="New step" translate 
-                                translate-attr-aria-label="THEMES.NEW_STEP">
+                                translate-attr-aria-label="TIMELINE.NEW_STEP">
                         <md-icon md-font-icon="icon-apple-safari"></md-icon>
-                        <span translate="THEMES.NEW_STEP">Step</span>
+                        <span translate="TIMELINE.NEW_STEP">Step</span>
                     </md-button>
                 </md-menu-item>
                 <md-menu-item>
                     <md-button  ng-click="vm.createNewGoal($event)"
                                 aria-label="New goal" translate 
-                                translate-attr-aria-label="THEMES.NEW_GOAL">
+                                translate-attr-aria-label="TIMELINE.NEW_GOAL">
                         <md-icon md-font-icon="icon-alarm-check"></md-icon>
-                        <span translate="THEMES.NEW_GOAL">Goal</span>
+                        <span translate="TIMELINE.NEW_GOAL">Goal</span>
                     </md-button>
                 </md-menu-item>
                 <md-menu-item>
                     <md-button  ng-click="vm.createNewMessage($event)"
                                 aria-label="New message" translate 
-                                translate-attr-aria-label="THEMES.NEW_MESSAGE">
+                                translate-attr-aria-label="TIMELINE.NEW_MESSAGE">
                         <md-icon md-font-icon="icon-email"></md-icon>
-                        <span translate="THEMES.NEW_MESSAGE">Message</span>
+                        <span translate="TIMELINE.NEW_MESSAGE">Message</span>
                     </md-button>
                 </md-menu-item>
                 <md-menu-item>
                     <md-button  ng-click="vm.createNewPost($event)"
                                 aria-label="New post" translate 
-                                translate-attr-aria-label="THEMES.NEW_POST">
+                                translate-attr-aria-label="TIMELINE.NEW_POST">
                         <md-icon md-font-icon="icon-message-text"></md-icon>
-                        <span translate="THEMES.NEW_POST">Post</span>
+                        <span translate="TIMELINE.NEW_POST">Post</span>
                     </md-button>
                 </md-menu-item>
             </md-menu-content>
@@ -105,5 +105,5 @@
         -->
 
     </div>
-
+    
 </div>

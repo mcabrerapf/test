@@ -3,16 +3,16 @@
     'use strict';
 
     angular
-        .module('app.pages.general.themes')
-        .controller('timeLineViewController', timeLineViewController)
-        .directive('timeLineView', timeLineViewDirective);
+        .module('app.common.timeline-viewer')
+        .controller('timelineViewerController', timelineViewerController)
+        .directive('timelineViewer', timelineViewerDirective);
 
     /** @ngInject */
-    function timeLineViewController($scope, $translate, $mdDialog, api)
+    function timelineViewerController($scope, $translate, $mdDialog)
     {
         var vm = this;
-        vm.theme = $scope.theme;
-
+        vm.dataService = $scope.dataService;
+        vm.timeline = vm.dataService.getTimeline();
 
         // Methods
         vm.openNewMenu = openNewMenu;
@@ -26,19 +26,7 @@
         vm.deleteConfirm = deleteConfirm;
 
 
-
         //////////
-
-        init();
-
-        /**
-         * Initialize
-         */
-        function init()
-        {
-        }
-
-
         function openNewMenu($mdOpenMenu, ev) {
             // originatorEv = ev;
             $mdOpenMenu(ev);
@@ -50,7 +38,7 @@
          */
         function dragstartItem(timelineEvent) {
 
-            angular.forEach(vm.theme.timeline, function(item) {
+            angular.forEach(vm.timeline, function(item) {
                 delete item.selected;
             });
             timelineEvent.selected = true;
@@ -58,16 +46,16 @@
 
         function dropedItem(index, item) {
 
-            vm.theme.timeline = vm.theme.timeline.slice(0, index)
+            vm.timeline = vm.timeline.slice(0, index)
                                 .concat(item)
-                                .concat(vm.theme.timeline.slice(index));
+                                .concat(vm.timeline.slice(index));
 
-            // server update!!
+            vm.dataService.saveTimeline(vm.timeline);
             return true;
         }
 
         function movedItem(index, timelineEvent) {
-            vm.theme.timeline = vm.theme.timeline.filter(function(item) {
+            vm.timeline = vm.timeline.filter(function(item) {
                 return !item.selected;
             });
         }
@@ -89,7 +77,7 @@
                 clickOutsideToClose: true,
                 locals             : {
                     Element: element,
-                    Container: vm.theme.timeline
+                    Container: vm.timeline
                 }
             });
         }
@@ -99,13 +87,12 @@
          */
         function createNewGoal() {
             var newItem = {
-                _id: new Date().valueOf(),
                 type: 'Goal',
                 start: new Date(),
                 end: new Date(),
                 data: {}
             }
-            vm.theme.timeline.push(newItem);
+            vm.timeline.push(newItem);
         }
 
         /**
@@ -113,13 +100,12 @@
          */
         function createNewMessage() {
             var newItem = {
-                _id: new Date().valueOf(),
                 type: 'Message',
                 start: new Date(),
                 end: new Date(),
                 data: {}
             }
-            vm.theme.timeline.push(newItem);
+            vm.timeline.push(newItem);
         }
 
         /**
@@ -127,13 +113,12 @@
          */
         function createNewPost() {
             var newItem = {
-                _id: new Date().valueOf(),
                 type: 'Post',
                 start: new Date(),
                 end: new Date(),
                 data: {}
             }
-            vm.theme.timeline.push(newItem);
+            vm.timeline.push(newItem);
         }
 
 
@@ -159,40 +144,28 @@
 
                 $mdDialog.show(confirm).then(function ()
                 {
-                    vm.theme.timeline.splice(index, 1);
-                    /*
-                    api.themes.timeline.delete({id: item._id},
-                        function() {
-
-                            vm.theme.timeline.slice(index, 1);
-
-                        }, function(error) {
-                            alert(error.data.errmsg);
-                            console.error(error);
-                        });
-                    */
+                    vm.timeline.splice(index, 1);
+                    vm.dataService.saveTimeline(vm.timeline);
+                    return true;
                 });
 
             });
         }
 
 
-        //////////
-
-
     }
     
     /** @ngInject */
-    function timeLineViewDirective()
+    function timelineViewerDirective()
     {
         return {
             restrict: 'E',
-            scope   : {
-                theme: '=theme'
+            scope: {
+                dataService: '=dataservice'
             },
-            controller: 'timeLineViewController',
+            controller: 'timelineViewerController',
             controllerAs: 'vm',
-            templateUrl: 'app/main/pages/general/themes/directives/time-line-view/time-line-view.html'
+            templateUrl: 'app/main/common/directives/timeline-viewer/timeline-viewer.html'
         };
     }
 })();

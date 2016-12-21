@@ -12,7 +12,7 @@
 
             <div layout="row" layout-align="start center">
                 <div layout="column" layout-align="start start">
-                    <div class="h2" editable-text="vm.gameCopy.name" onbeforesave="vm.updateGameName($data)">
+                    <div class="h2" editable-text="vm.gameCopy.name" onbeforesave="vm.renameGame($data)">
                         {{vm.game.name}}
                     </div>
                     <div class="subtitle secondary-text">
@@ -48,6 +48,17 @@
                 </md-tab-body>
             </md-tab>
 
+            <!-- KPIs -->
+            <md-tab>
+                <md-tab-label>
+                    <span translate="GAMES.KPIS">Metricas</span>
+                </md-tab-label>
+
+                <md-tab-body>
+                    <div>Metricas / KPI's</div>
+                </md-tab-body>
+            </md-tab>
+            
             <!-- Timeline -->
             <md-tab>
                 <md-tab-label>
@@ -55,7 +66,7 @@
                 </md-tab-label>
 
                 <md-tab-body>
-                    <time-line-view theme="vm.game"></time-line-view>
+                    <timeline-viewer dataService="vm.gameService"></timeline-viewer>
                 </md-tab-body>
             </md-tab>
 
@@ -78,8 +89,8 @@
                 </md-tab-label>
 
                 <md-tab-body>
-                    <h1>Visor de prmios</h1>
-                    <treemap-viewer data="vm.data"></tremap-viewer>
+                    <h1>Visor de premios</h1>
+                    <treemap-viewer></tremap-viewer>
                 </md-tab-body>
             </md-tab>
 

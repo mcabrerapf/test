@@ -8,10 +8,10 @@
         .directive('treemapViewer', treemapViewerDirective);
 
     /** @ngInject */
-    function treemapViewerController($scope, $translate, $mdDialog, api)
+    function treemapViewerController($scope, $translate, $mdDialog, gameService)
     {
         var vm = this;
-        vm.data = $scope.data;
+        vm.data = gameService.budgetDistribution;
 
         console.log($scope.data);
 
@@ -38,9 +38,7 @@
     {
         return {
             restrict: 'E',
-            scope   : {
-                data: '=data'
-            },
+            scope: true,
             controller: 'treemapViewerController',
             controllerAs: 'vm',
             templateUrl: 'app/main/common/directives/treemap-viewer/treemap-viewer.html'
