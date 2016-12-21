@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pages.general.themes')
+        .module('app.services')
         .factory('themeService', themeService);
 
     /** @ngInject */
@@ -13,6 +13,8 @@
             theme: undefined,
             getTheme: getTheme,
             rename: rename,
+            getTimeline: getTimeline,
+            saveTimeline: saveTimeline,
             remove: remove
         };
 
@@ -43,6 +45,40 @@
 
 
         /**
+         * Get timeline
+         */
+        function getTimeline() {
+            return service.theme.timeline;
+        }
+
+        
+        /**
+         * Save timeline
+         */
+        function saveTimeline(timeline) {
+
+            if (service.theme === undefined) return $q.reject();
+            var def = $q.defer();
+
+            api.themes.update({id: service.theme._id}, {timeline: timeline},
+                function(response) {
+                    console.log(response);
+                    service.theme.timeline = response;
+                    showOk();
+                    def.resolve();
+                },
+                function(error) {
+                    showError(error);
+                    def.reject(error);
+                }
+            );
+
+            return def.promise;
+        }
+
+
+
+        /**
          * Rename theme
          */
         function rename(newName) {
@@ -56,24 +92,12 @@
 
             api.themes.update({id:id}, {name: newName},
                 function() {
-
-                    $mdToast.show(
-                        $mdToast.simple()
-                                .textContent('Operación realizada correctamente')
-                                .position('top right')
-                    );
-
+                    showOk;
                     service.theme.name = newName;
                     def.resolve();
                 },
                 function(error) {
-                    $mdToast.show(
-                        $mdToast.simple()
-                                .textContent(error.data.errmsg)
-                                .position('top right')
-//                                .toastClass('md-warn-bg')
-                    );
-                    console.log(error);
+                    showError(error);
                     def.reject(error);
                 }
             );
@@ -93,22 +117,36 @@
 
             api.themes.delete({id: service.theme._id}, 
                 function() {
-
                     service.theme = undefined;
                     def.resolve();
-
                 }, function(error) {
-                    $mdToast.show(
-                        $mdToast.simple()
-                                .textContent(error.data.errmsg)
-                                .position('top right')
-//                                .toastClass('md-warn-bg')
-                    );
-                    console.log(error);
+                    showError(error);
                     def.reject(error);
                 });
 
             return def.promise;
+        }
+
+
+        /**
+         * Internal methods
+         */
+        function showOk() {
+            $mdToast.show(
+                $mdToast.simple()
+                        .textContent('Operación realizada correctamente')
+                        .position('top right')
+            );
+        }
+
+        function showError(error) {
+            console.log(error);
+            $mdToast.show(
+                $mdToast.simple()
+                        .textContent(error.data.errmsg || error.data.message)
+                        .position('top right')
+                        //.toastClass('md-warn-bg')
+            );
         }
     }
 
