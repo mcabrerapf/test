@@ -29,6 +29,9 @@
             // Filters
             'app.filters',
             
+            // Services
+            'app.services',
+            
             // Pages
             'app.pages',
 

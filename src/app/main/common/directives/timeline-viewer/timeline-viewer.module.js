@@ -3,8 +3,7 @@
     'use strict';
 
     angular
-        .module('app.common', [
-            'app.common.timeline-viewer'
+        .module('app.common.timeline-viewer', [
         ])
         .config(config);
 
@@ -12,7 +11,7 @@
     function config(msNavigationServiceProvider, $translatePartialLoaderProvider)
     {
 
-        $translatePartialLoaderProvider.addPart('app/main/common');
+        $translatePartialLoaderProvider.addPart('app/main/common/directives/timeline-viewer');
 
     }
 })();

@@ -35,9 +35,11 @@
                     roles: ['Admin']
                 },
                 resolve: {
-                    game: function (apiResolver, $stateParams)
+                    gameService: function (gameService, $stateParams)
                     {
-                        return apiResolver.resolve('games@findOne', {'id': $stateParams.id});
+                        return gameService.getGame($stateParams.id).then(function() {
+                            return gameService;
+                        });
                     }
                 }
             });

@@ -24,12 +24,6 @@
         "PROGRESS_LEVELS": "Niveles de progreso",
         "ASSETS": "Recursos",
 
-        "ADD_TIMELINEEVENT": "Nuevo elemento",
-        "NEW_STEP": "Nueva etapa del juego",
-        "NEW_GOAL": "Nuevo reto de juego",
-        "NEW_MESSAGE": "Nuevo mensaje",
-        "NEW_POST": "Nueva publicación en el blog",
-
         "GO_TO_THEMES": "Ir al listado de temas"
     }
 }

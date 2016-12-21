@@ -35,9 +35,11 @@
                     roles: ['Admin']
                 },
                 resolve: {
-                    theme: function (apiResolver, $stateParams)
+                    themeService: function (themeService, $stateParams)
                     {
-                        return apiResolver.resolve('themes@findOne', {'id': $stateParams.id});
+                        return themeService.getTheme($stateParams.id).then(function() {
+                            return themeService;
+                        });
                     }
                 }
             });
