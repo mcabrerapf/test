@@ -46,7 +46,7 @@
          */
         function saveItem(item) {
             var idx = findItemIndex(item._id);
-            if (!idx) return;
+            if (idx === undefined) return;
             service.timeline[idx] = angular.copy(item);
         }
 

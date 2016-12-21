@@ -19,5 +19,24 @@
         "TITLE": "Nombre del reto",
         "DESCRIPTION": "Descripción del reto",
         "ADD": "Añadir reto"
+    },
+
+    "MESSAGE": {
+        "NEW_TITLE": "Nuevo mensaje",
+        "EDIT_TITLE": "Editar mensaje",
+        "TO": "Destinatarios",
+        "SUBJECT": "Asunto",
+        "BODY": "Cuerpo del mensaje",
+        "ADD": "Añadir mensaje"
+    },
+
+    "POST": {
+        "NEW_TITLE": "Nueva entrada de blog",
+        "EDIT_TITLE": "Editar entrada",
+        "DEFINITION": "Definición",
+        "TITLE": "Titulo",
+        "DESCRIPTION": "Descripción",
+        "VIDEO": "Video de contenido",
+        "ADD": "Añadir entrada"
     }
 }
