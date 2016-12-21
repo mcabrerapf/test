@@ -7,7 +7,7 @@
         .factory('themeService', themeService);
 
     /** @ngInject */
-    function themeService($q, $mdToast, api)
+    function themeService($q, $mdToast, timelineService, api)
     {
         var service = {
             theme: undefined,
@@ -28,10 +28,13 @@
         function getTheme(id)
         {
             var deferred = $q.defer();
+            var self = this;
+
             api.themes.findOne({id: id},
                 function (response)
                 {
                     service.theme = response;
+                    timelineService.init(self);
                     deferred.resolve(service.theme);
                 },
                 function (response)
@@ -62,8 +65,7 @@
 
             api.themes.update({id: service.theme._id}, {timeline: timeline},
                 function(response) {
-                    console.log(response);
-                    service.theme.timeline = response;
+                    service.theme.timeline = response.timeline;
                     showOk();
                     def.resolve();
                 },

@@ -4,42 +4,42 @@
 
     angular
         .module('app.dialogs')
-        .controller('StepDialogController', StepDialogController);
+        .controller('GoalDialogController', GoalDialogController);
 
     /** @ngInject */
-    function StepDialogController($mdDialog, Element, timelineService, msUtils) {
+    function GoalDialogController($mdDialog, Element, timelineService, msUtils) {
 
         var vm = this;
 
         // Data
-        vm.TITLEKEY = 'STEP.EDIT_TITLE';
-        vm.step = angular.copy(Element);
-        vm.newStep = false;
+        vm.TITLEKEY = 'GOAL.EDIT_TITLE';
+        vm.goal = angular.copy(Element);
+        vm.newItem = false;
 
-        if ( !vm.step )
+        if ( !vm.goal )
         {
-            vm.step = {
+            vm.goal = {
                 title: '',
-                type: 'Step',
+                type: 'Goal',
                 start: new Date(),
                 data: {
                     description: '',
-                    location: {
-                        address: undefined,
-                        longitud: undefined,
-                        latitud: undefined
-                    },
-                    images: undefined
+                    type: 'Money',
+                    money: {
+                        budget: 0,
+                        participants: 0,
+                        distributionTable: []
+                    }
                 }
             };
 
-            vm.TITLEKEY = 'STEP.NEW_TITLE';
-            vm.newStep = true;
+            vm.TITLEKEY = 'GOAL.NEW_TITLE';
+            vm.newItem = true;
         }
 
         // Methods
         vm.addNew = addNew;
-        vm.saveStep = saveStep;
+        vm.saveItem = saveItem;
         vm.closeDialog = closeDialog;
         vm.toggleInArray = msUtils.toggleInArray;
         vm.exists = msUtils.exists;
@@ -51,7 +51,7 @@
          */
         function addNew() {
 
-            timelineService.addNew(vm.step);
+            timelineService.addNew(vm.goal);
             timelineService.save().then(function() {
                 closeDialog();
             });
@@ -60,9 +60,9 @@
         /**
          * Save step
          */
-        function saveStep() {
+        function saveItem() {
 
-            timelineService.saveItem(vm.step);
+            timelineService.saveItem(vm.goal);
             timelineService.save().then(function() {
                 closeDialog();
             });
@@ -74,7 +74,7 @@
          */
         function closeDialog()
         {
-            $mdDialog.hide(vm.step);
+            $mdDialog.hide(vm.goal);
         }
 
     }

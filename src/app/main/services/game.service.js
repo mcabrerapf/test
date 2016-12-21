@@ -7,7 +7,7 @@
         .factory('gameService', gameService);
 
     /** @ngInject */
-    function gameService($q, $mdToast, $filter, api)
+    function gameService($q, $mdToast, $filter, timelineService, api)
     {
         var service = {
             game: undefined,
@@ -29,10 +29,13 @@
         function getGame(id)
         {
             var deferred = $q.defer();
+            var self = this;
+
             api.games.findOne({id: id},
                 function (response)
                 {
                     service.game = response;
+                    timelineService.init(self);
                     updateBudgetDistribution();
                     deferred.resolve(service.game);
                 },
@@ -64,8 +67,7 @@
 
             api.games.update({id: service.game._id}, {timeline: timeline},
                 function(response) {
-                    console.log(response);
-                    service.game.timeline = response;
+                    service.game.timeline = response.timeline;
                     showOk();
                     def.resolve();
                 },

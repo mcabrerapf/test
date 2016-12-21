@@ -2,7 +2,7 @@
     "STEP": {
         "NEW_TITLE": "Nueva etapa",
         "EDIT_TITLE": "Editar etapa",
-        "ADD_THEME": "Añadir etapa",
+        "ADD": "Añadir etapa",
         "DEFINITION": "Definición",
         "TITLE": "Nombre de la etapa",
         "DESCRIPTION": "Descripción de la etapa",
@@ -10,5 +10,14 @@
         "ADDRESS": "Dirección",
         "LONGITUDE": "Longitud",
         "LATITUDE": "Latitud"
+    },
+
+    "GOAL": {
+        "NEW_TITLE": "Nuevo reto",
+        "EDIT_TITLE": "Editar reto",
+        "DEFINITION": "Definición",
+        "TITLE": "Nombre del reto",
+        "DESCRIPTION": "Descripción del reto",
+        "ADD": "Añadir reto"
     }
 }

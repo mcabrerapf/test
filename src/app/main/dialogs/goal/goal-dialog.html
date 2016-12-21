@@ -1,7 +1,7 @@
 <!-- DIALOG -->
-<md-dialog class="step-dialog" aria-label="Nuevo paso" translate-attr-aria-label="STEP.NEW_TITLE">
+<md-dialog class="goal-dialog" aria-label="Nuevo paso" translate-attr-aria-label="GOAL.NEW_TITLE">
 
-    <kldform name="stepForm" class="md-inline-form" novalidate mode="edit">
+    <kldform name="goalForm" class="md-inline-form" novalidate mode="edit">
 
         <!-- DIALOG TOOLBAR -->
         <md-toolbar class="md-accent md-hue-2">
@@ -25,38 +25,19 @@
 
             <div layout="column">
 
-                <div ms-icon-wrap="{{vm.step.type | timelineIcon}}" title="STEP.DEFINITION">
+                <div ms-icon-wrap="{{vm.goal.type | timelineIcon}}" title="GOAL.DEFINITION">
 
                     <field  type="text"
-                            ng-model="vm.step.title"
+                            ng-model="vm.goal.title"
                             required 
-                            label="STEP.TITLE" />
+                            label="GOAL.TITLE" />
 
                     <field  type="note"
-                            ng-model="vm.step.data.description"
+                            ng-model="vm.goal.data.description"
                             rows="3"
-                            label="STEP.DESCRIPTION" />
+                            label="GOAL.DESCRIPTION" />
                 </div>
 
-
-                <div ms-icon-wrap="icon-map-marker" title="STEP.LOCATION">
-
-                    <field  type="note"
-                            ng-model="vm.step.data.location.address"
-                            rows="3"
-                            label="STEP.ADDRESS" />
-
-                    <div layout="row">
-
-                        <field  type="number" flex
-                                ng-model="vm.step.data.location.longitud"
-                                label="STEP.LONGITUDE" />
-
-                        <field  type="number" flex
-                                ng-model="vm.step.data.location.latitud"
-                                label="STEP.LATITUDE" />
-                    </div>
-                </div>
             </div>
 
 
@@ -66,16 +47,16 @@
         <!-- DIALOG ACTIONS -->
         <md-dialog-actions layout="row" layout-align="space-between center">
             <div layout="row" layout-align="start center">
-                <md-button type="submit" ng-if="vm.newStep" ng-click="vm.addNew()"
+                <md-button type="submit" ng-if="vm.newItem" ng-click="vm.addNew()"
                            class="send-button md-accent md-raised"
-                           ng-disabled="stepForm.$invalid"
-                           translate="STEP.ADD"
-                           aria-label="New" translate-attr-aria-label="STEP.ADD">
+                           ng-disabled="goalForm.$invalid"
+                           translate="GOAL.ADD"
+                           aria-label="New" translate-attr-aria-label="GOAL.ADD">
                     NEW
                 </md-button>
-                <md-button type="submit" ng-if="!vm.newStep" ng-click="vm.saveStep()"
+                <md-button type="submit" ng-if="!vm.newItem" ng-click="vm.saveItem()"
                            class="send-button md-accent md-raised"
-                           ng-disabled="stepForm.$invalid"
+                           ng-disabled="goalForm.$invalid"
                            aria-label="Save" translate="FORMS.SAVE" translate-attr-aria-label="FORMS.SAVE">
                     SAVE
                 </md-button>
