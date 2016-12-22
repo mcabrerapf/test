@@ -187,6 +187,7 @@
         return {
             restrict: 'E',
             replace: true,
+            scope: true,
             controller: controller,
             controllerAs: 'vm',
             templateUrl: 'app/main/common/directives/treemap-viewer/treemap.html'
