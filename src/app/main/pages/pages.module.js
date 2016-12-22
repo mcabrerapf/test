@@ -7,7 +7,9 @@
             'app.pages.auth.login',
             'app.pages.games',
             'app.pages.general.themes',
-            'app.pages.general.distributions'
+            'app.pages.general.distributions',
+            'app.pages.general.users',
+            'app.pages.general.customers'
         ])
         .config(config);
 

@@ -1,0 +1,78 @@
+<div id="customers" class="page-layout simple left-sidenav inner-sidenav">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between center">
+
+        <!-- APP TITLE -->
+        <div layout="row" layout-align="start center">
+            <div class="logo" layout="row" layout-align="start center">
+                <span class="logo-icon">
+                    <md-icon md-font-icon="icon-hand-pointing-right" class="s24"></md-icon>
+                </span>
+                <span class="logo-text" translate="CUSTOMERS.TITLE">Temas</span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content" md-background-bg layout="row" layout-align="start start">
+
+        <!-- MAIN -->
+        <div class="main scrollable" ms-scroll>
+
+            <!-- CUSTOMERS LIST -->
+
+            <div class="customer-list">
+
+                <div class="white-bg md-whiteframe-4dp">
+                    <table class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
+                        <thead>
+                        <tr>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title" translate="CUSTOMERS.GRID.NAME">Customer</span>
+                                </div>
+                            </th>
+                            <th class="secondary-text">
+                                <div class="table-header">
+                                    <span class="column-title" translate="CUSTOMERS.GRID.ADMIN">Admin</span>
+                                </div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="customer in vm.customers" ng-click="vm.editCustomer($event, customer)">
+                            <td>{{ customer.name }}</td>
+                            <td>{{ customer.admin.userName }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <!-- / CUSTOMERS LIST -->
+
+            <!-- NO RESULTS -->
+            <md-list-item class="no-results md-white-bg" ng-show="vm.customers.length === 0">
+                <p translate="CUSTOMERS.NO_RESULTS">No results..</p>
+            </md-list-item>
+            <!-- / NO RESULTS -->
+
+        </div>
+        <!-- / MAIN -->
+
+    </div>
+    <!-- / CONTENT -->
+
+    <!-- ADD CONTACT BUTTON -->
+    <md-button class="md-fab md-accent md-icon-button" id="add-customer-button" ng-click="vm.editCustomer($event)"
+               aria-label="add customer" translate translate-attr-aria-label="FORMS.ADD">
+        <md-icon md-font-icon="icon-plus"></md-icon>
+    </md-button>
+    <!-- / ADD CONTACT BUTTON -->
+
+</div>

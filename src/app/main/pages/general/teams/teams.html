@@ -1,0 +1,71 @@
+<div id="teams" class="page-layout simple left-sidenav inner-sidenav">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between center">
+
+        <!-- APP TITLE -->
+        <div layout="row" layout-align="start center">
+            <div class="logo" layout="row" layout-align="start center">
+                <span class="logo-icon">
+                    <md-icon md-font-icon="icon-chart-line" class="s24"></md-icon>
+                </span>
+                <span class="logo-text" translate="TEAMS.TITLE">Temas</span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content" md-background-bg layout="row" layout-align="start start">
+
+        <!-- MAIN -->
+        <div class="main scrollable" ms-scroll>
+
+            <kldform class="md-inline-form" novalidate mode="edit">
+                <div layout="column">
+                    <div layout="row">
+                        <div flex>
+                            <field type="select"
+                                   ng-model="vm.customer"
+                                   items="vm.customers"
+                                   display-field="name"
+                                   value-field="_id"
+                                   label="USERS.IMPORT.CUSTOMER"/>
+                        </div>
+                    </div>
+                </div>
+            </kldform>
+
+            <!-- TEAMS LIST -->
+
+            <div class="team-list">
+
+                <div id="teamsList" kendo-tree-view options="vm.gridOptions">
+                </div>
+
+            </div>
+
+            <!-- / TEAMS LIST -->
+
+            <!-- NO RESULTS -->
+            <!--<md-list-item class="no-results md-white-bg" ng-show="vm.teams.length === 0">-->
+                <!--<p translate="TEAMS.NO_RESULTS">No results..</p>-->
+            <!--</md-list-item>-->
+            <!-- / NO RESULTS -->
+
+        </div>
+        <!-- / MAIN -->
+
+    </div>
+    <!-- / CONTENT -->
+
+    <!-- ADD CONTACT BUTTON -->
+    <md-button class="md-fab md-accent md-icon-button" id="add-team-button" ng-click="vm.createNew($event)"
+               aria-label="add team" ng-disabled="!vm.customer" translate translate-attr-aria-label="FORMS.ADD">
+        <md-icon md-font-icon="icon-plus"></md-icon>
+    </md-button>
+    <!-- / ADD CONTACT BUTTON -->
+
+</div>

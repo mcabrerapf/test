@@ -1,0 +1,99 @@
+<!-- DIALOG -->
+<md-dialog class="user-dialog" aria-label="Nuevo tema" translate-attr-aria-label="USERS.NEW_TITLE">
+
+    <kldform name="userForm" class="md-inline-form" novalidate mode="edit">
+
+        <!-- DIALOG TOOLBAR -->
+        <md-toolbar class="md-accent md-hue-2">
+
+            <!-- TOOLBAR TOP -->
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+                <span class="title"
+                      translate="USERS.NEW_TITLE">Distribución</span>
+                <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Cerrar" translate
+                           translate-attr-aria-label="DIALOG.CLOSE">
+                    <md-icon md-font-icon="icon-close"></md-icon>
+                </md-button>
+            </div>
+            <!-- / TOOLBAR TOP -->
+
+        </md-toolbar>
+        <!-- / DIALOG TOOLBAR -->
+
+        <!-- DIALOG CONTENT -->
+        <md-dialog-content ms-scroll>
+
+            <div layout="column">
+
+                <field  type="email"
+                        ng-model="vm.user.email"
+                        required
+                        label="USERS.EMAIL" />
+
+                <field  type="text"
+                        ng-model="vm.user.userName"
+                        required
+                        label="USERS.NAME"/>
+
+                <field  type="boolean"
+                        ng-model="vm.user.active"
+                        label="USERS.ACTIVE" />
+
+                <field  type="select"
+                        ng-model="vm.user.role"
+                        items="vm.roles"
+                        label="USERS.ROLE" />
+
+                <field  type="select"
+                        ng-model="vm.user.customer._id"
+                        items="vm.customers"
+                        display-field="name"
+                        value-field="_id"
+                        label="USERS.CUSTOMER.NAME" />
+
+                <field  type="select"
+                        ng-model="vm.user.mentor._id"
+                        items="vm.users"
+                        display-field="name"
+                        value-field="_id"
+                        label="USERS.MENTOR" />
+            </div>
+
+        </md-dialog-content>
+        <!-- / DIALOG CONTENT -->
+
+        <!-- DIALOG ACTIONS -->
+        <md-dialog-actions layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-button type="submit" ng-if="!vm.isNew" ng-click="vm.updateUser()"
+                           class="send-button md-accent md-raised"
+                           ng-disabled="userForm.$invalid"
+                           aria-label="SAVE" translate="USERS.DIALOG.SAVE" translate-attr-aria-label="USERS.DIALOG.SAVE">
+                    SAVE
+                </md-button>
+
+                <md-button type="submit" ng-if="vm.isNew" ng-click="vm.addNewUser()"
+                           class="send-button md-accent md-raised"
+                           ng-disabled="userForm.$invalid"
+                           aria-label="Add Task" translate="USERS.DIALOG.ADD"
+                           translate-attr-aria-label="USERS.DIALOG.ADD">
+                    ADD CUSTOMER
+                </md-button>
+
+            </div>
+
+            <div layout="row">
+                <md-button ng-if="!vm.isNew" class="md-icon-button" ng-click="vm.deleteUser($event)" aria-label="Delete"
+                           translate
+                           translate-attr-aria-label="USERS.DIALOG.DELETE">
+                    <md-icon md-font-icon="icon-delete"></md-icon>
+                    <md-tooltip><span translate="USERS.DIALOG.DELETE">DELETE</span></md-tooltip>
+                </md-button>
+            </div>
+        </md-dialog-actions>
+        <!-- / DIALOG ACTIONS -->
+
+    </kldform>
+
+</md-dialog>
+<!-- / DIALOG -->
