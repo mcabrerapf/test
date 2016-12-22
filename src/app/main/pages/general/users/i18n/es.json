@@ -4,6 +4,19 @@
             "SECTION_TITLE": "ADMINISTRACIÓN DE USUARION",
             "TITLE": "Usuarios"
         },
+        "GRID": {
+            "NAME": "Nombre de usuario",
+            "EMAIL": "Correo electronico",
+            "CUSTOMER": "Cliente",
+            "ACTIVE": "Usuario activo"
+        },
+        "DIALOG": {
+            "SAVE": "Guardar",
+            "ADD": "Crear",
+            "DELETE": "Eliminar"
+        },
+        "YES": "Si",
+        "NO": "No",
         "TITLE": "Usuarios",
         "SEARCH": "Buscar un usuario",
         "NO_RESULTS": "No se han encontrado usuarios",
@@ -35,7 +48,8 @@
             "USER_NAME_COLUMN": "Columna nombre de usuario",
             "TEAM_LEADER_COLUMN": "Columna lider de equipo",
             "SELLER_CODE_COLUMN": "Columna código de vendedor",
-            "IMPORT": "Importar"
+            "IMPORT": "Importar",
+            "SHEET_RANGE": "Rango de datos"
         },
 
         "SAVE": "Guardar usuario",

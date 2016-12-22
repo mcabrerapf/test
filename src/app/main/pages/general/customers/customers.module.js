@@ -50,7 +50,7 @@
 
         msNavigationServiceProvider.saveItem('general.customer', {
             title    : 'Clientes',
-            icon     : 'icon-chart-line',
+            icon     : 'icon-hand-pointing-right',
             state    : 'app.customers',
             translate: 'CUSTOMERS.MENU.TITLE',
             weight   : 1

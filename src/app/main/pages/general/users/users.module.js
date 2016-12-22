@@ -26,13 +26,6 @@
                     },
                     customers: function (apiResolver) {
                         return apiResolver.resolve('customers@find');
-                    },
-                    translateValues: function ($translate) {
-                        return $translate([
-                            'USERS.NAME',
-                            'USERS.EMAIL',
-                            'USERS.ROLE'
-                        ]);
                     }
                 }
             })
@@ -67,7 +60,7 @@
 
         msNavigationServiceProvider.saveItem('general.user', {
             title: 'Distribuciones',
-            icon: 'icon-chart-line',
+            icon: 'icon-folder-account',
             state: 'app.users',
             translate: 'USERS.MENU.TITLE',
             weight: 1

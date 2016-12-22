@@ -12,7 +12,7 @@
         vm.users = users;
         vm.customers = [];
 
-        vm.dtOptions = vm.dtOptions = {
+        vm.dtOptions = {
             dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
             pagingType: 'simple',
             autoWidth: false,
@@ -27,26 +27,6 @@
 
 
         //////////
-        // function createNew(event) {
-        //
-        //     $mdDialog.show({
-        //         controller: 'NewCustomerDialogController',
-        //         controllerAs: 'vm',
-        //         templateUrl: 'app/main/pages/general/customers/new-customer/newcustomer-dialog.html',
-        //         parent: angular.element(document.body),
-        //         targetEvent: event,
-        //         clickOusideToClose: false,
-        //         locals: {
-        //             customers: vm.customers,
-        //             users: vm.users,
-        //             customer: null
-        //         }
-        //     }).then(function (customer, error) {
-        //         console.log(customer, error)
-        //         loadCustomers()
-        //     });
-        // }
-
         function editCustomer(event, customer) {
             $mdDialog.show({
                 controller: 'NewCustomerDialogController',
@@ -61,9 +41,7 @@
                     customer: customer
                 }
             }).then(function (data) {
-                console.log(data);
                 if(data.error) {
-                    console.log(data.error);
                     $mdToast.show(
                         $mdToast.simple()
                             .textContent(data.error)

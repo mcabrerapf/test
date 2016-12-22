@@ -31,12 +31,6 @@
                         label="USERS.EMAIL" />
 
                 <field  type="text"
-                        ng-model="vm.user.password"
-                        required
-                        mode="edit"
-                        label="PASSWORD" />
-
-                <field  type="text"
                         ng-model="vm.user.userName"
                         required
                         label="USERS.NAME"/>
@@ -46,17 +40,23 @@
                         label="USERS.ACTIVE" />
 
                 <field  type="select"
-                        ng-model="vm.user.customer"
+                        ng-model="vm.user.role"
+                        items="vm.roles"
+                        label="USERS.ROLE" />
+
+                <field  type="select"
+                        ng-model="vm.user.customer._id"
                         items="vm.customers"
                         display-field="name"
                         value-field="_id"
                         label="USERS.CUSTOMER.NAME" />
 
                 <field  type="select"
-                        ng-model="vm.user.role"
-                        items="vm.roles"
-                        multiple
-                        label="USERS.ROLE" />
+                        ng-model="vm.user.mentor._id"
+                        items="vm.users"
+                        display-field="name"
+                        value-field="_id"
+                        label="USERS.MENTOR" />
             </div>
 
         </md-dialog-content>
@@ -64,15 +64,32 @@
 
         <!-- DIALOG ACTIONS -->
         <md-dialog-actions layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-button type="submit" ng-if="!vm.isNew" ng-click="vm.updateUser()"
+                           class="send-button md-accent md-raised"
+                           ng-disabled="userForm.$invalid"
+                           aria-label="SAVE" translate="USERS.DIALOG.SAVE" translate-attr-aria-label="USERS.DIALOG.SAVE">
+                    SAVE
+                </md-button>
 
-            <md-button type="submit" ng-click="vm.addNewUser()"
-                        class="send-button md-accent md-raised"
-                        ng-disabled="userForm.$invalid"
-                        aria-label="Add Task" translate="FORMS.ADD"
-                        translate-attr-aria-label="FORMS.ADD">
-                ADD
-            </md-button>
+                <md-button type="submit" ng-if="vm.isNew" ng-click="vm.addNewUser()"
+                           class="send-button md-accent md-raised"
+                           ng-disabled="userForm.$invalid"
+                           aria-label="Add Task" translate="USERS.DIALOG.ADD"
+                           translate-attr-aria-label="USERS.DIALOG.ADD">
+                    ADD CUSTOMER
+                </md-button>
 
+            </div>
+
+            <div layout="row">
+                <md-button ng-if="!vm.isNew" class="md-icon-button" ng-click="vm.deleteUser($event)" aria-label="Delete"
+                           translate
+                           translate-attr-aria-label="USERS.DIALOG.DELETE">
+                    <md-icon md-font-icon="icon-delete"></md-icon>
+                    <md-tooltip><span translate="USERS.DIALOG.DELETE">DELETE</span></md-tooltip>
+                </md-button>
+            </div>
         </md-dialog-actions>
         <!-- / DIALOG ACTIONS -->
 

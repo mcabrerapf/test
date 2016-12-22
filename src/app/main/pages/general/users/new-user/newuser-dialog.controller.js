@@ -6,42 +6,56 @@
         .controller('NewUserDialogController', NewUserDialogController);
 
     /** @ngInject */
-    function NewUserDialogController($mdDialog, api) {
+    function NewUserDialogController(customers, users, user, $mdDialog, api) {
         var vm = this;
 
         // Data
-        vm.user = {
+        vm.isNew = !user;
+        vm.user = user || {
             email: '',
             password: '',
             userName: '',
             active: false,
-            role: [],
-            customer: '',
-            mentor: ''
+            role: '',
+            customer: {},
+            mentor: {}
         };
 
-        vm.roles = ['admin', 'editor', 'public'];
+        vm.customers = customers;
+        vm.users = users;
+        vm.roles = ['admin', 'manager', 'mentor', 'player'];
 
         // Methods
         vm.addNewUser = addNewUser;
+        vm.updateUser = updateUser;
+        vm.deleteUser = deleteUser;
         vm.closeDialog = closeDialog;
 
-        loadCustomers();
-
-
-        function loadCustomers(){
-            api.customers.find(function(customers){
-                vm.customers = customers;
+        /**
+         * Add new customer
+         */
+        function addNewUser() {
+            api.users.save(vm.user, function (user) {
+                $mdDialog.hide({user: user});
+            }, function(error){
+                $mdDialog.hide({user: null, error: 'create user error'});
             });
         }
 
-        /**
-         * Add new user
-         */
-        function addNewUser() {
-            api.users.save(vm.user, function (response) {
-                console.log(response);
-            });
+        function updateUser() {
+            api.users.update(vm.user, function(user) {
+                $mdDialog.hide({user: user});
+            }, function(error) {
+                $mdDialog.hide({user: null, error: 'update user error'});
+            })
+        }
+
+        function deleteUser() {
+            api.users.remove({id: vm.user._id}, function(user) {
+                $mdDialog.hide({user: user});
+            }, function(error) {
+                $mdDialog.hide({user: null, error: 'delete customer error'});
+            })
         }
 
 

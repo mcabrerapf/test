@@ -179,7 +179,7 @@
         api.baseUrl = '/api/';
 
         // USERS
-        api.users = $resource(api.baseUrl + 'users/:id/:action', {}, {
+        api.users = $resource(api.baseUrl + 'users/:id/:action', {id: '@_id'}, {
             find: {method: 'GET', params: {}, isArray: true},
             findOne: {method: 'GET', params: {}, isArray: false},
             save: {method: 'POST', params: {}, isArray: false},
