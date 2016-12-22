@@ -1,0 +1,45 @@
+
+	.BGRoot {
+
+		.innerbox;
+		.transition;
+
+		opacity: 1;
+
+		.Splash,
+		.PoweredBy {
+
+			position: relative;
+			text-align: center;
+		}
+
+		.PoweredBy {
+
+			* {
+
+				display: inline-block;
+				vertical-align: middle;
+
+				&.Text {
+
+					font-weight: 600;
+					color: white;
+				}
+
+				&.logo {
+
+					margin-left: 6px;
+					cursor: pointer;
+				}
+			}
+		}
+
+		&.Inited {
+
+			.Splash,
+			.PoweredBy {
+
+				top: 40%;
+			}
+		}
+	}

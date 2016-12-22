@@ -1,0 +1,1 @@
+define([],function(){"use strict";return function(r){for(var n={},e=[].slice.call(r),t=1;t<e.length;t++){var i=JSON.parse(e[t]);for(var a in i)n[a]=i[a]}return n}});

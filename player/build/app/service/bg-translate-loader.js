@@ -1,0 +1,1 @@
+define(["main-module"],function(e){"use strict";e.factory("BGTranslateLoader",["$http","$q",function(e,r){return function(e){var n=e.key,t="translate/"+n,i=r.defer();return require([t],function(e){i.resolve(e)}),i.promise}}])});

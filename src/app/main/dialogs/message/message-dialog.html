@@ -1,0 +1,76 @@
+<!-- DIALOG -->
+<md-dialog class="message-dialog" aria-label="Nuevo paso" translate-attr-aria-label="MESSAGE.NEW_TITLE">
+
+    <kldform name="messageForm" class="md-inline-form" novalidate mode="edit">
+
+        <!-- DIALOG TOOLBAR -->
+        <md-toolbar class="md-accent md-hue-2">
+
+            <!-- TOOLBAR TOP -->
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+                <span class="title"
+                      translate="{{vm.TITLEKEY}}">Nuevo tema</span>
+                <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Cerrar" translate
+                           translate-attr-aria-label="DIALOG.CLOSE">
+                    <md-icon md-font-icon="icon-close"></md-icon>
+                </md-button>
+            </div>
+            <!-- / TOOLBAR TOP -->
+
+        </md-toolbar>
+        <!-- / DIALOG TOOLBAR -->
+
+        <!-- DIALOG CONTENT -->
+        <md-dialog-content ms-scroll>
+
+            <div layout="column">
+
+                <div ms-icon-wrap="{{vm.message.type | timelineIcon}}">
+
+                    <field  type="text"
+                            ng-model="vm.message.data.to"
+                            required 
+                            label="MESSAGE.TO" />
+
+                    <field  type="text"
+                            ng-model="vm.message.data.subject"
+                            required
+                            label="MESSAGE.SUBJECT" />
+
+                    <field  type="note"
+                            ng-model="vm.message.data.body"
+                            rows="3"
+                            label="MESSAGE.BODY" />
+                </div>
+
+            </div>
+
+
+        </md-dialog-content>
+        <!-- / DIALOG CONTENT -->
+
+        <!-- DIALOG ACTIONS -->
+        <md-dialog-actions layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-button type="submit" ng-if="vm.newItem" ng-click="vm.addNew()"
+                           class="send-button md-accent md-raised"
+                           ng-disabled="messageForm.$invalid"
+                           translate="MESSAGE.ADD"
+                           aria-label="New" translate-attr-aria-label="MESSAGE.ADD">
+                    NEW
+                </md-button>
+                <md-button type="submit" ng-if="!vm.newItem" ng-click="vm.saveItem()"
+                           class="send-button md-accent md-raised"
+                           ng-disabled="messageForm.$invalid"
+                           aria-label="Save" translate="FORMS.SAVE" translate-attr-aria-label="FORMS.SAVE">
+                    SAVE
+                </md-button>
+            </div>
+
+        </md-dialog-actions>
+        <!-- / DIALOG ACTIONS -->
+
+    </kldform>
+
+</md-dialog>
+<!-- / DIALOG -->

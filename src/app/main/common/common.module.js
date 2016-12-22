@@ -4,6 +4,7 @@
 
     angular
         .module('app.common', [
+            'app.common.timeline-viewer'
         ])
         .config(config);
 
