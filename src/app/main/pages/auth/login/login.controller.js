@@ -41,7 +41,7 @@
 				}
 
                 if ($rootScope.returnToState) $state.go($rootScope.returnToState.name, $rootScope.returnToStateParams);
-                else $state.go('app.sample');
+                else $state.go('app.games');
 
             }, function (error) {
 				vm.showError(error);
