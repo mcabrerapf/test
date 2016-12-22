@@ -217,7 +217,7 @@
                 budget: 3000, // service.game.budget,
                 parts: [
                     {
-                        name: 'Goals',
+                        name: 'Retos',
                         blocks: [
                             {
                                 id: 'xxxxxxxxxx',
@@ -243,18 +243,18 @@
                         ]
                     },
                     {
-                        name: 'regular',
+                        name: 'Premios a la regularidad',
                         blocks: [
                             {
                                 id: 'xxxxxxxxxx',
-                                name: 'Premio regularidad mitad partida',
+                                name: 'Mitad partida',
                                 distributionTable: [
                                     25,25,25,25
                                 ]
                             },
                             {
                                 id: 'xxxxxxxxxx',
-                                name: 'Premio regularidad final partida',
+                                name: 'Final partida',
                                 distributionTable: [
                                     10,10,10,10,10,10,10,10,10,10
                                 ]
@@ -262,7 +262,7 @@
                         ]
                     },
                     {
-                        name: 'rankings',
+                        name: 'Rankings',
                         blocks: [
                             {
                                 id: 'xxxxxxxxxx',
