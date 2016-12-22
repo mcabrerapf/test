@@ -4,6 +4,15 @@
             "SECTION_TITLE": "ADMINISTRACIÓN DE CLIENTES",
             "TITLE": "Clientes"
         },
+        "GRID": {
+            "NAME": "Cliente",
+            "ADMIN": "Administrador"
+        },
+        "DIALOG": {
+            "SAVE": "Guardar",
+            "ADD": "Crear",
+            "DELETE": "Eliminar"
+        },
         "TITLE": "Clientes",
         "SEARCH": "Buscar un cliente",
         "NO_RESULTS": "No se han encontrado clientes",

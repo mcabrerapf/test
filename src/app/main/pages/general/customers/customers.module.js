@@ -3,7 +3,9 @@
     'use strict';
 
     angular
-        .module('app.pages.general.customers', [])
+        .module('app.pages.general.customers', [
+            'datatables'
+        ])
         .config(config);
 
     /** @ngInject */
@@ -23,6 +25,9 @@
                     roles: ['Admin']
                 },
                 resolve: {
+                    customers: function (apiResolver) {
+                        return apiResolver.resolve('customers@find');
+                    },
                     users: function (apiResolver)
                     {
                         return apiResolver.resolve('users@find');

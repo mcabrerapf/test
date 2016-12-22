@@ -1,5 +1,4 @@
-(function ()
-{
+(function () {
     'use strict';
 
     angular
@@ -7,113 +6,91 @@
         .controller('CustomersController', CustomersController);
 
     /** @ngInject */
-    function CustomersController(users, $scope, api, $mdDialog, $state, $filter, $timeout)
-    {
+    function CustomersController(customers, users, $q, api, $mdDialog, $mdToast, $filter, $timeout) {
         var vm = this;
 
         vm.users = users;
+        vm.customers = [];
 
-        var datasource = new kendo.data.DataSource({
-            transport: {
-                read: function (options) {
-                    api.customers.find(function (customers) {
-                        options.success(customers);
-                    }, function (error) {
-                        options.error(error);
-                    });
-                },
-                create: function(options) {
-
-                },
-                parameterMap: function (options, operation) {
-                    if (operation !== 'read' && options.models) {
-                        return {models: kendo.stringify(options.models)};
-                    }
-                }
-            },
-            batch: true,
-            pageSize: 20,
-            schema: {
-                model: {
-                    id: '_id',
-                    fields: {
-                        name: {editable: true},
-                        admin: {editable: true}
-                    }
-                }
-            }
-        })
-
-        vm.gridOptions = {
-            dataSource: datasource,
-            theme: 'common',
-            scrollable: true,
-            sortable: true,
-            filterable: true,
-            navigatable: true,
-            selectable: false, // 'single row',
-            editable: 'inline',
-            pageable: {
-                input: true,
-                numeric: false
-            },
-            save: function (data) {
-                data.model.$update({id: data.model._id}, function () {
-                    $('#customersGrid').data('kendoGrid').dataSource.read();
-                    $('#customersGrid').data('kendoGrid').refresh();
-                });
-            },
-            remove: function (data) {
-                console.log(data.model)
-                data.model.$delete({id: data.model._id}, function () {
-                    $('#customersGrid').data('kendoGrid').dataSource.read();
-                    $('#customersGrid').data('kendoGrid').refresh();
-                });
-            },
-            columns: [
-                {
-                    field: 'name',
-                    // title: translateValues['USERS.NAME'],
-                    filterable: {multi: true, search: true}
-                },
-                {
-                    field: 'admin',
-                    // title: translateValues['USERS.EMAIL'],
-                    filterable: {multi: true, search: true},
-                    editor: function(container, options) {
-                        $('<input name="' + options.field + '"/>')
-                            .appendTo(container)
-                            .kendoDropDownList({
-                                autoBind: true,
-                                dataTextField: "userName",
-                                dataValueField: "_id",
-                                dataSource: vm.users
-                            });
-                    }
-                },
-                {
-                    command: ['edit', 'destroy'],
-                    title: '&nbsp;',
-                    width: '300px'
-                }
-            ]
+        vm.dtOptions = vm.dtOptions = {
+            dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
+            pagingType: 'simple',
+            autoWidth: false,
+            responsive: true
         };
 
-        // Methods
-        vm.createNew = createNew;
+        loadCustomers()
 
+        // Methods
+        // vm.createNew = createNew;
+        vm.editCustomer = editCustomer
 
 
         //////////
-        function createNew(event) {
+        // function createNew(event) {
+        //
+        //     $mdDialog.show({
+        //         controller: 'NewCustomerDialogController',
+        //         controllerAs: 'vm',
+        //         templateUrl: 'app/main/pages/general/customers/new-customer/newcustomer-dialog.html',
+        //         parent: angular.element(document.body),
+        //         targetEvent: event,
+        //         clickOusideToClose: false,
+        //         locals: {
+        //             customers: vm.customers,
+        //             users: vm.users,
+        //             customer: null
+        //         }
+        //     }).then(function (customer, error) {
+        //         console.log(customer, error)
+        //         loadCustomers()
+        //     });
+        // }
 
+        function editCustomer(event, customer) {
             $mdDialog.show({
-                controller:         'NewCustomerDialogController',
-                controllerAs:       'vm',
-                templateUrl:        'app/main/pages/general/customers/new-customer/newcustomer-dialog.html',
-                parent:             angular.element(document.body),
-                targetEvent:        event,
-                clickOusideToClose: false
+                controller: 'NewCustomerDialogController',
+                controllerAs: 'vm',
+                templateUrl: 'app/main/pages/general/customers/new-customer/newcustomer-dialog.html',
+                parent: angular.element(document.body),
+                targetEvent: event,
+                clickOusideToClose: false,
+                locals: {
+                    customers: vm.customers,
+                    users: vm.users,
+                    customer: customer
+                }
+            }).then(function (data) {
+                console.log(data);
+                if(data.error) {
+                    console.log(data.error);
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .textContent(data.error)
+                            .position('top right')
+                    );
+                } else {
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .textContent('Operación realizada correctamente')
+                            .position('top right')
+                    );
+                }
+                loadCustomers()
+            });
+        }
+
+        function loadCustomers() {
+            api.customers.find(function (customers) {
+                customers.forEach(function (customer) {
+                    customer.admin = vm.users.find(function (user) {
+                        return user._id === customer.admin;
+                    });
+                });
+                vm.customers = customers;
+            }, function (error) {
+                vm.customers = [];
+                return error;
             });
         }
 

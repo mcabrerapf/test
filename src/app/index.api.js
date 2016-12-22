@@ -247,24 +247,13 @@
         });
 
         // COSTUMERS
-        api.customers = $resource(api.baseUrl + 'customers/:id', {}, {
+        api.customers = $resource(api.baseUrl + 'customers/:id', {id: '@_id'}, {
             find: {method: 'GET', params: {}, isArray: true},
             findOne: {method: 'GET', params: {}, isArray: false},
             save: {method: 'POST', params: {}, isArray: false},
             update: {method: 'PUT', params: {}, isArray: false},
             remove: {method: 'DELETE', params: {}, isArray: false}
         });
-
-        // TEAMS
-        api.teams = $resource(api.baseUrl + 'teams/:id/:action/:parent', {id: '@id', parent: '@parent'}, {
-            find: {method: 'GET', params: {}, isArray: true},
-            findOne: {method: 'GET', params: {}, isArray: false},
-            save: {method: 'POST', params: {}, isArray: false},
-            update: {method: 'PUT', params: {}, isArray: false},
-            remove: {method: 'DELETE', params: {}, isArray: false},
-            tree: {method: 'GET', params: {action: 'tree'}, isArray: true}
-        });
-
 
         return api;
     }
