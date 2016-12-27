@@ -2,25 +2,37 @@
 
     <div layout="row" layout-align="center">
 
-        <div id="treeview"
+        <div id="treeview" ng-click="vm.boundariesTreeView($event)"
              flex
              class="p-24"
              kendo-tree-view="vm.tree"
              k-options="vm.treeView.options"
-             k-data-source="vm.treeView.dataSource">
+             k-data-source="vm.treeView.dataSource"
+             k-on-drag="vm.onDrag(kendoEvent)"
+             k-on-drop="vm.onDrop(kendoEvent)">
+        </div>
+
+        <div flex ng-click="vm.outsideTreeView($event)">            
         </div>
 
         <div flex="30" layout="column" class="md-background-bg md-hue-3 bl p-24">
-            
-            <div class="h2" editable-text="vm.selectedItem.text" onbeforesave="vm.rename($data)">
-                {{vm.selectedItem.text}}
+
+            <div ng-if="vm.selectedItem">
+                <div class="h2" editable-text="vm.selectedItem.text" onbeforesave="vm.rename($data)">
+                    {{vm.selectedItem.text}}
+                </div>
+
+                <div>Path: {{vm.selectedItem.id}}</div>
+                <div ng-if="vm.selectedItem.mtime !== undefined">Modified: {{vm.selectedItem.mtime | date}}</div>
+                <div ng-if="vm.selectedItem.size !== undefined">Size: {{vm.selectedItem.size}} bytes</div>
+
+                <div>
+                    <button ng-if="vm.selectedItem.type=='folder'" ng-click="vm.addFolder($event)">[New folder]</button>
+                    <button ng-if="vm.selectedItem.type=='folder'" ng-click="vm.addFile($event)">[New file]</button>
+                    <button ng-if="vm.selectedItem && vm.selectedItem.id != '/'" ng-click="vm.delete($event)">[Delete]</button>
+                </div>
             </div>
 
-            <div>
-                <button ng-click="vm.addFolder($event)">[New folder]</button>
-                <button ng-click="vm.addFile($event)">[New file]</button>
-                <button ng-click="vm.delete($event)">[Delete]</button>
-            </div>
         </div>
 
     </div>
