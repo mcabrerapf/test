@@ -177,8 +177,6 @@
                 var PosY = $element.offset().top;
                 var SpaceLeft = $Window.height() - PosY;
 
-                console.log($Parent);
-
                 $Parent.addClass('NoPadding');
 
                 $element.css({ height: SpaceLeft + 'px' });

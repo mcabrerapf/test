@@ -112,6 +112,10 @@
                     value: vm.distribution.distributionTable[r]
                 })
             }
+
+            if (vm.chart !== undefined) {
+                vm.chart.options.categoryAxis.categories = generateCategoryAxisArray();
+            }
         }
 
         //////////
@@ -145,12 +149,12 @@
             vm.distribution.distributionTable = [];
 
             var value = vm.points.first;
-            var delta = (vm.points.first - vm.points.last) / (vm.distribution.participants);
-            delta = Math.round(delta * 100) / 100;
+            var delta = (vm.points.first - vm.points.last) / (vm.distribution.participants - 1);
+            delta = (delta * 100) / 100;
             for(var r=0; r < vm.distribution.participants -1; r++) {
 
-                vm.distribution.distributionTable.push(value);
-                value = Math.round(value - delta);
+                vm.distribution.distributionTable.push(Math.floor(value));
+                value = (value - delta);
             }
             vm.distribution.distributionTable.push(vm.points.last);
 
@@ -187,12 +191,10 @@
         function saveDistribution()
         {
             var id = vm.distribution._id;
-            delete vm.distribution._id;
 
             api.distributions.update({id: id}, vm.distribution,
                 function(updatedDistribution) {
 
-                    vm.distribution._id = id;
                     angular.forEach(vm.flipped, function(value, key) {
                         vm.flipped[key] = false;
                     });

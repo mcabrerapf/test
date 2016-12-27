@@ -89,6 +89,7 @@ var timelineevent = {
     title:                      { type: String, required: true },
     type:                       { type: String, required: true, enum: ['Step', 'Goal', 'Message', 'Post', 'Quiz', 'Game']},
     start:                      { type: Date, required: true },
+    end:                        { type: Date, required: false },
     data:                       { type: Schema.Types.Mixed, required: true }
 };
 
@@ -96,7 +97,7 @@ var timelineevent = {
 var level = {
     name: {type: String, required: true},
     thumbnail: {type: String, required: false},
-    position: {type: Number, required: true},
+    position: {type: Number, required: true},           // posición en el ranking semanal necesario para conseguir este nivel
     description: {type: String, required: false}
     // data??
 };
@@ -114,7 +115,7 @@ var player = {
         accepted: {type: Boolean, required: true, default: false},
         date: {type: Date, required: false}
     },
-    team: {type: String, required: false}       // id del team
+    team: {type: String, required: false}                           // id del team
 };
 
 
@@ -122,14 +123,10 @@ var player = {
 var team = {
     name: {type: String, required: true},
     alias: {type: String, required: false},
-    admin: {type: String, required: true},      // id d'usuari
-    parent: {type: String, required: false, default: ''}         // id del team superior
+    admin: {type: String, required: true},                              // id d'usuari
+    parent: {type: String, required: false, default: ''}                // id del team superior
 }
 
-var code = {
-    sellerCode: {type: String, required: true},
-    teamLeader: {type: String, required: false}
-}
 
 
 var schemas = {
@@ -148,14 +145,9 @@ var schemas = {
         thumbnail:              { type: String, required: false, default: '' },
         players:                [ player, { _id: true }],
         teams:                  [ team, { _id: true }],
+        kpis:                   [ kpi, { _id: true }],
         results:                { type: Schema.Types.Mixed, required: false }
     },
-
-    'turn': {
-        name: {type: String, required: false}
-    },
-
-    'kpi': kpi,
 
     'distribution': {   // de reparto de puntos y premios
         name:               { type: String, required: false, unique: true },
@@ -164,14 +156,6 @@ var schemas = {
         participants:       { type: Number, required: true },
         formula:            { type: String, required: false },
         distributionTable:  [ Number ]
-    },
-
-    'retos': {
-        name: {type: String, required: false}
-    },
-
-    'premios': {
-        name: {type: String, required: false}
     },
 
     'theme': {
