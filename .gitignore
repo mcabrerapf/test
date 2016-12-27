@@ -5,6 +5,7 @@ dist
 data
 .tmp
 e2e
+.idea
 .vscode
 
 # Mac

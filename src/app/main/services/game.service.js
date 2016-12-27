@@ -56,7 +56,7 @@
             return service.game.timeline;
         }
 
-        
+
         /**
          * Save timeline
          */
@@ -122,10 +122,10 @@
         function remove() {
 
             if (service.game === undefined) return $q.reject();
-            
+
             var def = $q.defer();
 
-            api.games.delete({id: service.game._id}, 
+            api.games.delete({id: service.game._id},
                 function() {
                     service.game = undefined;
                     def.resolve();
@@ -159,6 +159,43 @@
             );
         }
 
+        function percentualizeDistribution(Data) {
+
+            var Budget = Data.budget;
+
+            _.forEach(Data.parts, function(Part) {
+
+                Part.percent = 100 / Data.parts.length;
+                Part.budget = Math.floor(Budget / Data.parts.length);
+
+                _.forEach(Part.blocks, function(Block) {
+
+                    Block.percent = 100 / Part.blocks.length;
+                    Block.budget = Math.floor(Part.budget / Part.blocks.length);
+
+                    if(Block.distributionTable) {
+
+                        Block.distributionTableBudget = _.map(Block.distributionTable, function(Sector) {
+
+                            return Math.floor(Sector * Block.budget / 100);
+                        });
+                    }
+
+                    _.forEach(Block.steps, function(Step) {
+
+                        Step.percent = 100 / Block.steps.length;
+                        Step.budget = Math.floor(Block.budget / Block.steps.length);
+                        Step.distributionTableBudget = _.map(Step.distributionTable, function(Sector) {
+
+                            return Math.floor(Sector * Step.budget / 100);
+                        });
+                    });
+                });
+            });
+
+            return Data;
+        }
+
         function updateBudgetDistribution() {
 
             var goals = service.game.timeline
@@ -177,24 +214,21 @@
 
             var distribution = {
                 name: service.game.name,
-                budget: service.game.budget,
+                budget: 3000, // service.game.budget,
                 parts: [
                     {
-                        name: 'Goals',
-                        budget: null,
+                        name: 'Retos',
                         blocks: [
                             {
                                 id: 'xxxxxxxxxx',
                                 name: 'Reto 1',
-                                budget: 1000,               // editable
                                 distributionTable: [
-                                    40,30,20,15
+                                    20,20,20,20,20
                                 ]
                             },
                             {
                                 id: 'xxxxxxxxxx',
                                 name: 'Reto 2',
-                                budget: 800,                // editable
                                 distributionTable: [
                                     10,10,10,10,10,10,10,10,10,10
                                 ]
@@ -202,7 +236,6 @@
                             {
                                 id: 'xxxxxxxxxx',
                                 name: 'Reto 3',
-                                budget: 1000,
                                 distributionTable: [
                                     2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
                                 ]
@@ -210,21 +243,18 @@
                         ]
                     },
                     {
-                        name: 'regular',
-                        budget: null,
+                        name: 'Premios a la regularidad',
                         blocks: [
                             {
                                 id: 'xxxxxxxxxx',
-                                name: 'Premio regularidad mitad partida',
-                                budget: 400,
+                                name: 'Mitad partida',
                                 distributionTable: [
                                     25,25,25,25
                                 ]
                             },
                             {
                                 id: 'xxxxxxxxxx',
-                                name: 'Premio regularidad final partida',
-                                budget: 1000,
+                                name: 'Final partida',
                                 distributionTable: [
                                     10,10,10,10,10,10,10,10,10,10
                                 ]
@@ -232,19 +262,16 @@
                         ]
                     },
                     {
-                        name: 'rankings',
-                        budget: null,
+                        name: 'Rankings',
                         blocks: [
                             {
                                 id: 'xxxxxxxxxx',
                                 name: 'Repartidores',
                                 totalPlayers: 230,
-                                budget: null,
                                 steps: [
                                     {
                                         id: 'xxxxxxxxxx',
                                         name: 'Monaco',
-                                        budget: null,
                                         distributionTable: [
                                             10,10,10,10,10,10,10,10,10,10
                                         ]
@@ -252,7 +279,6 @@
                                     {
                                         id: 'xxxxxxxxxx',
                                         name: 'Paris',
-                                        budget: null,
                                         distributionTable: [
                                             10,10,10,10,10,10,10,10,10,10
                                         ]
@@ -260,7 +286,6 @@
                                     {
                                         id: 'xxxxxxxxxx',
                                         name: 'Barcelona',
-                                        budget: null,
                                         distributionTable: [
                                             10,10,10,10,10,10,10,10,10,10
                                         ]
@@ -268,7 +293,6 @@
                                     {
                                         id: 'xxxxxxxxxx',
                                         name: 'Londres',
-                                        budget: null,
                                         distributionTable: [
                                             10,10,10,10,10,10,10,10,10,10
                                         ]
@@ -276,7 +300,6 @@
                                     {
                                         id: 'xxxxxxxxxx',
                                         name: 'Texas',
-                                        budget: null,
                                         distributionTable: [
                                             10,10,10,10,10,10,10,10,10,10
                                         ]
@@ -288,12 +311,10 @@
                                 id: 'xxxxxxxxxx',
                                 name: 'Teleoperadoras',
                                 totalPlayers: 20,
-                                budget: null,
                                 steps: [
                                     {
                                         id: 'xxxxxxxxxx',
                                         name: 'Monaco',
-                                        budget: null,
                                         distributionTable: [
                                             10,10,10,10,10,10,10,10,10,10
                                         ]
@@ -301,7 +322,6 @@
                                     {
                                         id: 'xxxxxxxxxx',
                                         name: 'Paris',
-                                        budget: null,
                                         distributionTable: [
                                             10,10,10,10,10,10,10,10,10,10
                                         ]
@@ -309,7 +329,6 @@
                                     {
                                         id: 'xxxxxxxxxx',
                                         name: 'Barcelona',
-                                        budget: null,
                                         distributionTable: [
                                             10,10,10,10,10,10,10,10,10,10
                                         ]
@@ -317,7 +336,6 @@
                                     {
                                         id: 'xxxxxxxxxx',
                                         name: 'Londres',
-                                        budget: null,
                                         distributionTable: [
                                             10,10,10,10,10,10,10,10,10,10
                                         ]
@@ -325,7 +343,6 @@
                                     {
                                         id: 'xxxxxxxxxx',
                                         name: 'Texas',
-                                        budget: null,
                                         distributionTable: [
                                             10,10,10,10,10,10,10,10,10,10
                                         ]
@@ -336,12 +353,10 @@
                                 id: 'xxxxxxxxxx',
                                 name: 'Otros',
                                 totalPlayers: 4,
-                                budget: null,
                                 steps: [
                                     {
                                         id: 'xxxxxxxxxx',
                                         name: 'Monaco',
-                                        budget: null,
                                         distributionTable: [
                                             10,10,10,10,10,10,10,10,10,10
                                         ]
@@ -349,7 +364,6 @@
                                     {
                                         id: 'xxxxxxxxxx',
                                         name: 'Paris',
-                                        budget: null,
                                         distributionTable: [
                                             10,10,10,10,10,10,10,10,10,10
                                         ]
@@ -357,7 +371,6 @@
                                     {
                                         id: 'xxxxxxxxxx',
                                         name: 'Barcelona',
-                                        budget: null,
                                         distributionTable: [
                                             10,10,10,10,10,10,10,10,10,10
                                         ]
@@ -365,7 +378,6 @@
                                     {
                                         id: 'xxxxxxxxxx',
                                         name: 'Londres',
-                                        budget: null,
                                         distributionTable: [
                                             10,10,10,10,10,10,10,10,10,10
                                         ]
@@ -373,7 +385,6 @@
                                     {
                                         id: 'xxxxxxxxxx',
                                         name: 'Texas',
-                                        budget: null,
                                         distributionTable: [
                                             10,10,10,10,10,10,10,10,10,10
                                         ]
@@ -385,8 +396,8 @@
                 ]
             };
 
-            service.budgetDistribution = distribution;
-            return distribution;
+            service.budgetDistribution = percentualizeDistribution(distribution);
+            return service.budgetDistribution;
         }
     }
 

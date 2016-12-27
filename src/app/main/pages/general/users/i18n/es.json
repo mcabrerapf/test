@@ -1,0 +1,59 @@
+{
+    "USERS": {
+        "MENU": {
+            "SECTION_TITLE": "ADMINISTRACIÓN DE USUARION",
+            "TITLE": "Usuarios"
+        },
+        "GRID": {
+            "NAME": "Nombre de usuario",
+            "EMAIL": "Correo electronico",
+            "CUSTOMER": "Cliente",
+            "ACTIVE": "Usuario activo"
+        },
+        "DIALOG": {
+            "SAVE": "Guardar",
+            "ADD": "Crear",
+            "DELETE": "Eliminar"
+        },
+        "YES": "Si",
+        "NO": "No",
+        "TITLE": "Usuarios",
+        "SEARCH": "Buscar un usuario",
+        "NO_RESULTS": "No se han encontrado usuarios",
+
+        "NEW_TITLE": "Nuevo usuario",
+        "NAME": "Nombre del usuario",
+        "EMAIL": "Correo del usuario",
+        "PASSWORD": "Contraseña del usuario",
+        "ACTIVE": "Usuario activo",
+        "STATUS": "Estado del usuario",
+        "ROLE": "Rol",
+        "CUSTOMER": {
+            "NAME": "Cliente",
+            "LOGO": "Logo"
+        },
+        "GO_TO_USERS": "Volver a administración de usuarios",
+        "IMPORT_TITLE": "IMPORTAR USUARIOS",
+        "IMPORT": {
+            "USERS": "Importar usuarios",
+            "SPREADSHEET": "Abrir archivo",
+            "SHEET": "Hoja",
+            "CUSTOMER": "Cliente",
+            "START_ROW": "Fila inicio de rango",
+            "END_ROW": "Fila final de rango",
+            "START_COLUMN": "Columna inicio de rango",
+            "END_COLUMN": "Columna final de rango",
+            "HEADER_ROW": "Fila cabecera",
+            "EMAIL_COLUMN": "Columna email",
+            "USER_NAME_COLUMN": "Columna nombre de usuario",
+            "TEAM_LEADER_COLUMN": "Columna lider de equipo",
+            "SELLER_CODE_COLUMN": "Columna código de vendedor",
+            "IMPORT": "Importar",
+            "SHEET_RANGE": "Rango de datos"
+        },
+
+        "SAVE": "Guardar usuario",
+        "ADD_GAME": "Crear usuario",
+        "DELETE": "Eliminar usuario"
+    }
+}

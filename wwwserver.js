@@ -10,10 +10,9 @@ var configuration = require('./backend/configuration/gamification').configuratio
     User = require('./backend/controllers/users.js'),
     passport = require('passport'),
     session = require('express-session'),
-    
+
     routes = require('./backend/routes'),
     rest = require('./backend/rest');
-
 
 app.use(bodyParser.urlencoded({'extended':'true'}));
 app.use(bodyParser.json());
@@ -36,23 +35,17 @@ passport.use(User.localStrategy);
 passport.serializeUser(User.serializeUser);
 passport.deserializeUser(User.deserializeUser);
 
-
 rest.setupREST(app);
 
-// Para PRODUCCIÓN!!
-// app.use(express.static('dist', {'index': 'index.html'}));
-
-// Para DESARROLLO
+/* Para PRODUCCIÓN!!
+app.use(express.static('dist', {'index': 'index.html'}));
+*/
+/* Para DESARROLLO */
 app.use(express.static('.tmp/serve', {'index': 'index.html'}));
 app.use(express.static('src'));
 app.use('/bower_components', express.static('bower_components'));
 app.use('/assets', express.static('data'));
-//
-
-
-
 app.use(routes);
-
 
 app.listen(configuration.wwwPort, function() {
   console.log("Node server running on http://localhost:" + configuration.wwwPort);

@@ -17,7 +17,7 @@
         vm.timelineEventTypes = ['Step', 'Goal', 'Message', 'Post', 'Quiz', 'Game'];
 
         // Data
-        api.users.find(function(Users) {
+        api.users.find({role:'editor'}, function(Users) {
 
             vm.Users = Users;
 

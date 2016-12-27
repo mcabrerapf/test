@@ -21,7 +21,7 @@
                 </div>
             </div>
         </div>
-        
+
         <md-button  class="md-icon-button"
                     aria-label="delete"
                     ng-click="vm.deleteConfirm()"
@@ -58,7 +58,7 @@
                     <div>Metricas / KPI's</div>
                 </md-tab-body>
             </md-tab>
-            
+
             <!-- Timeline -->
             <md-tab>
                 <md-tab-label>
@@ -81,15 +81,14 @@
                     <players-view game="vm.game"></players-view>
                 </md-tab-body>
             </md-tab>
-            
+
             <!-- Premios -->
-            <md-tab>
+            <md-tab md-on-select="vm.initBudgetManager($event)">
                 <md-tab-label>
                     <span translate="GAMES.PREMIOS">Premios</span>
                 </md-tab-label>
 
-                <md-tab-body>
-                    <h1>Visor de premios</h1>
+                <md-tab-body class="TreeMapViewerWrapper">
                     <treemap-viewer></tremap-viewer>
                 </md-tab-body>
             </md-tab>

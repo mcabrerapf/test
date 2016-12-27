@@ -19,7 +19,6 @@ function connect(callback) {
 
   console.log('Connecting to database: ' + configuration.mongoDb);
   mongoose.connect(configuration.mongoDb, callback);
-
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////

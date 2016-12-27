@@ -1,0 +1,1 @@
+define(["main-module","text!./blog.html"],function(e,t){"use strict";e.CompileProvider.directive("bgBlog",function(){var e=["$scope",function(e){console.log("BLOG")}];return{restrict:"E",replace:!0,template:t,controller:e}})});
