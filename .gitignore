@@ -3,9 +3,10 @@ node_modules
 bower_components
 dist
 data
+data.local
+data.remote
 .tmp
 e2e
-.idea
 .vscode
 
 # Mac
