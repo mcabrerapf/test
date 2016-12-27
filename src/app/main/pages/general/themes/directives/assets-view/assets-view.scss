@@ -9,6 +9,10 @@
         background-image: url("/assets/images/coloricons-sprite.png");
     }
 
+    #treeview .k-item.k-first {
+        display: none;
+    }
+
     .rootfolder { background-position: 0 0; }
     .folder     { background-position: 0 -16px; }
     .pdf        { background-position: 0 -32px; }

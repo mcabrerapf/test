@@ -12,24 +12,66 @@
     {
         var vm = this;
         vm.theme = $scope.theme;
-        vm.observableStructureFolder = new kendo.data.ObservableArray([{}]);
+        vm.observableStructureFolder = new kendo.data.ObservableArray([
+        	{id: '/', text: '', type: 'folder'}
+        ]);
 
         // TreeView model
         vm.treeView = {
 
         	options: {
-                loadOnDemand: true,
+                dataSpriteCssClassField: "type", // nombre del campo que indica el tipo de archivo
 				dragAndDrop: true,
-                select: function(e) {
+                select: function(event) {
                     $scope.$apply(function() {
-                        vm.selectedNode = e.node;
-                        vm.selectedItem = vm.tree.dataItem(vm.selectedNode);
+                        vm.selectedItem = vm.tree.dataItem( event.node );
+                        console.log('selected:', event.node);
                     });
+                },
+                navigate: function(event) {
+                	console.log('navigate:', event.node);
                 }
         	},
 
         	dataSource: vm.observableStructureFolder,
 
+        };
+
+        vm.onDrag = function(event) {
+        };
+
+        vm.onDrop = function(event) {
+        	if (!event.valid) return;
+
+        	console.log('drop:', event);
+       		const 	src = vm.tree.dataItem( event.sourceNode )
+       		,		dst = vm.tree.dataItem( event.destinationNode )
+			,		first = vm.tree.dataItem( ".k-item:first" )
+       		,		pos = event.dropPosition
+
+       		if (!dst || dst.id === undefined || !src || src.id === undefined) {
+       			event.setValid( false );
+       			return;
+       		}
+
+       		console.log('drop.nodes: (%s) %s %s %s', first.id, src.id, pos, dst.id);
+
+
+			const 	oldSrcPath = src.id;
+			var 	newSrcPath = oldSrcPath;
+
+			if (pos == 'over' && dst.type == 'folder') {
+       			// un nivel por debajo, dentro del directorio destino
+       			newSrcPath = dst.id + '/' + src.text
+       		} else if (pos == 'after' || pos == 'before') {
+       			// mismo nivel
+				newSrcPath = dst.id.replace(/[^\/]+$/, src.text)
+       		} else {
+       			event.setValid( false );
+       		};
+			
+			console.log('mv %s %s', oldSrcPath, newSrcPath, (oldSrcPath != newSrcPath) && 'do it!');
+			if (oldSrcPath != newSrcPath) return rename2( src, oldSrcPath, newSrcPath );
         };
 
         vm.refresh = function() {
@@ -42,11 +84,12 @@
                 function (result) {
                     console.log('refresh: OK', result);
 
-                    var structure = dumpStructureToTreeView( result );
-                    angular.forEach(structure, function(node) {
-                        vm.observableStructureFolder.push(node);
+                    // vm.tree.append( dumpStructureToTreeView( result ) );
+
+                    dumpStructureToTreeView( result ).forEach(function(node){
+						vm.observableStructureFolder.push( node );
                     });
-                    vm.observableStructureFolder.splice(0, 1);
+                	// vm.observableStructureFolder.splice(0, 1);
                 },
                 function (error) {
                     console.log('refresh: ERROR', error);
@@ -56,9 +99,14 @@
 
         vm.addFolder = function(event) {
 
+			var parentNode = vm.tree.select();
+			if (parentNode.length == 0) parentNode = null;
+
+			var parentFolder = vm.selectedItem.id;
+
             // !! ES NECESARIO TRADUCIR TODOS ESTOS TEXTOS!!
             var confirm = $mdDialog.prompt()
-                                   .title('Crear carpeta?')
+                                   .title('Crear carpeta dentro de ' + parentFolder + ' ?')
                                    .textContent('Introduce el nombre de la nueva carpeta')
                                    .placeholder('nombre')
                                    .ariaLabel('Nombre carpeta')
@@ -68,32 +116,22 @@
 
             $mdDialog.show(confirm).then(function(folderName) {
 
-                if (folderName === undefined) return;
-
-                var parentFolder = '';
-                var parentNode = vm.tree.select();
-
-                if (parentNode.length > 0) {
-                    var parentItem = vm.tree.dataItem(parentNode);
-                    parentFolder = parentItem.id;
-                } else {
-                    parentNode = null;
-                };
+                if (!folderName || /^\.{1,2}$|\//.test(folderName)) return;
 
                 api.themes.folder.save(
                     {
                         id:     vm.theme._id,
-                        path:   parentFolder + '/' + folderName
+                        path:   parentFolder + (parentFolder != '/' ? '/' : '') + folderName
                     },
                     function (result) {
                         console.log('add: OK', result);
 
                         vm.tree.append({
-                            id:                 result.path,
-                            text:               result.name,
-                            items:              [], 
-                            expanded:           false, 
-                            spriteCssClass:     'folder'
+                            id:         result.path,
+                            text:       result.name,
+                            items: 		[], 
+                            expanded: 	false, 
+                            type: 		'folder'
                         }, parentNode);
                     },
                     function (error) {
@@ -104,7 +142,7 @@
         };
 
         vm.addFile = function(event) {
-            console.log('add: create file inside');
+            console.log('add: create file inside %s', vm.selectedItem.id);
         };
 
         vm.delete = function(event) {
@@ -112,7 +150,7 @@
             function deleteEntryFS (selectedNode) {
 
             	var item 		= vm.tree.dataItem( selectedNode )
-                ,	type 		= item.spriteCssClass
+                ,	type 		= item.type
                 ,   titleMsg 	= 'Borrar ' + (type == 'folder' ? 'carpeta' : 'archivo') + '?'
                 ,   entryType   = type == 'folder' ? 'folder' : 'file'
 
@@ -153,41 +191,33 @@
         vm.rename = function(newName) {
         	console.log('rename:', newName);
 
-			// No puede ser vacío, ni contener '/' ni '..'
-			if (!newName || /\/|\.\./.test(newName)) return $q.reject();
+			// No puede ser vacío, ni ser {'.', '..'}, ni contener '/'
+			if (!newName || /^\.{1,2}$|\//.test(newName)) return $q.reject();
 
-           	var def 		= $q.defer()
-           	,	oldType 	= vm.selectedItem.spriteCssClass
-            ,	oldPath 	= vm.selectedItem.id
-			,	newPath 	= oldPath.replace(/[^\/]+$/, newName)
+           	var oldType = vm.selectedItem.type
+            ,	oldPath = vm.selectedItem.id
+			,	newPath = oldPath.replace(/[^\/]+$/, newName)
 
-            api.themes.file.rename(
-            	{
-            		id: 		vm.theme._id,
-					oldpath: 	oldPath,
-					newpath: 	newPath
-            	},
-                function(result) {
-                	vm.selectedItem.set("id", result.path);
-	                vm.selectedItem.set("text", result.name);
-                	if (oldType != 'folder') vm.selectedItem.set("spriteCssClass", result.type);
+			return rename2( vm.selectedItem, oldPath, newPath, function(result){
+				if (oldType != 'folder') vm.selectedItem.set("type", result.type);
+			});
+		};
 
-              	    console.log('rename.result:', result);
+		vm.boundariesTreeView = function(event) {
+			if(!($.contains(vm.tree.wrapper[0], event.target))) {
+				vm.selectedItem = vm.tree.dataItem( vm.tree.findByText('') );
+				vm.tree.select($());
+				console.log('boundariesTreeView:', event, vm.selectedItem, vm.tree.select());
+            }
+		};
 
-                    def.resolve( result );
-                },
-                function(error) {
-                    alert(error.data.errmsg);
-                    console.log(error);
-                    def.reject( error );
-                }
-            );
-
-			return def.promise;
-        };
+		vm.outsideTreeView = function(event) {
+			vm.selectedItem = vm.tree.dataItem( vm.tree.findByText('') );
+			vm.tree.select($());
+			console.log('outsideTreeView:', event, vm.selectedItem, vm.tree.select());
+		};
 
         // Methods
-
 
         //////////
 
@@ -206,14 +236,18 @@
         function dumpStructureToTreeView(dump) {
             return dump.map(function(entry){
                 var node = {
-                    id:             entry.path,
-                    text:           entry.name,
-                    spriteCssClass: entry.type
+                    id: 	entry.path,
+                    text:   entry.name,
+                    type: 	entry.type,
+                    // type: entry.type == 'folder' ? 'icon-folder' : 'icon-file',
+                    mtime: 	entry.mtime
                 };
 
                 if (entry.type == 'folder') {
                     node.expanded   = false;
                     node.items      = dumpStructureToTreeView( entry.contents );
+                } else {
+                	node.size		= entry.size;
                 };
 
                 return node;
@@ -222,7 +256,45 @@
 
 
         //////////
+        function rename2(srcItem, oldPath, newPath, onOk) {
 
+        	function changePath(oldPath, newPath, items) {
+        		items && items.forEach(function(node){
+        			node.id = node.id.replace( RegExp("^" + oldPath), newPath );
+        			node.items && changePath( oldPath, newPath, node.items );
+        		});
+        	};
+
+           	var def = $q.defer()
+
+            api.themes.file.rename(
+            	{
+            		id: 		vm.theme._id,
+					oldpath: 	oldPath,
+					newpath: 	newPath
+            	},
+                function(result) {
+                	srcItem.set("id", 	result.path);
+	                srcItem.set("text", result.name);
+
+	                // si es directorio, cambia path del contenido
+	                changePath( oldPath, newPath, srcItem.items );
+
+	                onOk && onOk(result);
+
+              	    console.log('rename2.result:', result);
+
+                    def.resolve( result );
+                },
+                function(error) {
+                    alert(error.data.errmsg);
+                    console.log(error);
+                    def.reject( error );
+                }
+            );
+
+			return def.promise;
+        };
 
     }
     
