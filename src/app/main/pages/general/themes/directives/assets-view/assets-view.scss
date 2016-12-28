@@ -5,20 +5,22 @@
 
     }
 
-    #treeview .k-sprite {
-        /* background-image: url("/assets/images/coloricons-sprite.png"); */
-    }
+    #treeview {
 
-    #treeview .k-item.k-first {
-        display: none;
-    }
+        .k-item.k-first {
+            display: none;
+        }
 
-/*
-    .rootfolder { background-position: 0 0; }
-    .folder     { background-position: 0 -16px; }
-    .pdf        { background-position: 0 -32px; }
-    .html       { background-position: 0 -48px; }
-    .image      { background-position: 0 -64px; }
-*/
+        .k-icon.k-i-collapse {
+            background: url("/assets/icons/treeview/menu-down.svg") center center;
+        }
+        .k-icon.k-i-expand {
+            background: url("/assets/icons/treeview/menu-right.svg") center center;
+        }
+
+        span.k-in:hover {
+            text-decoration: underline;
+        }
+    }
 
 }

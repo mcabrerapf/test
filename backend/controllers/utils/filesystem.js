@@ -97,6 +97,7 @@ function typeByExtension (fileName) {
 	if ( /^\.(bmp|gif|jpe?g|png|svg)$/i.test( ext ) )		{ type = 'image'; }
 	else if ( /^\.(html?|s?css|sass|xml)$/i.test( ext ) )	{ type = 'html'; }
 	else if ( /^\.pdf$/i.test( ext ) )						{ type = 'pdf'; }
+	else if ( /^\.(txt|doc)$/i.test( ext ) )				{ type = 'doc'; }
 
 	return type;
 };

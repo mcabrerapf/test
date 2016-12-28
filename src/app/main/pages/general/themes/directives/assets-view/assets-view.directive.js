@@ -1,4 +1,3 @@
-
 (function ()
 {
     'use strict';
@@ -21,7 +20,8 @@
         vm.treeView = {
 
         	options: {
-                dataSpriteCssClassField: "class", // nombre del campo que indica el tipo de archivo
+                // dataSpriteCssClassField: "class",
+                dataImageUrlField: "iconUrl",
 				dragAndDrop: true,
                 select: function(event) {
                     $scope.$apply(function() {
@@ -249,13 +249,22 @@
 
         //////////
         function dumpStructureToTreeView(dump) {
+        	const type2icon = {
+        		'unknown': 	'file',
+        		'folder': 	'folder-outline',
+        		'image': 	'file-image',
+        		'html': 	'file-xml',
+        		'pdf': 		'file-pdf',
+        		'doc': 		'file-document'
+        	};
+
             return dump.map(function(entry){
                 var node = {
-                    id: 	entry.path,
-                    text:   entry.name,
-                    type: 	entry.type,
-                    class:  'icon icon-' + entry.type,
-                    mtime: 	entry.mtime
+                    id: 		entry.path,
+                    text: 		entry.name,
+                    type: 		entry.type,
+                    iconUrl: 	'/assets/icons/treeview/' + type2icon[ entry.type ] + '.svg',
+                    mtime: 		entry.mtime
                 };
 
                 if (entry.type == 'folder') {
