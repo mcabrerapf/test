@@ -20,12 +20,13 @@
         vm.treeView = {
 
         	options: {
-                dataSpriteCssClassField: "type", // nombre del campo que indica el tipo de archivo
+                // dataSpriteCssClassField: "class",
+                dataImageUrlField: "iconUrl",
 				dragAndDrop: true,
                 select: function(event) {
                     $scope.$apply(function() {
                         vm.selectedItem = vm.tree.dataItem( event.node );
-                        console.log('selected:', event.node);
+                        // console.log('selected:', event.node);
                     });
                 },
                 navigate: function(event) {
@@ -46,7 +47,6 @@
         	console.log('drop:', event);
        		const 	src = vm.tree.dataItem( event.sourceNode )
        		,		dst = vm.tree.dataItem( event.destinationNode )
-			,		first = vm.tree.dataItem( ".k-item:first" )
        		,		pos = event.dropPosition
 
        		if (!dst || dst.id === undefined || !src || src.id === undefined) {
@@ -54,7 +54,7 @@
        			return;
        		}
 
-       		console.log('drop.nodes: (%s) %s %s %s', first.id, src.id, pos, dst.id);
+       		console.log('drop.nodes: %s %s %s', src.id, pos, dst.id);
 
 
 			const 	oldSrcPath = src.id;
@@ -84,12 +84,13 @@
                 function (result) {
                     console.log('refresh: OK', result);
 
-                    // vm.tree.append( dumpStructureToTreeView( result ) );
-
                     dumpStructureToTreeView( result ).forEach(function(node){
 						vm.observableStructureFolder.push( node );
                     });
+
                 	// vm.observableStructureFolder.splice(0, 1);
+
+                    initSelectedItem();
                 },
                 function (error) {
                     console.log('refresh: ERROR', error);
@@ -173,7 +174,17 @@
                         function (result) {
                             console.log('delete: OK', result);
 
+                            var parentNode = vm.tree.parent( selectedNode );
+
+                            if (parentNode.length == 0) {
+                                initSelectedItem();
+                            } else {
+                                vm.tree.select( parentNode );
+                                vm.selectedItem = vm.tree.dataItem( parentNode );                                
+                            };
+
                             vm.tree.remove( selectedNode );
+
                         },
                         function (error) {
                             console.log('delete: ERROR', error);
@@ -185,7 +196,7 @@
 
             var selectedNode = vm.tree.select();
 
-            if (selectedNode.length !== 0) deleteEntryFS( selectedNode );
+            if (selectedNode.length != 0) deleteEntryFS( selectedNode );
         };
 
         vm.rename = function(newName) {
@@ -205,16 +216,13 @@
 
 		vm.boundariesTreeView = function(event) {
 			if(!($.contains(vm.tree.wrapper[0], event.target))) {
-				vm.selectedItem = vm.tree.dataItem( vm.tree.findByText('') );
-				vm.tree.select($());
-				console.log('boundariesTreeView:', event, vm.selectedItem, vm.tree.select());
+                initSelectedItem();
+				// console.log('boundariesTreeView:', event);
             }
 		};
 
 		vm.outsideTreeView = function(event) {
-			vm.selectedItem = vm.tree.dataItem( vm.tree.findByText('') );
-			vm.tree.select($());
-			console.log('outsideTreeView:', event, vm.selectedItem, vm.tree.select());
+            initSelectedItem();
 		};
 
         // Methods
@@ -233,14 +241,30 @@
 
 
         ///////////////////////////////////////////////////////////////////////////////////
+        function initSelectedItem() {
+			vm.selectedItem = vm.tree.dataItem( vm.tree.findByText('') );
+			vm.tree.select($());
+			// console.log('initSelectedItem:', vm.selectedItem, vm.tree.select());
+        };
+
+        //////////
         function dumpStructureToTreeView(dump) {
+        	const type2icon = {
+        		'unknown': 	'file',
+        		'folder': 	'folder-outline',
+        		'image': 	'file-image',
+        		'html': 	'file-xml',
+        		'pdf': 		'file-pdf',
+        		'doc': 		'file-document'
+        	};
+
             return dump.map(function(entry){
                 var node = {
-                    id: 	entry.path,
-                    text:   entry.name,
-                    type: 	entry.type,
-                    // type: entry.type == 'folder' ? 'icon-folder' : 'icon-file',
-                    mtime: 	entry.mtime
+                    id: 		entry.path,
+                    text: 		entry.name,
+                    type: 		entry.type,
+                    iconUrl: 	'/assets/icons/treeview/' + type2icon[ entry.type ] + '.svg',
+                    mtime: 		entry.mtime
                 };
 
                 if (entry.type == 'folder') {
