@@ -28,8 +28,12 @@
 
                 <div>
                     <button title="New folder" ng-if="vm.selectedItem.type=='folder'" ng-click="vm.addFolder($event)"><i class="icon icon-folder-plus"></i></button>
+
+                    <input class="ng-hide" id="fileInput" multiple type="file" />
                     <button title="New file" ng-if="vm.selectedItem.type=='folder'" ng-click="vm.addFile($event)"><i class="icon icon-upload"></i></button>
+
                     <button title="Delete" ng-if="vm.selectedItem && vm.selectedItem.id != '/'" ng-click="vm.delete($event)"><i class="icon icon-delete"></i></button>
+
                 </div>
             </div>
 

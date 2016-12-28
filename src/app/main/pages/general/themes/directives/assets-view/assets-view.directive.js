@@ -143,7 +143,20 @@
         };
 
         vm.addFile = function(event) {
-            console.log('add: create file inside %s', vm.selectedItem.id);
+        	var input = angular.element(document.querySelector('input#fileInput'));
+
+        	if (input.length) input[0].click();
+
+        	input.bind('change', function(e) {
+        		var files = e.target.files;
+				if (files[0]) {
+            		$scope.fileName = files[0].name;
+        		} else {
+            		$scope.fileName = null;
+        		}
+        		$scope.$apply();
+        	});
+
         };
 
         vm.delete = function(event) {
