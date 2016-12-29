@@ -6,28 +6,12 @@
         .controller('ImportUsersController', ImportUsersController);
 
     /** @ngInject */
-    function ImportUsersController(customers, $rootScope, $scope, translateValues, api, $mdDialog, $state, $filter, $timeout, $element) {
+    function ImportUsersController(customers, $rootScope, $scope, api, $mdDialog, $state, $filter, $timeout, $element) {
         var vm = this;
 
         vm.customers = customers;
         vm.columnPattern = /^[a-zA-Z]{1,2}$/
-
-        $rootScope.$on('$viewContentLoaded', function (event) {
-
-            if($("#spreadsheet")) {
-                setData()
-                vm.input = $('.file-input')
-
-                vm.input.on("change", function () {
-                    vm.spreadsheet.fromFile(this.files[0]).then(function (a, b, c) {
-                        console.log(a, b, c)
-                    }, function (err) {
-                        console.log(err);
-                    });
-                });
-            }
-        });
-
+        vm.rangePattern = /^[a-zA-Z]{1,2}[0-9]+:[a-zA-Z]{1,2}[0-9]+$/
 
         vm.spreadsheetOptions = {
             toolbar: {
@@ -36,12 +20,21 @@
                 home: false
             },
             sheetsbar: false,
-            excelImport: excelImport
+            excelImport: function(e) {
+                e.promise
+                    .progress(function(e) {
+                        console.log(kendo.format("{0:P} complete", e.progress));
+                    })
+                    .done(function() {
+                        setData()
+                    });
+            }
         };
 
         // Methods
         vm.goBack = goBack;
         vm.openFile = openFile;
+        vm.setRange = setRange;
         vm.importUsers = importUsers;
 
         function goBack() {
@@ -49,12 +42,35 @@
         }
 
         function openFile($event) {
+            kendo.destroy($("#spreadsheet"));
+            // $("#spreadsheet").data("kendoSpreadsheet").destroy();
+            $('#spreadsheet').empty();
+            $('#spreadsheet').remove();
+            $('#spreadsheetContainer').append($('<div id="spreadsheet"></div>'));
+            $("#spreadsheet").kendoSpreadsheet(vm.spreadsheetOptions);
+            vm.spreadsheet = $("#spreadsheet").data("kendoSpreadsheet");
+            vm.input = $('.file-input');
             vm.input.click();
+
+            vm.input.on("change", function () {
+                vm.spreadsheet.fromFile(this.files[0]);
+            });
+        }
+
+        function setRange() {
+            if(vm.sheet){
+                var r = vm.sheet.selection();
+                console.log(r);
+                var left = getColumn(r._ref.topLeft.col);
+                var top = r._ref.topLeft.row + 1;
+                var right = getColumn(r._ref.bottomRight.col);
+                var bottom = r._ref.bottomRight.row + 1;
+                vm.range = left + top + ':' + right + bottom;
+            }
         }
 
         function importUsers($event) {
-            console.log('import');
-            var range = vm.startColumn + vm.startRow + ':' + vm.endColumn + vm.endRow;
+            var range = vm.range;
             var values = vm.sheet.range(range).values();
             var emailIndex = getIndex(vm.emailColumn);
             var userNameIndex = getIndex(vm.userNameColumn);
@@ -75,17 +91,17 @@
                     data = value
                 }
 
-                var sellerCode = (sellerCodeIndex > -1) ?  value[sellerCodeIndex] : '';
-                var teamLeader = (teamLeaderIndex > -1) ?  value[teamLeaderIndex] : '';
-                var email = (emailIndex > -1) ?  value[emailIndex] : '';
-                var userName = (userNameIndex > -1) ?  value[userNameIndex] : '';
+                var sellerCode = (sellerCodeIndex > -1) ? value[sellerCodeIndex] : '';
+                var teamLeader = (teamLeaderIndex > -1) ? value[teamLeaderIndex] : '';
+                var email = (emailIndex > -1) ? value[emailIndex] : '';
+                var userName = (userNameIndex > -1) ? value[userNameIndex] : '';
                 var password = generatePasword()
 
-                var user = users.find(function(user){
+                var user = users.find(function (user) {
                     return user.email === value[emailIndex];
                 });
 
-                if(user) {
+                if (user) {
                     user.code.push({
                         sellerCode: sellerCode,
                         teamLeader: teamLeader
@@ -106,8 +122,8 @@
             });
 
             console.log(users.length)
-            for(var i = 0; i < users.length; i += 50){
-                var chunk = users.slice(i, i+50)
+            for (var i = 0; i < users.length; i += 50) {
+                var chunk = users.slice(i, i + 50)
                 api.users.import({users: chunk})
             }
         }
@@ -124,7 +140,7 @@
         }
 
         function excelImport(e) {
-            e.promise.done(setData);
+            // e.promise.done(setData);
         }
 
         function setData() {
@@ -134,16 +150,12 @@
             vm.sheet = getSheet(vm.selectedSheet);
             vm.columns = vm.sheet.toJSON().columns;
             vm.rows = vm.sheet.toJSON().rows;
-            vm.startRow = '';
-            vm.endRow = '';
-            vm.startColumn = '';
-            vm.endColumn = '';
-            vm.headerRow = null;
+            vm.range = '';
+            vm.headerRow = 1;
             vm.emailColumn = '';
             vm.userNameColumn = '';
             vm.sellerCodeColumn = '';
             vm.customer = '';
-            vm.teamLeaderColumn = '';
             vm.data = {};
         }
 
@@ -169,13 +181,19 @@
             return index;
         }
 
+        function getColumn(index) {
+            var columns = 'abcdefghijklmnopqrstuvwxyz';
+            var ent = Math.floor(index / columns.length);
+            var mod = index % columns.length;
+            return columns.charAt(ent - 1) + columns.charAt(mod)
+        }
+
         function generatePasword() {
             var chars = '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
             var pass = ''
-            for(var i = 0; i < 8; i++){
+            for (var i = 0; i < 8; i++) {
                 pass += chars.charAt(Math.floor(Math.random() * chars.length));
             }
-            console.log(pass);
             return pass;
         }
 
