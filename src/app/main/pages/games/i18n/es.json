@@ -37,7 +37,7 @@
         "ADD_KPI": "Definir una nueva métrica",
 
         "NAME": "Nombre",
-        "TYPE": "Tipo",
+        "TYPE": "Tipo métrica",
         "RANKING": "Ranking",
         "PARTICIPANTS": "Número ganadores",
         "TOTAL_POINTS": "Total puntos",
@@ -45,9 +45,20 @@
         "EDIT_TITLE": "Edición de la métrica",
         "NEW_TITLE": "Nueva métrica",
         "ADD": "Crear métrica",
-        "DEFINITION": "Definición",
+        "GENERAL": "Definición",
         "ID": "Identificador",
-        "DESCRIPTION": "Descripción de la métrica"
+        "DEFINITION": "Definición de la métrica",
+        "AGREGATE_FORMULA": "Método de agregación",
+        "DISPLAY_FORMAT": "Formato de visualización",
+        "NUMERATOR": "Cálculo",
+        "DENOMINATOR": "Dividido por",
+        "SCORE": "Reparto de puntos",
+        "SCORETYPE": "Tipo de reparto",
+        "FORMULA": "Formula de cálculo (x es el valor de la métrica)",
+        "UPLEVELPOINTS": "Puntos por subir de posición",
+        "EQUALLEVELPOINTS": "Puntos por mantener la posición",
+        "DOWNLEVELPOINTS": "Puntos por bajar de posición",
+        "SCOREDISTRIBUTION": "Distribución de puntos"
     }
 }
 
