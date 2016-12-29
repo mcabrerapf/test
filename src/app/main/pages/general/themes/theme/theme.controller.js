@@ -7,7 +7,7 @@
         .controller('ThemeController', ThemeController);
 
     /** @ngInject */
-    function ThemeController($q, $state, $stateParams, $mdDialog, $translate, themeService)
+    function ThemeController($q, $rootScope, $state, $stateParams, $mdDialog, $translate, themeService)
     {
         var vm = this;
 
@@ -21,7 +21,7 @@
         vm.gotoThemes = gotoThemes;
         vm.deleteConfirm = deleteConfirm;
         vm.updateThemeName = updateTheme;
-
+        vm.sendInitMessage = sendInitMessage;
 
 
         /**
@@ -78,6 +78,13 @@
             $state.go('app.themes');
         }
 
+        /**
+         * Advice to treemap-viewer directive
+         */
+        function sendInitMessage($event, eventName) {
+
+            $rootScope.$broadcast(eventName);
+        }
 
     }
 })();

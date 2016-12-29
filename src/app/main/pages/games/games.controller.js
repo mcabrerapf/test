@@ -50,7 +50,7 @@
             $mdDialog.show({
                 controller:         'NewGameDialogController',
                 controllerAs:       'vm',
-                templateUrl:        'app/main/pages/games/new-game/newgame-dialog.html',
+                templateUrl:        'app/main/pages/games/dialogs/new-game/newgame-dialog.html',
                 parent:             angular.element(document.body),
                 targetEvent:        event,
                 clickOusideToClose: true

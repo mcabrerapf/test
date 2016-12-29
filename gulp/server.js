@@ -41,7 +41,8 @@ function browserSyncInit(baseDir, browser)
 //        proxy: 'http://localhost:8090/'
         startPath: '/',
         server   : server,
-        browser  : browser
+        browser  : browser,
+        ghostMode: false
     });
 }
 

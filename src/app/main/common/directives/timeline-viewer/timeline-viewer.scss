@@ -1,8 +1,10 @@
 .timeline {
 
-    position: relative;
-    height: auto;
-    padding-bottom: 64px;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    right: 0;
+    bottom: 24px;
 
     &:before {
         display: block;
