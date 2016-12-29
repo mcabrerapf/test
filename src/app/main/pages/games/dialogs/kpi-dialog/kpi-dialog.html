@@ -1,7 +1,7 @@
 <!-- DIALOG -->
 <md-dialog class="kpi-dialog" aria-label="Nueva métrica" translate-attr-aria-label="KPIS.NEW_TITLE">
 
-    <kldform name="kpiForm" class="md-inline-form" novalidate mode="edit">
+    <kldform name="kpiForm" class="md-inline-form" novalidate mode="{{vm.mode}}">
 
         <!-- DIALOG TOOLBAR -->
         <md-toolbar class="md-accent md-hue-2">
@@ -25,7 +25,7 @@
 
             <div layout="column">
 
-                <div ms-icon-wrap="icon-speedometer" title="KPIS.DEFINITION">
+                <div ms-icon-wrap="icon-speedometer" title="KPIS.GENERAL">
 
                     <field  type="text"
                             ng-model="vm.kpi.name"
@@ -38,15 +38,107 @@
                             label="KPIS.ID" />
                             
                    <field  type="note"
-                            ng-model="vm.kpi.description"
+                            ng-model="vm.kpi.definition"
                             rows="3"
-                            label="KPIS.DESCRIPTION" />
+                            label="KPIS.DEFINITION" />
 
-                    <field  type="select"
-                            ng-model="vm.kpi.type"
-                            required
-                            items="vm.kpiTypes"
-                            label="KPIS.TYPE" />
+                    <div layout="row">
+
+                        <div flex="50">
+                            <field  type="select"
+                                    ng-model="vm.kpi.type"
+                                    required
+                                    items="vm.kpiTypes"
+                                    value-field="value"
+                                    display-field="text"
+                                    label="KPIS.TYPE" />
+                        </div>
+
+                        <div flex>
+                            <div ng-if="vm.kpi.type=='loaded'">
+                                <field  type="select"
+                                        ng-model="vm.kpi.loaded.aggregateformula"
+                                        required 
+                                        items="vm.agregatedTypes"
+                                        value-field="value"
+                                        display-field="text"
+                                        label="KPIS.AGREGATE_FORMULA" />
+                            </div>
+
+                            <div ng-if="vm.kpi.type=='calculated'" layout="column">
+
+                                <field  type="select"
+                                        ng-model="vm.kpi.calculated.numerator"
+                                        required 
+                                        items="vm.numerators"
+                                        value-field="_id"
+                                        display-field="name"
+                                        label="KPIS.NUMERATOR" />
+
+                                <field  type="select"
+                                        ng-model="vm.kpi.calculated.denominator"
+                                        required 
+                                        items="vm.denominators"
+                                        value-field="_id"
+                                        display-field="name"
+                                        label="KPIS.DENOMINATOR" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <field  type="text"
+                            ng-model="vm.kpi.displayformat"
+                            label="KPIS.DISPLAY_FORMAT" />
+
+                    <div layout="row">
+                        <div flex="50">
+                            <field  type="boolean"
+                                    ng-model="vm.score"
+                                    label="KPIS.SCORE" />
+                        </div>
+
+                        <div flex ng-if="vm.score">
+
+                            <field  type="select"
+                                    ng-model="vm.kpi.score.type"
+                                    required
+                                    items="vm.scoreTypes"
+                                    value-field="value"
+                                    display-field="text"
+                                    label="KPIS.SCORETYPE" />
+                        </div>
+                    </div>
+
+                    <div ng-if="vm.kpi.score.type=='levels'">
+                        <field  type="number"
+                                ng-model="vm.kpi.score.levels.upLevelPoints"
+                                label="KPIS.UPLEVELPOINTS" />
+
+                        <field  type="number"
+                                ng-model="vm.kpi.score.levels.equalLevelPoints"
+                                label="KPIS.EQUALLEVELPOINTS" />
+
+                        <field  type="number"
+                                ng-model="vm.kpi.score.levels.downLevelPoints"
+                                label="KPIS.DOWNLEVELPOINTS" />
+                    </div>
+
+
+                    <div ng-if="vm.kpi.score.type=='distribution'">
+
+                        <field  type="distribution"
+                                ng-model="vm.kpi.score.distribution" />
+
+                    </div>
+
+
+                    <div ng-if="vm.kpi.score.type=='formula'">
+                        <field  type="text"
+                                required
+                                ng-model="vm.kpi.score.formula"
+                                label="KPIS.FORMULA" />
+                    </div>
+
                 </div>
 
             </div>

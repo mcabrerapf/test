@@ -26,7 +26,7 @@
         $translate([
             "KPIS.NAME",
             "KPIS.TYPE",
-            "KPIS.RANKING",
+            "KPIS.SCORE",
             "KPIS.PARTICIPANTS",
             "KPIS.TOTAL_POINTS"]).then(function (translateValues) {
 
@@ -52,15 +52,17 @@
                     columns: [
                         { field: "name", title: translateValues['KPIS.NAME'] },
                         { field: "type", title: translateValues['KPIS.TYPE'], filterable: { multi: true, search: false }},
-                        /*
-                        { field: "ranking", title: translateValues['KPIS.RANKING'] },
-                        { field: "participants", title: translateValues['KPIS.PARTICIPANTS'], filterable: true },
+                        { field: "score.type", title: translateValues['KPIS.SCORE'] },
+                        { 
+                            field: null,
+                            title: translateValues['KPIS.PARTICIPANTS'],
+                            template: '#= score.type=="distribution" ? score.distribution.length : "" #'
+                        },
                         {
                             field: null,
                             title: translateValues['KPIS.TOTAL_POINTS'],
-                            template: '#= distributionTable.reduce(function(a,b) { return a+b; }, 0) #'
+                            template: '#= score.type=="distribution" ? score.distribution.reduce(function(a,b) { return a+b; }, 0) : "" #'
                         }
-                        */
                     ],
                     height: '100%'
                 };
@@ -103,7 +105,8 @@
                 targetEvent        : event,
                 clickOutsideToClose: false,
                 locals             : {
-                    Kpi: kpi
+                    Kpi: kpi,
+                    mode: (gameService.game.status==='En definición' ? 'edit' : 'display')
                 }
             }).then(function(result) {
 

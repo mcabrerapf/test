@@ -708,6 +708,16 @@
 					}
 				};
 
+
+				$scope.getDisplayValue = function() {
+					if ($scope.valueField !== undefined) {
+						var idx = getIndex($scope.value, $scope.items);
+						return $scope.items[idx][$scope.displayField]
+					} else {
+						return $scope.value;
+					}
+				}
+
 			}
 		};
 	}]);

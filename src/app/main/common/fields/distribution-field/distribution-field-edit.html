@@ -1,0 +1,64 @@
+<div class="distribution-field md-input-container md-input-has-value md-block" ng-class="currentMode" md-no-float>
+    <label ng-if="label" translate="{{label}}">{{label}}</label>
+
+    <div layout="row">
+
+        <div flex>
+            <div class="pr-20"
+                 kendo-chart="chart"
+                 k-options="options"
+                 style="height: 200px; width: 100%" >
+            </div>
+        </div>
+
+        <div flex="40" class="column">
+            <field  type="select"
+                    items="distributions"
+                    display-field="name"
+                    value-field="_id"
+                    ng-model="params.distribution"
+                    label="DISTRIBUTIONFIELD.COPYFROM" />
+
+            <div layout="column" class="params-table">
+
+                <div layout="row">
+                    <div flex class="label" translate="DISTRIBUTIONFIELD.PARTICIPANTS"></div>
+                    <input  flex="30" 
+                            type="number"
+                            ng-model-options="{debounce: 200}"
+                            ng-model="params.participants" 
+                            required />
+                </div>
+
+                <div layout="row">
+                    <div flex class="label" translate="DISTRIBUTIONFIELD.FIRST"></div>
+                    <input  flex="30" 
+                            type="number"
+                            ng-model-options="{debounce: 200}"
+                            ng-model="params.first" 
+                            required />
+                </div>
+
+                <div layout="row">
+                    <div flex class="label" translate="DISTRIBUTIONFIELD.LAST"></div>
+                    <input  flex="30" 
+                            type="number"
+                            ng-model-options="{debounce: 200}"
+                            ng-model="params.last" 
+                            required />
+                </div>
+
+                <div layout="row">
+                    <div flex class="label" translate="DISTRIBUTIONFIELD.TOTAL"></div>
+                    <input  flex="30" 
+                            type="number"
+                            ng-model="params.total" 
+                            disabled />
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
