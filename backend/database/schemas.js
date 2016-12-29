@@ -3,8 +3,8 @@
 var Schema = require('mongoose').Schema;
 
 var kpi = {
-    id:   {type: String, required: true, unique: true},
-    name: {type: String, required: true},
+    id:   {type: String, required: true, unique: true },
+    name: {type: String, required: true, unique: true },
     type: {type: String, required: true, enum: ['calculated', 'loaded']},
     calculated: {
         numerator: {type: String, required: true},        // id del KPI que se utilizará para el cálculo
