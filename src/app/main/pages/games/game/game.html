@@ -49,18 +49,18 @@
             </md-tab>
 
             <!-- KPIs -->
-            <md-tab>
+            <md-tab md-on-select="vm.sendInitMessage($event, 'initKpiViewer')">
                 <md-tab-label>
-                    <span translate="GAMES.KPIS">Metricas</span>
+                    <span translate="KPIS.TAB_TITLE">Metricas</span>
                 </md-tab-label>
 
                 <md-tab-body>
-                    <div>Metricas / KPI's</div>
+                    <game-kpis-view></game-kpis-view>
                 </md-tab-body>
             </md-tab>
 
             <!-- Timeline -->
-            <md-tab>
+            <md-tab md-on-select="vm.sendInitMessage($event, 'initTimeline')">
                 <md-tab-label>
                     <span translate="GAMES.TIME_LINE">Time line</span>
                 </md-tab-label>
@@ -83,7 +83,7 @@
             </md-tab>
 
             <!-- Premios -->
-            <md-tab md-on-select="vm.initBudgetManager($event)">
+            <md-tab md-on-select="vm.sendInitMessage($event, 'initTreeMapViewer')">
                 <md-tab-label>
                     <span translate="GAMES.PREMIOS">Premios</span>
                 </md-tab-label>
