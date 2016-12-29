@@ -18,6 +18,7 @@
                 'nvd3',
                 'kendo.directives',
                 'xeditable',
-                'dndLists'
+                'dndLists',
+                'datatables'
             ]);
 })();

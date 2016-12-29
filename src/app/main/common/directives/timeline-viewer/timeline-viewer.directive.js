@@ -8,9 +8,11 @@
         .directive('timelineViewer', timelineViewerDirective);
 
     /** @ngInject */
-    function timelineViewerController($scope, $translate, $mdDialog, timelineService)
+    function timelineViewerController($scope, $element, $window, $translate, $mdDialog, timelineService)
     {
         var vm = this;
+        var $Window = angular.element($window);
+
         vm.timeline = timelineService.timeline;
 
         // Methods
@@ -27,6 +29,23 @@
             // originatorEv = ev;
             $mdOpenMenu(ev);
         }
+
+
+
+        function resize() {
+
+            var $Parent = $element.parents('.md-no-scroll').eq(0);
+            var PosY = $element.offset().top;
+            var SpaceLeft = $Window.height() - PosY;
+
+            $Parent.addClass('NoPadding');
+
+            $element.css({ height: SpaceLeft + 'px' });
+        }
+
+        $Window.on('resize', resize);
+        $scope.$on('initTimeline', resize);
+        resize();
 
 
         /**
@@ -118,6 +137,7 @@
         return {
             restrict: 'E',
             scope: true,
+            replace: true,
             controller: 'timelineViewerController',
             controllerAs: 'vm',
             templateUrl: 'app/main/common/directives/timeline-viewer/timeline-viewer.html'

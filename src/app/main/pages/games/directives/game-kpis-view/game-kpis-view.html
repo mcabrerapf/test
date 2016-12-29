@@ -1,0 +1,69 @@
+
+<div class="kpis-list">
+
+ 
+    <div class="list-wrapper white-bg md-whiteframe-4dp">
+
+        <!--
+        <table class="dataTable row-border hover" datatable="ng" dt-options="vm.datatableOptions">
+            <thead>
+            <tr>
+                <th class="secondary-text">
+                    <div class="table-header">
+                        <span class="column-title" translate="KPIS.NAME"></span>
+                    </div>
+                </th>
+                <th class="secondary-text">
+                    <div class="table-header">
+                        <span class="column-title" translate="KPIS.TYPE"></span>
+                    </div>
+                </th>
+                <th class="secondary-text">
+                    <div class="table-header">
+                        <span class="column-title" translate="KPIS.RANKING"></span>
+                    </div>
+                </th>
+                <th class="secondary-text">
+                    <div class="table-header">
+                        <span class="column-title" translate="KPIS.PARTICIPANTS"></span>
+                    </div>
+                </th>
+                <th class="secondary-text">
+                    <div class="table-header">
+                        <span class="column-title" translate="KPIS.TOTAL_POINTS"></span>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="kpi in vm.kpis" ng-click="vm.openKpiDialog($event, kpi)">
+                <td>{{ kpi.name }}</td>
+                <td>{{ kpi.type }}</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            </tbody>
+        </table>
+        -->
+
+        <div ng-show="vm.kpis.length !== 0" kendo-grid="vm.grid" options="vm.gridOptions">
+        </div>
+
+
+        <!-- NO RESULTS -->
+        <div class="no-results" ng-show="vm.kpis.length === 0">
+            <p translate="KPIS.NO_RESULTS">No results..</p>
+        </div>
+        <!-- / NO RESULTS -->
+        
+    </div>
+
+    <!-- ADD CONTACT BUTTON -->
+    <md-button class="add-new-button md-fab md-accent md-icon-button" ng-click="vm.openKpiDialog($event)"
+               aria-label="Nuevo kpi" translate-attr-aria-label="KPIS.ADD_KPI">
+        <md-icon md-font-icon="icon-plus"></md-icon>
+    </md-button>
+    <!-- / ADD CONTACT BUTTON -->
+
+</div>

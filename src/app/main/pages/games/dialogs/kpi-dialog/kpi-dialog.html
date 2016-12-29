@@ -1,0 +1,91 @@
+<!-- DIALOG -->
+<md-dialog class="kpi-dialog" aria-label="Nueva métrica" translate-attr-aria-label="KPIS.NEW_TITLE">
+
+    <kldform name="kpiForm" class="md-inline-form" novalidate mode="edit">
+
+        <!-- DIALOG TOOLBAR -->
+        <md-toolbar class="md-accent md-hue-2">
+
+            <!-- TOOLBAR TOP -->
+            <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+                <span class="title"
+                      translate="{{vm.TITLEKEY}}">Nuevo tema</span>
+                <md-button class="md-icon-button" ng-click="vm.closeDialog()" aria-label="Cerrar" translate
+                           translate-attr-aria-label="DIALOG.CLOSE">
+                    <md-icon md-font-icon="icon-close"></md-icon>
+                </md-button>
+            </div>
+            <!-- / TOOLBAR TOP -->
+
+        </md-toolbar>
+        <!-- / DIALOG TOOLBAR -->
+
+        <!-- DIALOG CONTENT -->
+        <md-dialog-content ms-scroll>
+
+            <div layout="column">
+
+                <div ms-icon-wrap="icon-speedometer" title="KPIS.DEFINITION">
+
+                    <field  type="text"
+                            ng-model="vm.kpi.name"
+                            required 
+                            label="KPIS.NAME" />
+
+                     <field  type="text"
+                            ng-model="vm.kpi.id"
+                            required 
+                            label="KPIS.ID" />
+                            
+                   <field  type="note"
+                            ng-model="vm.kpi.description"
+                            rows="3"
+                            label="KPIS.DESCRIPTION" />
+
+                    <field  type="select"
+                            ng-model="vm.kpi.type"
+                            required
+                            items="vm.kpiTypes"
+                            label="KPIS.TYPE" />
+                </div>
+
+            </div>
+
+
+        </md-dialog-content>
+        <!-- / DIALOG CONTENT -->
+
+        <!-- DIALOG ACTIONS -->
+        <md-dialog-actions layout="row" layout-align="space-between center">
+            <div layout="row" layout-align="start center">
+                <md-button type="submit" ng-if="vm.newItem" ng-click="vm.addNew()"
+                           class="send-button md-accent md-raised"
+                           ng-disabled="kpiForm.$invalid"
+                           translate="KPIS.ADD"
+                           aria-label="New" translate-attr-aria-label="KPIS.ADD">
+                    NEW
+                </md-button>
+                <md-button type="submit" ng-if="!vm.newItem" ng-click="vm.saveItem()"
+                           class="send-button md-accent md-raised"
+                           ng-disabled="kpiForm.$invalid"
+                           aria-label="Save" translate="FORMS.SAVE" translate-attr-aria-label="FORMS.SAVE">
+                    SAVE
+                </md-button>
+            </div>
+
+            <div layout="row">
+                <md-button ng-if="!vm.newItem" class="md-icon-button" ng-click="vm.deleteKpi($event)" aria-label="Delete"
+                           translate
+                           translate-attr-aria-label="FORMS.DELETE">
+                    <md-icon md-font-icon="icon-delete"></md-icon>
+                    <md-tooltip><span translate="FORMS.DELETE">DELETE</span></md-tooltip>
+                </md-button>
+            </div>
+
+        </md-dialog-actions>
+        <!-- / DIALOG ACTIONS -->
+
+    </kldform>
+
+</md-dialog>
+<!-- / DIALOG -->
