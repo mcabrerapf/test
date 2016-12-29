@@ -3,7 +3,7 @@
 var Schema = require('mongoose').Schema;
 
 var kpi = {
-    id: {type: String, required: true, unique: true},
+    id:   {type: String, required: true, unique: true},
     name: {type: String, required: true},
     type: {type: String, required: true, enum: ['calculated', 'loaded']},
     calculated: {
@@ -16,7 +16,6 @@ var kpi = {
     comments: {type: String, required: false},
     definition: {type: String, required: false},
     displayformat: {type: String, required: false, default: '#.##0,0'},
-    thumbnail: {type: String, required: false, default: ''},
     negative: {type: Boolean, required: true, default: false},
     minvalue: {type: Number, required: false},
     ranking: {
