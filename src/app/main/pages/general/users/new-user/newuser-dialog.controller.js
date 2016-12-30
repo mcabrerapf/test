@@ -43,6 +43,7 @@
         }
 
         function updateUser() {
+            vm.user.customer = vm.user.customer._id
             api.users.update(vm.user, function(user) {
                 $mdDialog.hide({user: user});
             }, function(error) {

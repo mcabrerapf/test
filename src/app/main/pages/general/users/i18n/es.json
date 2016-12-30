@@ -50,7 +50,8 @@
             "SELLER_CODE_COLUMN": "Columna código de vendedor",
             "IMPORT": "Importar",
             "SHEET_RANGE": "Rango de datos",
-            "GET_RANGE": "Importar rango seleccionado"
+            "GET_RANGE": "Importar rango seleccionado",
+            "GET_COLUMN": "Importar columna seleccionado"
         },
 
         "SAVE": "Guardar usuario",
