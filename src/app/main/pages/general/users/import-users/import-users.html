@@ -41,84 +41,100 @@
 
                 <!-- CONFIG FORM  -->
                 <div flex="30" class="form-wrapper form-data-wrapper md-whiteframe-1dp">
-                    <div layout="row">
-                        <form name="importUsersForm"></form>
-                        <div flex="50">
+                    <form name="importUsersForm">
+                        <div layout="row">
+                            <div flex="50">
 
-                            <md-list class="edit-list">
-                                <md-list-item>
-                                    <p translate="USERS.IMPORT.SHEET">HOJA</p>
-                                    <select ng-model="vm.selectedSheet"
-                                            required>
-                                        <option ng-repeat="sheet in vm.sheets">{{sheet.name}}</option>
-                                    </select>
-                                </md-list-item>
+                                <md-list class="edit-list">
+                                    <md-list-item>
+                                        <p translate="USERS.IMPORT.SHEET" class="text-semibold">HOJA</p>
+                                        <select ng-model="vm.selectedSheet"
+                                                required>
+                                            <option ng-repeat="sheet in vm.sheets">{{sheet.name}}</option>
+                                        </select>
+                                    </md-list-item>
 
-                                <md-list-item>
-                                    <p translate="USERS.IMPORT.CUSTOMER">CLIENTE</p>
-                                    <select ng-model="vm.customer"
-                                            required>
-                                        <option ng-repeat="customer in vm.customers" value="{{customer._id}}">
-                                            {{customer.name}}
-                                        </option>
-                                    </select>
-                                </md-list-item>
+                                    <md-list-item>
+                                        <p translate="USERS.IMPORT.CUSTOMER" class="text-semibold">CLIENTE</p>
+                                        <select ng-model="vm.customer"
+                                                required>
+                                            <option ng-repeat="customer in vm.customers" value="{{customer._id}}">
+                                                {{customer.name}}
+                                            </option>
+                                        </select>
+                                    </md-list-item>
 
-                                <md-list-item>
-                                    <p translate="USERS.IMPORT.SHEET_RANGE">RANGO</p>
-                                    <button ng-click="vm.setRange()">
-                                        <span translate="USERS.IMPORT.GET_RANGE"></spantranslate>
-                                    </button>
-                                    <input type="text"
-                                           ng-model="vm.range"
-                                    pattern="{vm.rangePattern}"/>
-                                </md-list-item>
+                                    <md-list-item class="md-no-proxy">
+                                        <p translate="USERS.IMPORT.SHEET_RANGE" class="text-semibold">RANGO</p>
+                                        <md-button ng-click="vm.setRange()">
+                                            <span translate="USERS.IMPORT.GET_RANGE"></span>
+                                        </md-button>
+                                        <input type="text"
+                                               ng-model="vm.range"
+                                               ng-pattern="vm.rangePattern"
+                                               required/>
+                                    </md-list-item>
 
-                                <md-list-item>
-                                    <md-button type="submit" ng-click="vm.importUsers($event)"
-                                               class="send-button md-accent md-raised"
-                                               ng-disabled="importUsersForm.$invalid"
-                                               aria-label="Add Task" translate="USERS.IMPORT.IMPORT"
-                                               translate-attr-aria-label="USERS.IMPORT.IMPORT">
-                                    </md-button>
-                                </md-list-item>
-                            </md-list>
+                                    <md-list-item class="md-no-proxy">
+                                        <md-button type="submit" ng-click="vm.importUsers($event)"
+                                                   class="send-button md-accent md-raised"
+                                                   ng-disabled="!importUsersForm.$valid"
+                                                   aria-label="Add Task" translate="USERS.IMPORT.IMPORT"
+                                                   translate-attr-aria-label="USERS.IMPORT.IMPORT">
+                                        </md-button>
+                                    </md-list-item>
+                                </md-list>
+                            </div>
+
+                            <div flex>
+
+                                <md-list class="edit-list">
+                                    <md-list-item class="md-no-proxy">
+                                        <p translate="USERS.IMPORT.HEADER_ROW" class="text-semibold">CABECERA</p>
+                                        <input type="number"
+                                               ng-model="vm.headerRow"
+                                               min="1"
+                                               required/>
+                                    </md-list-item>
+
+                                    <md-list-item class="md-no-proxy">
+                                        <p translate="USERS.IMPORT.EMAIL_COLUMN" class="text-semibold">EMAIL</p>
+                                        <md-button ng-click="vm.setColumn('emailColumn')">
+                                            <span translate="USERS.IMPORT.GET_COLUMN"></span>
+                                        </md-button>
+                                        <input type="text"
+                                               ng-model="vm.emailColumn"
+                                               ng-pattern="vm.columnPattern"
+                                               required/>
+                                    </md-list-item>
+
+                                    <md-list-item class="md-no-proxy">
+                                        <p translate="USERS.IMPORT.USER_NAME_COLUMN" class="text-semibold">Puntos último
+                                            clasificado</p>
+                                        <md-button ng-click="vm.setColumn('userNameColumn')">
+                                            <span translate="USERS.IMPORT.GET_COLUMN"></span>
+                                        </md-button>
+                                        <input type="text"
+                                               ng-model="vm.userNameColumn"
+                                               ng-pattern="vm.columnPattern"
+                                               required/>
+                                    </md-list-item>
+
+                                    <md-list-item class="md-no-proxy">
+                                        <p translate="USERS.IMPORT.SELLER_CODE_COLUMN" class="text-semibold">Total
+                                            puntos</p>
+                                        <md-button ng-click="vm.setColumn('sellerCodeColumn')">
+                                            <span translate="USERS.IMPORT.GET_COLUMN"></span>
+                                        </md-button>
+                                        <input type="text"
+                                               ng-model="vm.sellerCodeColumn"
+                                               ng-pattern="vm.columnPattern"
+                                               required/>
+                                    </md-list-item>
+                                </md-list>
+                            </div>
                         </div>
-
-                        <div flex>
-
-                            <md-list class="edit-list">
-                                <md-list-item>
-                                    <p translate="USERS.IMPORT.HEADER_ROW">CABECERA</p>
-                                    <input type="number"
-                                           required
-                                           ng-model="vm.headerRow"/>
-                                </md-list-item>
-
-                                <md-list-item>
-                                    <p translate="USERS.IMPORT.EMAIL_COLUMN">EMAIL</p>
-                                    <input type="text"
-                                           ng-model="vm.emailColumn"
-                                           ng-pattern="vm.columnPattern"/>
-                                </md-list-item>
-
-                                <md-list-item>
-                                    <p translate="USERS.IMPORT.USER_NAME_COLUMN">Puntos último clasificado</p>
-                                    <input type="text"
-                                           ng-model="vm.userNameColumn"
-                                           ng-pattern="vm.columnPattern"/>
-                                </md-list-item>
-
-                                <md-list-item>
-                                    <p translate="USERS.IMPORT.SELLER_CODE_COLUMN" class="text-semibold">Total
-                                        puntos</p>
-                                    <input type="text"
-                                           ng-model="vm.sellerCodeColumn"
-                                           ng-pattern="vm.columnPattern"/>
-                                </md-list-item>
-                            </md-list>
-                        </div>
-                    </div>
+                    </form>
                 </div>
 
                 <div layout="column">
