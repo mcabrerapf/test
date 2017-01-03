@@ -7,7 +7,7 @@
         .run(runBlock);
 
     /** @ngInject */
-    function runBlock($rootScope, $timeout, $state, $stateParams, authorization, principal)
+    function runBlock($rootScope, $timeout, $state, $stateParams, authorization, principal, DTDefaultOptions)
     {
         // Activate loading indicator
         var stateChangeStartEvent = $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams)
@@ -38,5 +38,11 @@
             stateChangeStartEvent();
             stateChangeSuccessEvent();
         });
+
+
+        /**
+         * DataTable default configuration
+         */
+        DTDefaultOptions.setDisplayLength(10);
     }
 })();

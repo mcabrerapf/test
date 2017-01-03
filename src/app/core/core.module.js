@@ -12,6 +12,7 @@
                 'ngResource',
                 'ngSanitize',
                 'ngMaterial',
+                'ngFileUpload',
                 'pascalprecht.translate',
                 'ui.router',
                 'kaldeera.forms',
@@ -19,6 +20,6 @@
                 'kendo.directives',
                 'xeditable',
                 'dndLists',
-                'ngFileUpload'
+                'datatables'
             ]);
 })();

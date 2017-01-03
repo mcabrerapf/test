@@ -3,5 +3,13 @@
         "TITLE": "Seleccionar una imagen del tema",
         "NOIMAGE": "No image",
         "SELECTIMAGE": "Editar imagen"
+    },
+
+    "DISTRIBUTIONFIELD": {
+        "PARTICIPANTS": "Participantes",
+        "FIRST": "Primero",
+        "LAST": "Último",
+        "TOTAL": "Total",
+        "COPYFROM": "Copiar distribución de"
     }
 }

@@ -24,11 +24,41 @@
         "GO_TO_GAMES": "Volver a la lista de partidas",
         "GAME_DETAIL": "Detalle de la partida",
         "BASIC_INFO": "Información general",
-        "KPIS": "Métricas",
         "TIME_LINE": "Linea de tiempo",
         "PLAYERS": "Jugadores y grupos",
         "PREMIOS": "Premios",
         "RESULTADOS": "Resultados"
+
+    },
+
+    "KPIS": {
+        "TAB_TITLE": "Métricas",
+        "NO_RESULTS": "No se han definido métricas para esta partida",
+        "ADD_KPI": "Definir una nueva métrica",
+
+        "NAME": "Nombre",
+        "TYPE": "Tipo métrica",
+        "RANKING": "Ranking",
+        "PARTICIPANTS": "Número ganadores",
+        "TOTAL_POINTS": "Total puntos",
+
+        "EDIT_TITLE": "Edición de la métrica",
+        "NEW_TITLE": "Nueva métrica",
+        "ADD": "Crear métrica",
+        "GENERAL": "Definición",
+        "ID": "Identificador",
+        "DEFINITION": "Definición de la métrica",
+        "AGREGATE_FORMULA": "Método de agregación",
+        "DISPLAY_FORMAT": "Formato de visualización",
+        "NUMERATOR": "Cálculo",
+        "DENOMINATOR": "Dividido por",
+        "SCORE": "Reparto de puntos",
+        "SCORETYPE": "Tipo de reparto",
+        "FORMULA": "Formula de cálculo (x es el valor de la métrica)",
+        "UPLEVELPOINTS": "Puntos por subir de posición",
+        "EQUALLEVELPOINTS": "Puntos por mantener la posición",
+        "DOWNLEVELPOINTS": "Puntos por bajar de posición",
+        "SCOREDISTRIBUTION": "Distribución de puntos"
     }
 }
 

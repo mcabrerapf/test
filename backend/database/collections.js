@@ -7,6 +7,7 @@ var accessLevel 		= require('../configuration/gamification').accessLevels;
 // middleware para la gestión de colecciones (uso general)
 var common              = require('../controllers/common');
 var filesystem          = require('../controllers/utils/filesystem');
+var submodelrest        = require('../controllers/utils/submodelrest.js');
 
 // middleware específico para la gestión de colecciones
 var themes   	        = require('../controllers/themes.js');
@@ -131,20 +132,42 @@ function makeREST(app, name, definition, model, baseUrl) {
     }
 
     if (definition.routes) {
+
+        // rutas
         definition.routes.forEach(function(route) {          
 
-            const fnHandler = route.detail === undefined ?
-                route.middleware :
-                {
-                    detail:     route.detail,
-                    handler:    route.middleware
-                };
+            if (!route.submodel) {
 
-            model.route( route.path, fnHandler );
+                var fnHandler = route.detail === undefined ?
+                    route.middleware :
+                    {
+                        detail:     route.detail,
+                        handler:    route.middleware
+                    };
+
+                model.route( route.path, fnHandler );
+
+            } else {
+
+                var path = route.path + '/:child([0-9a-fA-F]{0,24}$)?';
+                model.routes[path] = model.routes[path] || {};
+
+                route.methods.forEach(function(method) {
+
+                    model.routes[path][method.method] = {
+                        after: method.after || [],
+                        before: method.before || [],
+                        detail: true,
+                        handler: method.handler || submodelrest[method.method],
+                        accessLevel: method.accessLevel
+                    };
+                });
+
+            }
         });
     }
 
-    const url = baseUrl + '/' + name;
+    var url = baseUrl + '/' + name;
     model.register(app, url);
 
 }

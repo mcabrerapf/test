@@ -53,7 +53,7 @@
             </md-tab>
 
             <!-- Timeline -->
-            <md-tab>
+            <md-tab md-on-select="vm.sendInitMessage($event, 'initTimeline')">
                 <md-tab-label>
                     <span translate="THEMES.TIME_LINE">Time line</span>
                 </md-tab-label>

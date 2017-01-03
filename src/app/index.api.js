@@ -229,7 +229,7 @@
 
 
         // KPIs
-        api.kpis = $resource(api.baseUrl + 'kpis/:id', {}, {
+        api.games.kpis = $resource(api.baseUrl + 'games/:id/kpis/:kpi', {}, {
             find: {method: 'GET', params: {}, isArray: true},
             findOne: {method: 'GET', params: {}, isArray: false},
             save: {method: 'POST', params: {}, isArray: false},

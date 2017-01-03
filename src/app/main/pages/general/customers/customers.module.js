@@ -3,9 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pages.general.customers', [
-            'datatables'
-        ])
+        .module('app.pages.general.customers', [])
         .config(config);
 
     /** @ngInject */

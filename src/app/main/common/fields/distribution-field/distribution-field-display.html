@@ -1,0 +1,37 @@
+<div class="distribution-field md-input-container md-input-has-value md-block" ng-class="currentMode" md-no-float>
+    <label ng-if="label" translate="{{label}}">{{label}}</label>
+
+    <div layout="row">
+
+        <div class="pr-20"
+                kendo-chart="chart"
+                k-options="options"
+                style="height: 200px; width: 100%" >
+        </div>
+        
+        <div flex="40" layout="column" class="params-table">
+            
+            <div layout="row">
+                <div flex class="label" translate="DISTRIBUTIONFIELD.PARTICIPANTS"></div>
+                <div flex="30" class="value" ng-bind="params.participants"></div>
+            </div>
+
+            <div layout="row">
+                <div flex class="label" translate="DISTRIBUTIONFIELD.FIRST"></div>
+                <div flex="30" class="value" ng-bind="params.first"></div>
+            </div>
+
+            <div layout="row">
+                <div flex class="label" translate="DISTRIBUTIONFIELD.LAST"></div>
+                <div flex="30" class="value" ng-bind="params.last"></div>
+            </div>
+
+            <div layout="row">
+                <div flex class="label" translate="DISTRIBUTIONFIELD.TOTAL"></div>
+                <div flex="30" class="value" ng-bind="params.total"></div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

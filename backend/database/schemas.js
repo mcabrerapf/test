@@ -3,8 +3,8 @@
 var Schema = require('mongoose').Schema;
 
 var kpi = {
-    id: {type: String, required: true, unique: true},
-    name: {type: String, required: true},
+    id:   {type: String, required: true, unique: true },
+    name: {type: String, required: true, unique: true },
     type: {type: String, required: true, enum: ['calculated', 'loaded']},
     calculated: {
         numerator: {type: String, required: true},        // id del KPI que se utilizará para el cálculo
@@ -16,17 +16,12 @@ var kpi = {
     comments: {type: String, required: false},
     definition: {type: String, required: false},
     displayformat: {type: String, required: false, default: '#.##0,0'},
-    thumbnail: {type: String, required: false, default: ''},
     negative: {type: Boolean, required: true, default: false},
     minvalue: {type: Number, required: false},
-    ranking: {
-        type: {
-            type: String,
-            required: true,
-            enum: ['No ranking', 'Niveles de ranking', 'Esquema de puntos', 'Formula']
-        },
+    score: {
+        type: { type: String, required: true, enum: ['no', 'levels', 'distribution', 'formula'] },
         formula: {type: String, required: false, default: ''},
-        esquema: {type: String, required: false},       // id del esquema de puntos que aplica
+        distribution:  [ Number ],
         levels: {
             upLevelPoints: {type: Number, required: false},
             downLevelPoints: {type: Number, required: false},
@@ -52,6 +47,8 @@ var notification = {
 
 var goal = {
     description:    { type: String, required: false },
+    body:           { type: String, required: false },
+    slider:         { type: String, required: false },
     notifications:  [ notification, { _id: true }],
     metric:         { type: String, required: true },                       // id de la métrica a la que va asociada el reto
     winmessage:     { type: String, required: false },
@@ -82,6 +79,7 @@ var message = {
 
 var post = {
     description:    { type: String, required: false },
+    slider:         { type: String, required: false },
     body:           { type: String, required: true }
 };
 
