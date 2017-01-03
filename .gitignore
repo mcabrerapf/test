@@ -5,7 +5,6 @@ dist
 data
 data.local
 data.remote
-upload
 .tmp
 e2e
 .idea

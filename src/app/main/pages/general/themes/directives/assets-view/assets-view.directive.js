@@ -178,7 +178,7 @@
 
         vm.delete = function(event) {
 
-            function deleteresultFS (selectedNode) {
+            function deleteEntryFS (selectedNode) {
 
             	var item 		= vm.tree.dataItem( selectedNode )
                 ,	type 		= item.type
