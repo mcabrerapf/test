@@ -14,6 +14,7 @@ module.exports = {
 	createSubFolder: 	createSubFolder,
 	deleteFolder: 		deleteFolder,
 	deleteFile: 		deleteFile,
+	uploadFile: 		uploadFile,
 	renameEntryFS: 		renameEntryFS,
 
 	blank2hyphen: 		blank2hyphen,
@@ -119,6 +120,8 @@ function createSubFolder (req, res) {
 			const result = {
 				name: 		Path.basename(subDir),
 				path: 		subDir,
+				type: 		'folder',
+				mtime: 		new Date(),				
 				fullPath: 	fullPath
 			};
 			return res.status(201).send(result);
@@ -171,6 +174,39 @@ function deleteFile (req, res) {
 	deleteEntryFS( req, res );
 };
 
+// --------------------------------------------------------------------------------------
+
+function uploadFile (req, res) {
+
+	const 	destBaseDir 		= ParseReqRes.getItemFolder(req, res)
+	,		fileParam			= req.files.file 		// multiparty
+	,		dirName 			= ParseReqRes.getPostParam(req, 'dirName')
+	,		uploadedFullPath 	= fileParam.path
+	,		fileName 			= fileParam.name
+	,		destFullPath 		= Path.join( destBaseDir, dirName, fileName )
+
+	console.log('DEBUG (INFO): uploadFile: [%s] -> [%s]', uploadedFullPath, destFullPath);
+
+	renameFile( uploadedFullPath, destFullPath ).done(
+
+		function () {
+			const result = {
+				name: 		fileName,
+				path: 		Path.join( dirName, fileName ),
+				type: 		typeByExtension( fileName ),	// fileParam.type
+				size: 		fileParam.size,
+				mtime: 		new Date(),
+				fullPath: 	destFullPath
+			};
+			
+			return res.status(201).send(result);
+		},
+		function (error) {
+			console.log('DEBUG (ERR): uploadFile:', error);
+			return res.status(500).send(error);
+		}		
+	);
+};
 
 // --------------------------------------------------------------------------------------
 

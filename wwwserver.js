@@ -1,15 +1,17 @@
-var configuration = require('./backend/configuration/gamification').configuration,
+var config = require('./backend/configuration/gamification'),
 
     express = require("express"),
     app = express(),
 
 	  bodyParser = require("body-parser"),
+    multipart = require('connect-multiparty'),
 	  methodOverride = require("method-override"),
 	  morgan = require('morgan'),
 
     User = require('./backend/controllers/users.js'),
     passport = require('passport'),
     session = require('express-session'),
+    path = require('path'),
 
     routes = require('./backend/routes'),
     rest = require('./backend/rest');
@@ -17,6 +19,7 @@ var configuration = require('./backend/configuration/gamification').configuratio
 app.use(bodyParser.urlencoded({'extended':'true'}));
 app.use(bodyParser.json());
 app.use(bodyParser.json({type:'application/vnd.api+json'}));
+app.use(multipart({ uploadDir: path.join(__dirname, config.upload.dir), maxFilesSize: config.upload.limit }));
 app.use(methodOverride());
 app.use(morgan('dev'));
 
@@ -47,6 +50,6 @@ app.use('/bower_components', express.static('bower_components'));
 app.use('/assets', express.static('data'));
 app.use(routes);
 
-app.listen(configuration.wwwPort, function() {
-  console.log("Node server running on http://localhost:" + configuration.wwwPort);
+app.listen(config.configuration.wwwPort, function() {
+  console.log("Node server running on http://localhost:" + config.configuration.wwwPort);
 });

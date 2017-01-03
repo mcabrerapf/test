@@ -8,7 +8,7 @@
         .directive('themeAssetsView', themeAssetsViewDirective);
 
     /** @ngInject */
-    function themeAssetsViewController($scope, $mdDialog, api, $q)
+    function themeAssetsViewController($scope, $mdDialog, api, $q, Upload)
     {
         var vm = this;
         vm.theme = $scope.theme;
@@ -132,7 +132,9 @@
                             text:       result.name,
                             items: 		[], 
                             expanded: 	false, 
-                            type: 		'folder'
+                            type: 		'folder',
+                    		iconUrl: 	iconUrlByType( 'folder' ),
+                            mtime: 		result.mtime
                         }, parentNode);
                     },
                     function (error) {
@@ -142,26 +144,41 @@
             });
         };
 
-        vm.addFile = function(event) {
-        	var input = angular.element(document.querySelector('input#fileInput'));
+        vm.addFiles = function(files) {
 
-        	if (input.length) input[0].click();
+        	const 	url 	= '/api/themes/' + vm.theme._id + '/file'
+        	,		dirName	= vm.selectedItem.id
 
-        	input.bind('change', function(e) {
-        		var files = e.target.files;
-				if (files[0]) {
-            		$scope.fileName = files[0].name;
-        		} else {
-            		$scope.fileName = null;
-        		}
-        		$scope.$apply();
+			var 	parentNode = vm.tree.select();
+			if (parentNode.length == 0) parentNode = null;
+
+        	files && files.length && files.forEach(function(file){
+
+				Upload.upload({ url: url, data: { file: file, dirName: dirName } }).then(
+                    function (result) {
+                        console.log('addFiles: OK', result);
+
+                        vm.tree.append({
+                            id:  		result.data.path,
+                            text:		result.data.name,
+                            type: 		result.data.type,
+                    		iconUrl: 	iconUrlByType( result.data.type ),
+                            size: 		result.data.size,
+                            mtime: 		result.data.mtime
+                        }, parentNode);
+
+                    },
+                    function (error) {
+                        console.log('addFiles: ERROR', error);
+                    }					
+				);
+
         	});
-
         };
 
         vm.delete = function(event) {
 
-            function deleteEntryFS (selectedNode) {
+            function deleteresultFS (selectedNode) {
 
             	var item 		= vm.tree.dataItem( selectedNode )
                 ,	type 		= item.type
@@ -261,7 +278,7 @@
         };
 
         //////////
-        function dumpStructureToTreeView(dump) {
+        function iconUrlByType(type) {
         	const type2icon = {
         		'unknown': 	'file',
         		'folder': 	'folder-outline',
@@ -270,13 +287,16 @@
         		'pdf': 		'file-pdf',
         		'doc': 		'file-document'
         	};
+			return '/assets/icons/treeview/' + type2icon[ type ] + '.svg';
+        };
 
+        function dumpStructureToTreeView(dump) {
             return dump.map(function(entry){
                 var node = {
                     id: 		entry.path,
                     text: 		entry.name,
                     type: 		entry.type,
-                    iconUrl: 	'/assets/icons/treeview/' + type2icon[ entry.type ] + '.svg',
+                    iconUrl: 	iconUrlByType( entry.type ),
                     mtime: 		entry.mtime
                 };
 
