@@ -26,6 +26,10 @@
                 <div ng-if="vm.selectedItem.mtime !== undefined">Modified: {{vm.selectedItem.mtime | date}}</div>
                 <div ng-if="vm.selectedItem.size !== undefined">Size: {{vm.selectedItem.size}} bytes</div>
 
+                <img ng-if="vm.selectedItem.type == 'image'"
+                title="{{vm.selectedItem.text}}"
+                ngf-thumbnail="'/assets/themes/' + vm.theme._id + vm.selectedItem.id" />
+
                 <div>
                     <button title="New folder" ng-if="vm.selectedItem.type=='folder'"
                     ng-click="vm.addFolder($event)"><i class="icon icon-folder-plus"></i></button>
@@ -37,6 +41,7 @@
                     ng-click="vm.delete($event)"><i class="icon icon-delete"></i></button>
 
                 </div>
+
             </div>
 
         </div>
