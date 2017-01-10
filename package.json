@@ -10,8 +10,7 @@
     "gulp2": "node node_modules/gulp/bin/gulp serve"
   },
   "directories": {},
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "body-parser": "^1.15.1",
     "browser-sync": "~2.9.11",
@@ -64,6 +63,7 @@
     "lodash": "~3.10.1",
     "main-bower-files": "~2.9.0",
     "method-override": "^2.3.6",
+    "mime-types": "^2.1.13",
     "mongoose": "^4.5.0",
     "morgan": "^1.7.0",
     "node-restful": "^0.2.5",
