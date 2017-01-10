@@ -87,7 +87,7 @@
             $mdDialog.show({
                 controller         : type  + 'DialogController',
                 controllerAs       : 'vm',
-                templateUrl        : 'app/main/dialogs/' + type + '/' + type + '-dialog.html',
+                templateUrl        : ('app/main/dialogs/' + type + '/' + type + '-dialog.html').toLowerCase(),
                 parent             : angular.element(document.body),
                 targetEvent        : ev,
                 clickOutsideToClose: true,
