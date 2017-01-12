@@ -29,11 +29,8 @@
 						$scope.value = [];
 					}
 
-					$scope.params.participants = newValue.length;
+					$scope.params.participants = $scope.value.length;
 					setParamValues();
-					//$scope.params.first = newValue[0] || 0;
-					//$scope.params.last = newValue[newValue.length - 1] || 0;
-					//$scope.params.total = getTotalPoints(newValue);
 
 					$timeout(function() {
 						$scope.chart.resize();
@@ -132,11 +129,13 @@
 						data: new kendo.data.ObservableArray([])
 					}];
 
-					for(var r=0; r < $scope.value.length; r++) {
-						ret[0].data.push({
-							index: r+1,
-							value: $scope.value[r]
-						});
+					if ($scope.value !== undefined) {
+						for(var r=0; r < $scope.value.length; r++) {
+							ret[0].data.push({
+								index: r+1,
+								value: $scope.value[r]
+							});
+						}
 					}
 
 					return ret;
@@ -144,11 +143,13 @@
 
 				function generateCategoryAxisArray() {
 					var array = [];
-					array.push(1);
-					for(var r=1; r < $scope.value.length - 1; r++) {
-						array.push(undefined);
+					if ($scope.value !== undefined) {
+						array.push(1);
+						for(var r=1; r < $scope.value.length - 1; r++) {
+							array.push(undefined);
+						}
+						array.push($scope.value.length);
 					}
-					array.push($scope.value.length);
 					return array;
 				}
 
