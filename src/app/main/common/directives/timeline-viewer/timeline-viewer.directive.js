@@ -137,7 +137,9 @@
                         item.end = vis.moment(item.start).add(1, 'days');
                     }
                 }
+                item.type = item.dataType;
                 timelineService.saveItem(item).then(function() {
+                    delete item.type;
                     callback(item);
                 });
             },
@@ -217,7 +219,7 @@
         $scope.$on('initTimeline', resize);
         resize();
     }
-    
+
     
     /** @ngInject */
     function timelineViewerDirective()

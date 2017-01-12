@@ -98,14 +98,14 @@
                 </md-tab-body>
             </md-tab>
 
-            <!-- Premios -->
-            <md-tab md-on-select="vm.sendInitMessage($event, 'initTreeMapViewer')">
+            <!-- Carga de datos -->
+            <md-tab ng-if="vm.game.status!=='En definición'">
                 <md-tab-label>
-                    <span translate="GAMES.PREMIOS">Premios</span>
+                    <span translate="GAMES.CARGADATOS">Carga datos</span>
                 </md-tab-label>
 
-                <md-tab-body class="TreeMapViewerWrapper">
-                    <treemap-viewer></tremap-viewer>
+                <md-tab-body>
+                    <div>Permite cargar EXCELS con los datos de los KPI's para las distintas ETAPAS (solo si la partida está en ejecución)</div>
                 </md-tab-body>
             </md-tab>
 
@@ -116,7 +116,18 @@
                 </md-tab-label>
 
                 <md-tab-body>
-                    <div>Visor de resultados (solo si la partida está en ejecución</div>
+                    <div>Visor de resultados (solo si la partida está en ejecución)</div>
+                </md-tab-body>
+            </md-tab>
+
+            <!-- Premios -->
+            <md-tab md-on-select="vm.sendInitMessage($event, 'initTreeMapViewer')">
+                <md-tab-label>
+                    <span translate="GAMES.PREMIOS">Premios</span>
+                </md-tab-label>
+
+                <md-tab-body class="TreeMapViewerWrapper">
+                    <treemap-viewer></tremap-viewer>
                 </md-tab-body>
             </md-tab>
 
