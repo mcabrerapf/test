@@ -33,36 +33,34 @@
         }
 
 
+        
         /**
          * Add new item
          */
         function addNew(item)
         {
-            service.timeline.push(item);
+            return dataService.addTimeline(item);
         }
 
         /**
          * Save item
          */
         function saveItem(item) {
-            var idx = findItemIndex(item._id);
-            if (idx === undefined) return;
-            service.timeline[idx] = angular.copy(item);
+            return dataService.updateTimeline(item);
         }
 
         /**
          * Delete item
          */
         function deleteItem(item) {
-            var idx = findItemIndex(item._id);
-            service.timeline.splice(idx, 1);
+            return dataService.removeTimeline(item);
         }
 
         /**
          * Save
          */
         function save() {
-            return dataService.saveTimeline(service.timeline);
+            console.log('save ...??');
         }
 
 

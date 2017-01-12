@@ -199,6 +199,14 @@
             remove: 			{ method: 'DELETE',	params: {},	isArray: false },
         });
 
+        // THEMES.TIMELINE
+        api.themes.timeline = $resource(api.baseUrl + 'themes/:id/timeline/:timeline', {}, {
+            find: {method: 'GET', params: {}, isArray: true},
+            findOne: {method: 'GET', params: {}, isArray: false},
+            save: {method: 'POST', params: {}, isArray: false},
+            update: {method: 'PUT', params: {}, isArray: false},
+            remove: {method: 'DELETE', params: {}, isArray: false}
+        });
 
         // THEMES.FOLDER
         api.themes.folder = $resource(api.baseUrl + 'themes/:id/folder', {}, {
@@ -228,8 +236,17 @@
         });
 
 
-        // KPIs
+        // GAMES.KPIs
         api.games.kpis = $resource(api.baseUrl + 'games/:id/kpis/:kpi', {}, {
+            find: {method: 'GET', params: {}, isArray: true},
+            findOne: {method: 'GET', params: {}, isArray: false},
+            save: {method: 'POST', params: {}, isArray: false},
+            update: {method: 'PUT', params: {}, isArray: false},
+            remove: {method: 'DELETE', params: {}, isArray: false}
+        });
+
+        // GAMES.TIMELINE
+        api.games.timeline = $resource(api.baseUrl + 'games/:id/timeline/:timeline', {}, {
             find: {method: 'GET', params: {}, isArray: true},
             findOne: {method: 'GET', params: {}, isArray: false},
             save: {method: 'POST', params: {}, isArray: false},

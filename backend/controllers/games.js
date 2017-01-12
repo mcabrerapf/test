@@ -6,7 +6,6 @@
 
 var accessLevel 		= require('../configuration/gamification').accessLevels;
 var common              = require('../controllers/common');
-var Games               = require('../database/database').models['game'];
 
 module.exports = {
 

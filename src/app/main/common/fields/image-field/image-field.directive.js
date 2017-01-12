@@ -51,6 +51,8 @@
 
 
 				function show(mode) {
+					$scope.onSelectImage = false;
+					
                     // $http.get('app/main/common/fields/image-field/image-field-' + mode + '.html', {cache: $templateCache}).success(function(html) {
                     $http.get('app/main/common/fields/image-field/image-field.html', {cache: $templateCache}).success(function(html) {
                         generateElement(html);
@@ -67,6 +69,7 @@
 					'doc': 		'file-document'
 				};
 
+/*
 				function getTreeViewData(folderData) {
 
 					return folderData.map(function(entry){
@@ -89,29 +92,19 @@
 						return node;
 					});
 				}
+*/
+
+				$scope.cancelChange = function() {
+					$scope.onSelectImage = false;
+				};
+
 
                 $scope.changeImage = function() {
 
 					api.themes.folder.list({id: $scope.id}, function(folderData) {
 
 						$scope.folderTree = folderData;
-						$scope.treeView = {
-
-							options: {
-								dataImageUrlField: "iconUrl",
-								dragAndDrop: false,
-								select: function(event) {
-									$scope.$apply(function() {
-										$scope.selectedItem = $scope.tree.dataItem( event.node );
-										console.log('selected:', event.node);
-									});
-								},
-								navigate: function(event) {
-									console.log('navigate:', event.node);
-								}
-							},
-							dataSource: new kendo.data.ObservableArray(getTreeViewData(folderData))
-						};
+						$scope.currentFolder = folderData;
 
 						$scope.onSelectImage = true;
 					});

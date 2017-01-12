@@ -7,13 +7,34 @@
         <div class="selector" translate="IMAGE.SELECTIMAGE" ng-click="changeImage($event)"></div>
     </div>
 
-    <div ng-show="onSelectImage">
+    <div ng-show="onSelectImage" class="file-viewer">
 
+        <div class="file-viewer-header">Current path</div>
+        
+        <ul ms-scroll>
+            <li ng-repeat="item in currentFolder">
+                <span>{{item.name}}</span>
+            </li>
+        </ul>
+
+        <div class="file-viewer-actions">
+            <md-button  translate="FORMS.SELECT"
+                        aria-label="FORMS.SELECT"
+                        translate-attr-aria-label="FORMS.SELECT"></md-button>
+
+            <md-button  translate="FORMS.CANCEL"
+                        aria-label="FORMS.CANCEL"
+                        translate-attr-aria-label="FORMS.CANCEL"
+                        ng-click="cancelChange()"></md-button>
+        </div>
+
+        <!--
         <div kendo-tree-view="tree"
              k-options="treeView.options"
              k-data-source="treeView.dataSource">
         </div>
-
+        -->
+        
     </div>
 
 </md-input-container>
