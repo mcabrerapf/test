@@ -7,7 +7,7 @@
         .directive('imageField', imageFieldDirective);
 
     /** @ngInject */
-    function imageFieldDirective($compile, $http, $templateCache)
+    function imageFieldDirective($compile, $http, $templateCache, api)
     {
         return {
             restrict: 'E',
@@ -51,7 +51,8 @@
 
 
 				function show(mode) {
-
+					$scope.onSelectImage = false;
+					
                     // $http.get('app/main/common/fields/image-field/image-field-' + mode + '.html', {cache: $templateCache}).success(function(html) {
                     $http.get('app/main/common/fields/image-field/image-field.html', {cache: $templateCache}).success(function(html) {
                         generateElement(html);
@@ -59,9 +60,54 @@
 				};
 
 
+				const type2icon = {
+					'unknown': 	'file',
+					'folder': 	'folder-outline',
+					'image': 	'file-image',
+					'html': 	'file-xml',
+					'pdf': 		'file-pdf',
+					'doc': 		'file-document'
+				};
+
+/*
+				function getTreeViewData(folderData) {
+
+					return folderData.map(function(entry){
+
+						var node = {
+							id: 		entry.path,
+							text: 		entry.name,
+							type: 		entry.type,
+							iconUrl: 	'/assets/icons/treeview/' + type2icon[entry.type] + '.svg',
+							mtime: 		entry.mtime
+						};
+
+						if (entry.type == 'folder') {
+							node.expanded   = true;
+							node.items      = getTreeViewData(entry.contents);
+						} else {
+							node.size		= entry.size;
+						};
+
+						return node;
+					});
+				}
+*/
+
+				$scope.cancelChange = function() {
+					$scope.onSelectImage = false;
+				};
+
+
                 $scope.changeImage = function() {
 
-                    alert('change image');
+					api.themes.folder.list({id: $scope.id}, function(folderData) {
+
+						$scope.folderTree = folderData;
+						$scope.currentFolder = folderData;
+
+						$scope.onSelectImage = true;
+					});
 
                 }
             }

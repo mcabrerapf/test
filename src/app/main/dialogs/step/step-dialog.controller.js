@@ -16,12 +16,8 @@
         vm.step = angular.copy(Element);
         vm.newStep = false;
 
-        if ( !vm.step )
-        {
-            vm.step = {
-                title: '',
-                type: 'Step',
-                start: new Date(),
+        if ( vm.step._id === undefined ) {
+            angular.extend(vm.step, {
                 data: {
                     description: '',
                     location: {
@@ -31,7 +27,7 @@
                     },
                     images: undefined
                 }
-            };
+            });
 
             vm.TITLEKEY = 'STEP.NEW_TITLE';
             vm.newStep = true;
@@ -49,9 +45,8 @@
          */
         function addNew() {
 
-            timelineService.addNew(vm.step);
-            timelineService.save().then(function() {
-                closeDialog();
+            timelineService.addNew(vm.step).then(function(response) {
+                closeDialog(response);
             });
         }
 
@@ -60,9 +55,8 @@
          */
         function saveStep() {
 
-            timelineService.saveItem(vm.step);
-            timelineService.save().then(function() {
-                closeDialog();
+            timelineService.saveItem(vm.step).then(function(response) {
+                closeDialog(response);
             });
         }
 
@@ -70,9 +64,9 @@
         /**
          * Close dialog
          */
-        function closeDialog()
+        function closeDialog(retValue)
         {
-            $mdDialog.hide(vm.step);
+            $mdDialog.hide(retValue);
         }
 
     }

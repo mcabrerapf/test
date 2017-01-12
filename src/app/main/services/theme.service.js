@@ -14,7 +14,9 @@
             getTheme: getTheme,
             rename: rename,
             getTimeline: getTimeline,
-            saveTimeline: saveTimeline,
+            addTimeline: addTimeline,
+            removeTimeline: removeTimeline,
+            updateTimeline: updateTimeline,
             remove: remove
         };
 
@@ -56,18 +58,23 @@
 
         
         /**
-         * Save timeline
+         * addTimeline
          */
-        function saveTimeline(timeline) {
+        function addTimeline(item) {
 
             if (service.theme === undefined) return $q.reject();
             var def = $q.defer();
 
-            api.themes.update({id: service.theme._id}, {timeline: timeline},
+            api.themes.timeline.save({id: service.theme._id}, item,
                 function(response) {
-                    service.theme.timeline = response.timeline;
+
+                    delete response.$promise;
+                    delete response.$resolved;
+                    
+                    service.theme.timeline.push(response);
+
                     showOk();
-                    def.resolve();
+                    def.resolve(response);
                 },
                 function(error) {
                     showError(error);
@@ -78,6 +85,75 @@
             return def.promise;
         }
 
+        /**
+         * removeTimeline
+         */
+        function removeTimeline(item) {
+
+            if (service.theme === undefined) return $q.reject();
+            var def = $q.defer();
+
+            var id = item._id;
+
+            api.themes.timeline.remove({
+
+                    id: service.theme._id,
+                    timeline: id
+                
+                }, 
+                function(response) {
+
+                    var idx = findItemIndex(id, service.theme.timeline);
+                    if (idx !== undefined) service.theme.timeline.splice(idx, 1);
+
+                    showOk();
+                    def.resolve(response);
+                },
+                function(error) {
+                    showError(error);
+                    def.reject(error);
+                }
+            );
+
+            return def.promise;
+        }
+
+        /**
+         * updateTimeline
+         */
+        function updateTimeline(item) {
+
+            if (service.theme === undefined) return $q.reject();
+            var def = $q.defer();
+
+            var id = item._id;
+
+            api.themes.timeline.update({
+
+                    id: service.theme._id,
+                    timeline: id
+                
+                }, item,
+
+                function(response) {
+
+                    delete response.$promise;
+                    delete response.$resolved;
+
+                    var timeline = findItemById(id, service.theme.timeline);
+                    angular.extend(timeline, response);
+
+                    showOk();
+                    def.resolve(response);
+                },
+                function(error) {
+                    showError(error);
+                    def.reject(error);
+                }
+            );
+
+            return def.promise;
+        }
 
 
         /**
@@ -149,6 +225,19 @@
                         .position('top right')
                         //.toastClass('md-warn-bg')
             );
+        }
+
+        function findItemIndex(id, collection) {
+            for(var r=0; r < collection.length; r++) {
+                if (collection[r]._id.toString() === id) return r;
+            }
+            return undefined;
+        }
+
+        function findItemById(id, collection) {
+            var idx = findItemIndex(id, collection);
+            if (idx === undefined) return undefined;
+            return collection[idx];
         }
     }
 

@@ -16,12 +16,8 @@
         vm.goal = angular.copy(Element);
         vm.newItem = false;
 
-        if ( !vm.goal )
-        {
-            vm.goal = {
-                title: '',
-                type: 'Goal',
-                start: new Date(),
+        if ( vm.goal._id === undefined ) {
+            angular.extend(vm.goal, {
                 data: {
                     description: '',
                     type: 'Money',
@@ -31,7 +27,7 @@
                         distributionTable: []
                     }
                 }
-            };
+            });
 
             vm.TITLEKEY = 'GOAL.NEW_TITLE';
             vm.newItem = true;
@@ -49,9 +45,8 @@
          */
         function addNew() {
 
-            timelineService.addNew(vm.goal);
-            timelineService.save().then(function() {
-                closeDialog();
+            timelineService.addNew(vm.goal).then(function(response) {
+                closeDialog(response);
             });
         }
 
@@ -60,9 +55,8 @@
          */
         function saveItem() {
 
-            timelineService.saveItem(vm.goal);
-            timelineService.save().then(function() {
-                closeDialog();
+            timelineService.saveItem(vm.goal).then(function(response) {
+                closeDialog(response);
             });
         }
 
@@ -70,9 +64,9 @@
         /**
          * Close dialog
          */
-        function closeDialog()
+        function closeDialog(retValue)
         {
-            $mdDialog.hide(vm.goal);
+            $mdDialog.hide(retValue);
         }
 
     }

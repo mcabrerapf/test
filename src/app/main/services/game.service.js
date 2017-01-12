@@ -17,7 +17,9 @@
             removeKpi: removeKpi,
             updateKpi: updateKpi,
             getTimeline: getTimeline,
-            saveTimeline: saveTimeline,
+            addTimeline: addTimeline,
+            removeTimeline: removeTimeline,
+            updateTimeline: updateTimeline,
             saveBudget: saveBudget,
             remove: remove
         };
@@ -61,18 +63,93 @@
 
 
         /**
-         * Save timeline
+         * addTimeline
          */
-        function saveTimeline(timeline) {
+        function addTimeline(item) {
 
             if (service.game === undefined) return $q.reject();
             var def = $q.defer();
 
-            api.games.update({id: service.game._id}, {timeline: timeline},
+            api.games.timeline.save({id: service.game._id}, item,
                 function(response) {
-                    service.game.timeline = response.timeline;
+
+                    delete response.$promise;
+                    delete response.$resolved;
+                    
+                    service.game.timeline.push(response);
+
                     showOk();
-                    def.resolve();
+                    def.resolve(response);
+                },
+                function(error) {
+                    showError(error);
+                    def.reject(error);
+                }
+            );
+
+            return def.promise;
+        }
+
+        /**
+         * removeTimeline
+         */
+        function removeTimeline(item) {
+
+            if (service.game === undefined) return $q.reject();
+            var def = $q.defer();
+
+            var id = item._id;
+
+            api.games.timeline.remove({
+
+                    id: service.game._id,
+                    timeline: id
+                
+                }, 
+                function(response) {
+
+                    var idx = findItemIndex(id, service.game.timeline);
+                    if (idx !== undefined) service.game.timeline.splice(idx, 1);
+
+                    showOk();
+                    def.resolve(response);
+                },
+                function(error) {
+                    showError(error);
+                    def.reject(error);
+                }
+            );
+
+            return def.promise;
+        }
+
+        /**
+         * updateTimeline
+         */
+        function updateTimeline(item) {
+
+            if (service.game === undefined) return $q.reject();
+            var def = $q.defer();
+
+            var id = item._id;
+
+            api.games.timeline.update({
+
+                    id: service.game._id,
+                    timeline: id
+                
+                }, item,
+
+                function(response) {
+
+                    delete response.$promise;
+                    delete response.$resolved;
+
+                    var timeline = findItemById(id, service.game.timeline);
+                    angular.extend(timeline, response);
+
+                    showOk();
+                    def.resolve(response);
                 },
                 function(error) {
                     showError(error);
@@ -205,26 +282,26 @@
         /**
          * updateKpi
          */
-        function updateKpi(kpi) {
+        function updateKpi(item) {
 
             if (service.game === undefined) return $q.reject();
             var def = $q.defer();
 
-            var id = kpi._id;
+            var id = item._id;
 
             api.games.kpis.update({
 
                     id: service.game._id,
                     kpi: id
                 
-                }, kpi,
+                }, item,
 
                 function(response) {
 
                     delete response.$promise;
                     delete response.$resolved;
 
-                    kpi = findItemById(id, service.game.kpis);
+                    var kpi = findItemById(id, service.game.kpis);
                     angular.extend(kpi, response);
 
                     showOk();

@@ -16,17 +16,14 @@
         vm.post = angular.copy(Element);
         vm.newItem = false;
 
-        if ( !vm.post )
+        if ( vm.post._id === undefined )
         {
-            vm.post = {
-                title: '',
-                type: 'Post',
-                start: new Date(),
+            angular.extend(vm.post, {
                 data: {
                     description: '',
                     body: ''
                 }
-            };
+            });
 
             vm.TITLEKEY = 'POST.NEW_TITLE';
             vm.newItem = true;
@@ -44,9 +41,8 @@
          */
         function addNew() {
 
-            timelineService.addNew(vm.post);
-            timelineService.save().then(function() {
-                closeDialog();
+            timelineService.addNew(vm.post).then(function(response) {
+                closeDialog(response);
             });
         }
 
@@ -55,9 +51,8 @@
          */
         function saveItem() {
 
-            timelineService.saveItem(vm.post);
-            timelineService.save().then(function() {
-                closeDialog();
+            timelineService.saveItem(vm.post).then(function(response) {
+                closeDialog(response);
             });
         }
 
@@ -65,9 +60,9 @@
         /**
          * Close dialog
          */
-        function closeDialog()
+        function closeDialog(retValue)
         {
-            $mdDialog.hide(vm.post);
+            $mdDialog.hide(retValue);
         }
 
     }

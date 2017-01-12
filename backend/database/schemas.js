@@ -37,7 +37,11 @@ var step = {
         longitud: {type: Number, required: false},
         latitud: {type: Number, required: false}
     },
-    images: {type: Schema.Types.Mixed, required: false}
+    images: {type: Schema.Types.Mixed, required: false},
+    // reparte premio?
+    // a quantos? (que budget)
+    // reparte regularidad ?
+    // a quantos?
 };
 
 var notification = {
@@ -126,6 +130,82 @@ var team = {
 }
 
 
+var kpiDataLoaded = {
+
+    "58775bb9f57de40261f48021": {   // e1
+        "ventas": {
+            "j1": 80,
+            "j2": 60,
+            "j3": 40,
+            "j4": 60,
+            "j5": 22
+        },
+        "objetivo": {
+            "j1": 400,
+            "j2": 300,
+            "j3": 400,
+            "j4": 200,
+            "j5": 100
+        },
+        "llamadas": {
+            "j1": 0,
+            "j2": 1,
+            "j3": 0,
+            "j4": 2,
+            "j5": 3
+        }
+    },
+
+    "58775bbef57de40261f48022": {   // e2
+        "ventas": {
+            "j1": null,
+            "j2": null,
+            "j3": null,
+            "j4": null,
+            "j5": null
+        },
+        "objetivo": {
+            "j1": 400,
+            "j2": 300,
+            "j3": 400,
+            "j4": 200,
+            "j5": 100
+        },
+        "llamadas": {
+            "j1": null,
+            "j2": null,
+            "j3": null,
+            "j4": null,
+            "j5": null
+        }
+    },
+
+    "58775bc4f57de40261f48023": {   // e3
+        "ventas": {
+            "j1": null,
+            "j2": null,
+            "j3": null,
+            "j4": null,
+            "j5": null
+        },
+        "objetivo": {
+            "j1": 400,
+            "j2": 300,
+            "j3": 400,
+            "j4": 200,
+            "j5": 100
+        },
+        "llamadas": {
+            "j1": null,
+            "j2": null,
+            "j3": null,
+            "j4": null,
+            "j5": null
+        }
+    }
+}
+
+
 
 var schemas = {
 
@@ -144,7 +224,10 @@ var schemas = {
         players:                [ player, { _id: true }],
         teams:                  [ team, { _id: true }],
         kpis:                   [ kpi, { _id: true }],
-        results:                { type: Schema.Types.Mixed, required: false }
+        kpiData:                { type: Schema.Types.Mixed, required: false },
+        results:                { type: Schema.Types.Mixed, required: false },
+        winners:                { type: Schema.Types.Mixed, required: false }
+
     },
 
     'distribution': {   // de reparto de puntos y premios

@@ -12,6 +12,7 @@
 		"EDIT": "Editar",
 		"OK": "Ok",
 		"APPLY": "Aplicar",
+		"SELECT": "Seleccionar",
 		"DELETECONFIRMATION": {
 			"TITLE": "Estás seguro de que deseas eliminar este registro?",
 			"DETAIL": "<b>Este elemento</b> será eliminado permanentemente.",

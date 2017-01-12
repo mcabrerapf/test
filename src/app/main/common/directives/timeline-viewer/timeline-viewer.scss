@@ -1,23 +1,6 @@
 .timeline {
 
-    position: absolute;
-    top: 1px;
-    left: 0;
-    right: 0;
-    bottom: 24px;
-
-    &:before {
-        display: block;
-        position: absolute;
-        z-index: 10;
-        content: "";
-        width: 2px;
-        background: rgba(0, 0, 0, 0.08);
-        top: 0;
-        left: 50%;
-        bottom: 0;
-        margin-left: -1px;
-    }
+    
 
     .ms-timeline {
 
@@ -25,13 +8,6 @@
         list-style: none;
         z-index: 20;
 
-        .dndPlaceholder {
-            height: 1px;
-            border-style: dotted;
-            border-width: 0 0 2px 0;
-            border-color: material-color('light-blue');
-            margin: 0;
-        }
 
         .ms-timeline-item {
 
