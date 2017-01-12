@@ -130,29 +130,23 @@ var team = {
 }
 
 
-var kpiDataLoaded = {
+var kpiData = {
 
     "58775bb9f57de40261f48021": {   // e1
-        "ventas": {
-            "j1": 80,
-            "j2": 60,
-            "j3": 40,
-            "j4": 60,
-            "j5": 22
-        },
-        "objetivo": {
-            "j1": 400,
-            "j2": 300,
-            "j3": 400,
-            "j4": 200,
-            "j5": 100
-        },
+
         "llamadas": {
             "j1": 0,
             "j2": 1,
             "j3": 0,
             "j4": 2,
             "j5": 3
+        },
+        "cumplimiento": {
+            "j1": null,
+            "j2": null,
+            "j3": null,
+            "j4": null,
+            "j5": null
         }
     },
 
@@ -172,6 +166,13 @@ var kpiDataLoaded = {
             "j5": 100
         },
         "llamadas": {
+            "j1": null,
+            "j2": null,
+            "j3": null,
+            "j4": null,
+            "j5": null
+        },
+        "cumplimiento": {
             "j1": null,
             "j2": null,
             "j3": null,
@@ -201,7 +202,20 @@ var kpiDataLoaded = {
             "j3": null,
             "j4": null,
             "j5": null
+        },
+        "cumplimiento": {           // NOTA! ESTOS VALORES SE CALCULAN A PARTIR DE LA CARGA DE LOS OTROS KPIS
+            "j1": 0.2,
+            "j2": 0.2,
+            "j3": 0.1,
+            "j4": 0.25,
+            "j5": 0.22
         }
+    },
+
+    "reto1": {},
+
+    "total": {
+
     }
 }
 
@@ -225,7 +239,7 @@ var schemas = {
         teams:                  [ team, { _id: true }],
         kpis:                   [ kpi, { _id: true }],
         kpiData:                { type: Schema.Types.Mixed, required: false },
-        results:                { type: Schema.Types.Mixed, required: false },
+        points:                 { type: Schema.Types.Mixed, required: false },
         winners:                { type: Schema.Types.Mixed, required: false }
 
     },
