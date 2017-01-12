@@ -204,7 +204,6 @@
 
 
         function resize() {
-
             var $Parent = $element.parents('.md-no-scroll').eq(0);
             var PosY = $element.offset().top;
             var SpaceLeft = $Window.height() - PosY;
@@ -217,10 +216,8 @@
         $Window.on('resize', resize);
         $scope.$on('initTimeline', resize);
         resize();
-
-
-
     }
+    
     
     /** @ngInject */
     function timelineViewerDirective()

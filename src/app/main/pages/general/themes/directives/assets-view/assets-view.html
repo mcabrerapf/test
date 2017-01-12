@@ -22,19 +22,61 @@
                     {{vm.selectedItem.text}}
                 </div>
 
-                <div>Path: {{vm.selectedItem.id}}</div>
-                <div ng-if="vm.selectedItem.mtime !== undefined">Modified: {{vm.selectedItem.mtime | date}}</div>
-                <div ng-if="vm.selectedItem.size !== undefined">Size: {{vm.selectedItem.size}} bytes</div>
+                <div><span translate="ASSETS.PROPERTY.PATH" />: {{vm.selectedItem.id}}</div>
+                <div ng-if="vm.selectedItem.mtime !== undefined"><span translate="ASSETS.PROPERTY.MODIFIED" />: {{vm.selectedItem.mtime | date}}</div>
+                <div ng-if="vm.selectedItem.size !== undefined"><span translate="ASSETS.PROPERTY.SIZE" />: {{vm.selectedItem.size}} bytes</div>
+
+                <div ng-switch on="vm.selectedItem.type">
+                    <img ng-switch-when="image" title="{{vm.selectedItem.text}}"
+                    ngf-thumbnail="vm.fileUrl(vm.selectedItem.id)" />
+
+                    <audio ng-switch-when="audio" title="{{vm.selectedItem.text}}" controls
+                    ngf-src="vm.fileUrl(vm.selectedItem.id)" />
+
+                    <video ng-switch-when="video" title="{{vm.selectedItem.text}}" controls
+                    ngf-src="vm.fileUrl(vm.selectedItem.id)" />
+                </div>
 
                 <div>
-                    <button title="New folder" ng-if="vm.selectedItem.type=='folder'" ng-click="vm.addFolder($event)"><i class="icon icon-folder-plus"></i></button>
+                    <md-button  ng-if="vm.selectedItem.type=='folder'"
+                                ng-click="vm.addFolder($event)"
+                                class="md-icon-button"
+                                aria-label="new folder" translate
+                                translate-attr-aria-label="ASSETS.ACTION.NEW_FOLDER">
+                        <md-tooltip><span translate="ASSETS.ACTION.NEW_FOLDER" /></md-tooltip>
+                        <md-icon md-font-icon="icon-folder-plus" class="md-default-theme"></md-icon>
+                    </md-button>
 
-                    <input class="ng-hide" id="fileInput" multiple type="file" />
-                    <button title="New file" ng-if="vm.selectedItem.type=='folder'" ng-click="vm.addFile($event)"><i class="icon icon-upload"></i></button>
+                    <md-button  ng-if="vm.selectedItem.type=='folder'"
+                                ngf-select="vm.addFiles($files)" multiple
+                                class="md-icon-button"
+                                aria-label="upload file" translate
+                                translate-attr-aria-label="ASSETS.ACTION.UPLOAD_FILE">
+                        <md-tooltip><span translate="ASSETS.ACTION.UPLOAD_FILE" /></md-tooltip>
+                        <md-icon md-font-icon="icon-upload" class="md-default-theme"></md-icon>
+                    </md-button>
 
-                    <button title="Delete" ng-if="vm.selectedItem && vm.selectedItem.id != '/'" ng-click="vm.delete($event)"><i class="icon icon-delete"></i></button>
+                    <md-button  ng-if="vm.selectedItem.type!='folder'"
+                                ng-click="vm.downloadFile($event)"
+                                class="md-icon-button"
+                                aria-label="download file" translate
+                                translate-attr-aria-label="ASSETS.ACTION.DOWNLOAD_FILE">
+                        <md-tooltip><span translate="ASSETS.ACTION.DOWNLOAD_FILE" /></md-tooltip>
+                        <md-icon md-font-icon="icon-download" class="md-default-theme"></md-icon>
+
+                    </md-button>
+
+                    <md-button  ng-if="vm.selectedItem && vm.selectedItem.id != '/'"
+                                ng-click="vm.delete($event)"
+                                class="md-icon-button"
+                                aria-label="delete" translate
+                                translate-attr-aria-label="ASSETS.ACTION.DELETE">
+                        <md-tooltip><span translate="ASSETS.ACTION.DELETE" /></md-tooltip>
+                        <md-icon md-font-icon="icon-delete" class="md-default-theme"></md-icon>
+                    </md-button>
 
                 </div>
+
             </div>
 
         </div>

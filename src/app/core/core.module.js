@@ -12,6 +12,7 @@
                 'ngResource',
                 'ngSanitize',
                 'ngMaterial',
+                'ngFileUpload',
                 'pascalprecht.translate',
                 'ui.router',
                 'kaldeera.forms',

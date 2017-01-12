@@ -15,7 +15,7 @@ module.exports = {
         { path: 'folder.post',      middleware: filesystem.createSubFolder, detail: true },
 		{ path: 'folder.delete',	middleware: filesystem.deleteFolder,	detail: true },
 
-        //{ path: 'file.post',      	middleware: filesystem.createSubFolder, detail: true },
+        { path: 'file.post',      	middleware: filesystem.uploadFile,		detail: true },
 		{ path: 'file.put',			middleware: filesystem.renameEntryFS,	detail: true },
 		{ path: 'file.delete',		middleware: filesystem.deleteFile,		detail: true },
     	

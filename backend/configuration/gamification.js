@@ -15,3 +15,8 @@ exports.accessLevels = {
 exports.paths = {
   dataDir: '../../../data'
 }
+
+exports.upload = {
+  dir: 'data/.upload',
+  limit: '600mb'
+}
