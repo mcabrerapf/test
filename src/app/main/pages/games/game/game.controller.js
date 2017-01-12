@@ -21,7 +21,7 @@
         vm.gotoGames = gotoGames;
         vm.deleteConfirm = deleteConfirm;
         vm.renameGame = renameGame;
-        vm.initBudgetManager = initBudgetManager;
+        vm.sendInitMessage = sendInitMessage;
 
 
         init();
@@ -89,9 +89,9 @@
         /**
          * Advice to treemap-viewer directive
          */
-        function initBudgetManager($event) {
+        function sendInitMessage($event, eventName) {
 
-            $rootScope.$broadcast('initTreeMapViewer');
+            $rootScope.$broadcast(eventName);
         }
     }
 })();

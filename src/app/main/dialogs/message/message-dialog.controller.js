@@ -16,18 +16,14 @@
         vm.message = angular.copy(Element);
         vm.newItem = false;
 
-        if ( !vm.message )
-        {
-            vm.message = {
-                title: '',
-                type: 'Message',
-                start: new Date(),
+        if ( vm.message._id === undefined ) {
+            angular.extend(vm.message, {
                 data: {
                     to: '',
                     subject: '',
                     body: ''
                 }
-            };
+            });
 
             vm.TITLEKEY = 'MESSAGE.NEW_TITLE';
             vm.newItem = true;
@@ -46,9 +42,8 @@
         function addNew() {
 
             vm.message.title = vm.message.data.subject;
-            timelineService.addNew(vm.message);
-            timelineService.save().then(function() {
-                closeDialog();
+            timelineService.addNew(vm.message).then(function(response) {
+                closeDialog(response);
             });
         }
 
@@ -58,9 +53,8 @@
         function saveItem() {
 
             vm.message.title = vm.message.data.subject;
-            timelineService.saveItem(vm.message);
-            timelineService.save().then(function() {
-                closeDialog();
+            timelineService.saveItem(vm.message).then(function(response) {
+                closeDialog(response);
             });
         }
 
@@ -68,9 +62,9 @@
         /**
          * Close dialog
          */
-        function closeDialog()
+        function closeDialog(retValue)
         {
-            $mdDialog.hide(vm.message);
+            $mdDialog.hide(retValue);
         }
 
     }

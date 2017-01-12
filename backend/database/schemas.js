@@ -3,8 +3,8 @@
 var Schema = require('mongoose').Schema;
 
 var kpi = {
-    id: {type: String, required: true, unique: true},
-    name: {type: String, required: true},
+    id:   {type: String, required: true, unique: true },
+    name: {type: String, required: true, unique: true },
     type: {type: String, required: true, enum: ['calculated', 'loaded']},
     calculated: {
         numerator: {type: String, required: true},        // id del KPI que se utilizará para el cálculo
@@ -16,17 +16,12 @@ var kpi = {
     comments: {type: String, required: false},
     definition: {type: String, required: false},
     displayformat: {type: String, required: false, default: '#.##0,0'},
-    thumbnail: {type: String, required: false, default: ''},
     negative: {type: Boolean, required: true, default: false},
     minvalue: {type: Number, required: false},
-    ranking: {
-        type: {
-            type: String,
-            required: true,
-            enum: ['No ranking', 'Niveles de ranking', 'Esquema de puntos', 'Formula']
-        },
+    score: {
+        type: { type: String, required: true, enum: ['no', 'levels', 'distribution', 'formula'] },
         formula: {type: String, required: false, default: ''},
-        esquema: {type: String, required: false},       // id del esquema de puntos que aplica
+        distribution:  [ Number ],
         levels: {
             upLevelPoints: {type: Number, required: false},
             downLevelPoints: {type: Number, required: false},
@@ -42,7 +37,11 @@ var step = {
         longitud: {type: Number, required: false},
         latitud: {type: Number, required: false}
     },
-    images: {type: Schema.Types.Mixed, required: false}
+    images: {type: Schema.Types.Mixed, required: false},
+    // reparte premio?
+    // a quantos? (que budget)
+    // reparte regularidad ?
+    // a quantos?
 };
 
 var notification = {
@@ -52,6 +51,8 @@ var notification = {
 
 var goal = {
     description:    { type: String, required: false },
+    body:           { type: String, required: false },
+    slider:         { type: String, required: false },
     notifications:  [ notification, { _id: true }],
     metric:         { type: String, required: true },                       // id de la métrica a la que va asociada el reto
     winmessage:     { type: String, required: false },
@@ -82,6 +83,7 @@ var message = {
 
 var post = {
     description:    { type: String, required: false },
+    slider:         { type: String, required: false },
     body:           { type: String, required: true }
 };
 
@@ -89,6 +91,7 @@ var timelineevent = {
     title:                      { type: String, required: true },
     type:                       { type: String, required: true, enum: ['Step', 'Goal', 'Message', 'Post', 'Quiz', 'Game']},
     start:                      { type: Date, required: true },
+    end:                        { type: Date, required: false },
     data:                       { type: Schema.Types.Mixed, required: true }
 };
 
@@ -96,7 +99,7 @@ var timelineevent = {
 var level = {
     name: {type: String, required: true},
     thumbnail: {type: String, required: false},
-    position: {type: Number, required: true},
+    position: {type: Number, required: true},           // posición en el ranking semanal necesario para conseguir este nivel
     description: {type: String, required: false}
     // data??
 };
@@ -114,7 +117,7 @@ var player = {
         accepted: {type: Boolean, required: true, default: false},
         date: {type: Date, required: false}
     },
-    team: {type: String, required: false}       // id del team
+    team: {type: String, required: false}                           // id del team
 };
 
 
@@ -122,14 +125,86 @@ var player = {
 var team = {
     name: {type: String, required: true},
     alias: {type: String, required: false},
-    admin: {type: String, required: true},      // id d'usuari
-    parent: {type: String, required: false, default: ''}         // id del team superior
+    admin: {type: String, required: true},                              // id d'usuari
+    parent: {type: String, required: false, default: ''}                // id del team superior
 }
 
-var code = {
-    sellerCode: {type: String, required: true},
-    teamLeader: {type: String, required: false}
+
+var kpiDataLoaded = {
+
+    "58775bb9f57de40261f48021": {   // e1
+        "ventas": {
+            "j1": 80,
+            "j2": 60,
+            "j3": 40,
+            "j4": 60,
+            "j5": 22
+        },
+        "objetivo": {
+            "j1": 400,
+            "j2": 300,
+            "j3": 400,
+            "j4": 200,
+            "j5": 100
+        },
+        "llamadas": {
+            "j1": 0,
+            "j2": 1,
+            "j3": 0,
+            "j4": 2,
+            "j5": 3
+        }
+    },
+
+    "58775bbef57de40261f48022": {   // e2
+        "ventas": {
+            "j1": null,
+            "j2": null,
+            "j3": null,
+            "j4": null,
+            "j5": null
+        },
+        "objetivo": {
+            "j1": 400,
+            "j2": 300,
+            "j3": 400,
+            "j4": 200,
+            "j5": 100
+        },
+        "llamadas": {
+            "j1": null,
+            "j2": null,
+            "j3": null,
+            "j4": null,
+            "j5": null
+        }
+    },
+
+    "58775bc4f57de40261f48023": {   // e3
+        "ventas": {
+            "j1": null,
+            "j2": null,
+            "j3": null,
+            "j4": null,
+            "j5": null
+        },
+        "objetivo": {
+            "j1": 400,
+            "j2": 300,
+            "j3": 400,
+            "j4": 200,
+            "j5": 100
+        },
+        "llamadas": {
+            "j1": null,
+            "j2": null,
+            "j3": null,
+            "j4": null,
+            "j5": null
+        }
+    }
 }
+
 
 
 var schemas = {
@@ -148,14 +223,12 @@ var schemas = {
         thumbnail:              { type: String, required: false, default: '' },
         players:                [ player, { _id: true }],
         teams:                  [ team, { _id: true }],
-        results:                { type: Schema.Types.Mixed, required: false }
-    },
+        kpis:                   [ kpi, { _id: true }],
+        kpiData:                { type: Schema.Types.Mixed, required: false },
+        results:                { type: Schema.Types.Mixed, required: false },
+        winners:                { type: Schema.Types.Mixed, required: false }
 
-    'turn': {
-        name: {type: String, required: false}
     },
-
-    'kpi': kpi,
 
     'distribution': {   // de reparto de puntos y premios
         name:               { type: String, required: false, unique: true },
@@ -164,14 +237,6 @@ var schemas = {
         participants:       { type: Number, required: true },
         formula:            { type: String, required: false },
         distributionTable:  [ Number ]
-    },
-
-    'retos': {
-        name: {type: String, required: false}
-    },
-
-    'premios': {
-        name: {type: String, required: false}
     },
 
     'theme': {

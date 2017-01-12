@@ -4,6 +4,7 @@
 
     angular
         .module('app.common.timeline-viewer', [
+            'ngVis'
         ])
         .config(config);
 

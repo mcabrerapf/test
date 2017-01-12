@@ -14,6 +14,7 @@ module.exports = {
 	createSubFolder: 	createSubFolder,
 	deleteFolder: 		deleteFolder,
 	deleteFile: 		deleteFile,
+	uploadFile: 		uploadFile,
 	renameEntryFS: 		renameEntryFS,
 
 	blank2hyphen: 		blank2hyphen,
@@ -33,6 +34,8 @@ const 	E_ENOENT 		= 34	// errno, cuando entrada no existe (man 2)
 ,		Q 				= require('q')
 ,		Exec 			= require('./exec.js')
 ,		ParseReqRes		= require('./parsereqres.js')
+
+,		Mime 			= require('mime-types')
 
 
 // --------------------------------------------------------------------------------------
@@ -76,7 +79,7 @@ function dumpDirectory (baseDir, subDir) {
 				fileProperties.type = 'folder';
 				fileProperties.contents = dumpDirectory( baseDir, entryPath );	// Explora recursivamente
 			} else {
-				fileProperties.type = typeByExtension( entry );
+				fileProperties.type = typeByFileName( entry );
 				fileProperties.size = stats.size;
 			};
 
@@ -90,17 +93,31 @@ function dumpDirectory (baseDir, subDir) {
 
 // --------------------------------------------------------------------------------------
 
-function typeByExtension (fileName) {
-	const 	ext 	= Path.extname( fileName ).toLowerCase();
-	var		type 	= 'unknown';
-			
-	if ( /^\.(bmp|gif|jpe?g|png|svg)$/i.test( ext ) )		{ type = 'image'; }
-	else if ( /^\.(html?|s?css|sass|xml)$/i.test( ext ) )	{ type = 'html'; }
-	else if ( /^\.pdf$/i.test( ext ) )						{ type = 'pdf'; }
-
-	return type;
+function typeByFileName (fileName) {
+	return typeByMimeType( Mime.lookup(fileName) );
 };
+					
+function typeByMimeType (mimeType) {
 
+	if (!mimeType) return ('unknown');
+
+	var type = mimeType.split('/')[0];	// text, image, audio, video, application
+
+	if (type == 'image' || type == 'audio' || type == 'video') {
+		return type;
+
+	} else { // type == text | application
+		type = mimeType.split('/')[1];	// plain, html, css, ..., xml, pdf, ...
+
+		if (/(^html|css|javascript|json$)|xml$/.test(type)) 	type = 'web'
+		else if (/word|text/.test(type)) 						type = 'doc'
+		else if (type == 'mspowerpoint') 						type = 'ppt'
+		else if (/excel|spreadsheet/.test(type))				type = 'xls'
+		else if (type != 'plain' && type != 'pdf') 				type = 'unknown'
+
+		return type;
+	};
+};
 
 // --------------------------------------------------------------------------------------
 
@@ -118,6 +135,8 @@ function createSubFolder (req, res) {
 			const result = {
 				name: 		Path.basename(subDir),
 				path: 		subDir,
+				type: 		'folder',
+				mtime: 		new Date(),				
 				fullPath: 	fullPath
 			};
 			return res.status(201).send(result);
@@ -170,6 +189,39 @@ function deleteFile (req, res) {
 	deleteEntryFS( req, res );
 };
 
+// --------------------------------------------------------------------------------------
+
+function uploadFile (req, res) {
+
+	const 	destBaseDir 		= ParseReqRes.getItemFolder(req, res)
+	,		fileParam			= req.files.file 		// multiparty
+	,		dirName 			= ParseReqRes.getPostParam(req, 'dirName')
+	,		uploadedFullPath 	= fileParam.path
+	,		fileName 			= fileParam.name
+	,		destFullPath 		= Path.join( destBaseDir, dirName, fileName )
+
+	console.log('DEBUG (INFO): uploadFile: [%s] -> [%s]', uploadedFullPath, destFullPath);
+
+	renameFile( uploadedFullPath, destFullPath ).done(
+
+		function () {
+			const result = {
+				name: 		fileName,
+				path: 		Path.join( dirName, fileName ),
+				type: 		typeByMimeType( fileParam.type ),
+				size: 		fileParam.size,
+				mtime: 		new Date(),
+				fullPath: 	destFullPath
+			};
+			
+			return res.status(201).send(result);
+		},
+		function (error) {
+			console.log('DEBUG (ERR): uploadFile:', error);
+			return res.status(500).send(error);
+		}		
+	);
+};
 
 // --------------------------------------------------------------------------------------
 
@@ -189,7 +241,7 @@ function renameEntryFS (req, res) {
 			const result = {
 				name: 		Path.basename( newPath ),
 				path: 		Path.normalize( newPath ),
-				type: 		typeByExtension( newPath ),
+				type: 		typeByFileName( newPath ),
 				fullPath: 	newFullPath
 			};
 			

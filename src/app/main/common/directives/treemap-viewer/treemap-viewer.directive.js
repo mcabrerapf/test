@@ -173,8 +173,11 @@
 
             function resize() {
 
+                var $Parent = $element.parents('.md-no-scroll').eq(0);
                 var PosY = $element.offset().top;
                 var SpaceLeft = $Window.height() - PosY;
+
+                $Parent.addClass('NoPadding');
 
                 $element.css({ height: SpaceLeft + 'px' });
             }
@@ -218,7 +221,7 @@
             $scope.getSectorStyle = function(Index) {
 
                 return {
-                    width: ($scope.data[Index]) + 'px'
+                    width: ($scope.data[Index] * 2) + 'px'
                 }
             }
 

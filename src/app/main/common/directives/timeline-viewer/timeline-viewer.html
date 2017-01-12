@@ -1,10 +1,9 @@
 <div class="timeline">
 
-    <div layout="column" layout-align="none center">
+    <div vis-timeline="vm.timelineControl" data="vm.data" options="vm.options" events="vm.events"></div>
 
-        <!--
-        <md-icon class="s40 md-accent" md-font-icon="icon-arrow-down-bold-circle"></md-icon>
-        -->
+    <!--
+    <div class="timeline" ms-scroll layout="column" layout-align="none center">
 
         <ul class="ms-timeline"
             dnd-list="vm.timeline"
@@ -56,7 +55,6 @@
         </ul>
 
 
-        <!-- ADD NEW BUTTON -->
         <md-menu>
             <md-button class="md-fab md-accent md-icon-button" ng-click="vm.openNewMenu($mdOpenMenu, $event)"
                     aria-label="add contact" translate translate-attr-aria-label="TIMELINE.ADD_TIMELINEEVENT">
@@ -98,12 +96,8 @@
                 </md-menu-item>
             </md-menu-content>
         </md-menu>
-        <!-- / ADD NEW BUTTON -->
-
-        <!--
-        <md-icon class="s40 md-accent" md-font-icon="icon-close-circle"></md-icon>
-        -->
 
     </div>
-    
+    -->
+
 </div>

@@ -10,6 +10,7 @@ var configuration = require('../configuration/gamification').configuration,
 module.exports = {
   connect: connect,
   models: prepareDatabase(),
+  getModelByCollectionName: getModelByCollectionName,
   prepareDatabase: prepareDatabase
 };
 
@@ -64,3 +65,8 @@ function createSchema(fields, index) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
+function getModelByCollectionName(collectionName) {
+
+  var modelName = collectionName.slice(0, -1);
+  return this.models[modelName];
+}

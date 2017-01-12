@@ -45,22 +45,38 @@
 
                 <md-tab-body>
                     <div>General view</div>
+
+                    <!--
+                        Elementos de la definición a validar:
+
+                        * KPIs que puntuan en el ranking sin descripción
+                        * KPIs calculados sobre otros KPIs que ya no existen
+                        * Equipos de jugadores que no están en el último nivel
+                        * Presupuesto sobrepasado
+                        * Equipos sin jugadores
+                        * Etapas solapadas
+                        * Eventos del timeline fuera de rango
+                        *       - Antes de la fecha actual
+                        *       - 
+                        
+                    -->
+
                 </md-tab-body>
             </md-tab>
 
             <!-- KPIs -->
-            <md-tab>
+            <md-tab md-on-select="vm.sendInitMessage($event, 'initKpiViewer')">
                 <md-tab-label>
-                    <span translate="GAMES.KPIS">Metricas</span>
+                    <span translate="KPIS.TAB_TITLE">Metricas</span>
                 </md-tab-label>
 
                 <md-tab-body>
-                    <div>Metricas / KPI's</div>
+                    <game-kpis-view></game-kpis-view>
                 </md-tab-body>
             </md-tab>
 
             <!-- Timeline -->
-            <md-tab>
+            <md-tab md-on-select="vm.sendInitMessage($event, 'initTimeline')">
                 <md-tab-label>
                     <span translate="GAMES.TIME_LINE">Time line</span>
                 </md-tab-label>
@@ -82,14 +98,14 @@
                 </md-tab-body>
             </md-tab>
 
-            <!-- Premios -->
-            <md-tab md-on-select="vm.initBudgetManager($event)">
+            <!-- Carga de datos -->
+            <md-tab ng-if="vm.game.status!=='En definición'">
                 <md-tab-label>
-                    <span translate="GAMES.PREMIOS">Premios</span>
+                    <span translate="GAMES.CARGADATOS">Carga datos</span>
                 </md-tab-label>
 
-                <md-tab-body class="TreeMapViewerWrapper">
-                    <treemap-viewer></tremap-viewer>
+                <md-tab-body>
+                    <div>Permite cargar EXCELS con los datos de los KPI's para las distintas ETAPAS (solo si la partida está en ejecución)</div>
                 </md-tab-body>
             </md-tab>
 
@@ -100,7 +116,18 @@
                 </md-tab-label>
 
                 <md-tab-body>
-                    <div>Visor de resultados (solo si la partida está en ejecución</div>
+                    <div>Visor de resultados (solo si la partida está en ejecución)</div>
+                </md-tab-body>
+            </md-tab>
+
+            <!-- Premios -->
+            <md-tab md-on-select="vm.sendInitMessage($event, 'initTreeMapViewer')">
+                <md-tab-label>
+                    <span translate="GAMES.PREMIOS">Premios</span>
+                </md-tab-label>
+
+                <md-tab-body class="TreeMapViewerWrapper">
+                    <treemap-viewer></tremap-viewer>
                 </md-tab-body>
             </md-tab>
 

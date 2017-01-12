@@ -199,6 +199,14 @@
             remove: 			{ method: 'DELETE',	params: {},	isArray: false },
         });
 
+        // THEMES.TIMELINE
+        api.themes.timeline = $resource(api.baseUrl + 'themes/:id/timeline/:timeline', {}, {
+            find: {method: 'GET', params: {}, isArray: true},
+            findOne: {method: 'GET', params: {}, isArray: false},
+            save: {method: 'POST', params: {}, isArray: false},
+            update: {method: 'PUT', params: {}, isArray: false},
+            remove: {method: 'DELETE', params: {}, isArray: false}
+        });
 
         // THEMES.FOLDER
         api.themes.folder = $resource(api.baseUrl + 'themes/:id/folder', {}, {
@@ -210,7 +218,7 @@
 
         // THEMES.FILE
         api.themes.file = $resource(api.baseUrl + 'themes/:id/file', {}, {
-            //save:               { method: 'POST',   params: {id: '@id'}, isArray: false },
+            // save:               { method: 'POST',   params: {id: '@id'}, isArray: false },
             // update:             { method: 'PUT',    params: {}, isArray: false },
             rename:             { method: 'PUT',    params: {id: '@id'}, isArray: false },
             delete:             { method: 'DELETE', params: {id: '@id'}, isArray: false }
@@ -228,8 +236,17 @@
         });
 
 
-        // KPIs
-        api.kpis = $resource(api.baseUrl + 'kpis/:id', {}, {
+        // GAMES.KPIs
+        api.games.kpis = $resource(api.baseUrl + 'games/:id/kpis/:kpi', {}, {
+            find: {method: 'GET', params: {}, isArray: true},
+            findOne: {method: 'GET', params: {}, isArray: false},
+            save: {method: 'POST', params: {}, isArray: false},
+            update: {method: 'PUT', params: {}, isArray: false},
+            remove: {method: 'DELETE', params: {}, isArray: false}
+        });
+
+        // GAMES.TIMELINE
+        api.games.timeline = $resource(api.baseUrl + 'games/:id/timeline/:timeline', {}, {
             find: {method: 'GET', params: {}, isArray: true},
             findOne: {method: 'GET', params: {}, isArray: false},
             save: {method: 'POST', params: {}, isArray: false},

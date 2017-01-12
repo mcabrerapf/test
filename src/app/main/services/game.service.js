@@ -13,8 +13,13 @@
             game: undefined,
             getGame: getGame,
             rename: rename,
+            addKpi: addKpi,
+            removeKpi: removeKpi,
+            updateKpi: updateKpi,
             getTimeline: getTimeline,
-            saveTimeline: saveTimeline,
+            addTimeline: addTimeline,
+            removeTimeline: removeTimeline,
+            updateTimeline: updateTimeline,
             saveBudget: saveBudget,
             remove: remove
         };
@@ -58,18 +63,93 @@
 
 
         /**
-         * Save timeline
+         * addTimeline
          */
-        function saveTimeline(timeline) {
+        function addTimeline(item) {
 
             if (service.game === undefined) return $q.reject();
             var def = $q.defer();
 
-            api.games.update({id: service.game._id}, {timeline: timeline},
+            api.games.timeline.save({id: service.game._id}, item,
                 function(response) {
-                    service.game.timeline = response.timeline;
+
+                    delete response.$promise;
+                    delete response.$resolved;
+                    
+                    service.game.timeline.push(response);
+
                     showOk();
-                    def.resolve();
+                    def.resolve(response);
+                },
+                function(error) {
+                    showError(error);
+                    def.reject(error);
+                }
+            );
+
+            return def.promise;
+        }
+
+        /**
+         * removeTimeline
+         */
+        function removeTimeline(item) {
+
+            if (service.game === undefined) return $q.reject();
+            var def = $q.defer();
+
+            var id = item._id;
+
+            api.games.timeline.remove({
+
+                    id: service.game._id,
+                    timeline: id
+                
+                }, 
+                function(response) {
+
+                    var idx = findItemIndex(id, service.game.timeline);
+                    if (idx !== undefined) service.game.timeline.splice(idx, 1);
+
+                    showOk();
+                    def.resolve(response);
+                },
+                function(error) {
+                    showError(error);
+                    def.reject(error);
+                }
+            );
+
+            return def.promise;
+        }
+
+        /**
+         * updateTimeline
+         */
+        function updateTimeline(item) {
+
+            if (service.game === undefined) return $q.reject();
+            var def = $q.defer();
+
+            var id = item._id;
+
+            api.games.timeline.update({
+
+                    id: service.game._id,
+                    timeline: id
+                
+                }, item,
+
+                function(response) {
+
+                    delete response.$promise;
+                    delete response.$resolved;
+
+                    var timeline = findItemById(id, service.game.timeline);
+                    angular.extend(timeline, response);
+
+                    showOk();
+                    def.resolve(response);
                 },
                 function(error) {
                     showError(error);
@@ -139,6 +219,105 @@
 
 
         /**
+         * addKpi
+         */
+        function addKpi(kpi) {
+
+            if (service.game === undefined) return $q.reject();
+            var def = $q.defer();
+
+            api.games.kpis.save({id: service.game._id}, kpi,
+                function(response) {
+
+                    delete response.$promise;
+                    delete response.$resolved;
+                    
+                    service.game.kpis.push(response);
+
+                    showOk();
+                    def.resolve(response);
+                },
+                function(error) {
+                    showError(error);
+                    def.reject(error);
+                }
+            );
+
+            return def.promise;
+        }
+
+        /**
+         * removeKpi
+         */
+        function removeKpi(kpi) {
+
+            if (service.game === undefined) return $q.reject();
+            var def = $q.defer();
+
+            var id = kpi._id;
+
+            api.games.kpis.remove({
+
+                    id: service.game._id,
+                    kpi: id
+                
+                }, 
+                function(response) {
+
+                    var idx = findItemIndex(id, service.game.kpis);
+                    if (idx !== undefined) service.game.kpis.splice(idx, 1);
+
+                    showOk();
+                    def.resolve(response);
+                },
+                function(error) {
+                    showError(error);
+                    def.reject(error);
+                }
+            );
+
+            return def.promise;
+        }
+
+        /**
+         * updateKpi
+         */
+        function updateKpi(item) {
+
+            if (service.game === undefined) return $q.reject();
+            var def = $q.defer();
+
+            var id = item._id;
+
+            api.games.kpis.update({
+
+                    id: service.game._id,
+                    kpi: id
+                
+                }, item,
+
+                function(response) {
+
+                    delete response.$promise;
+                    delete response.$resolved;
+
+                    var kpi = findItemById(id, service.game.kpis);
+                    angular.extend(kpi, response);
+
+                    showOk();
+                    def.resolve(response);
+                },
+                function(error) {
+                    showError(error);
+                    def.reject(error);
+                }
+            );
+
+            return def.promise;
+        }
+
+
+        /**
          * Internal methods
          */
         function showOk() {
@@ -157,6 +336,19 @@
                         .position('top right')
                         //.toastClass('md-warn-bg')
             );
+        }
+
+        function findItemIndex(id, collection) {
+            for(var r=0; r < collection.length; r++) {
+                if (collection[r]._id.toString() === id) return r;
+            }
+            return undefined;
+        }
+
+        function findItemById(id, collection) {
+            var idx = findItemIndex(id, collection);
+            if (idx === undefined) return undefined;
+            return collection[idx];
         }
 
         function percentualizeDistribution(Data) {
@@ -217,7 +409,7 @@
                 budget: 3000, // service.game.budget,
                 parts: [
                     {
-                        name: 'Goals',
+                        name: 'Retos',
                         blocks: [
                             {
                                 id: 'xxxxxxxxxx',
@@ -243,18 +435,18 @@
                         ]
                     },
                     {
-                        name: 'regular',
+                        name: 'Premios a la regularidad',
                         blocks: [
                             {
                                 id: 'xxxxxxxxxx',
-                                name: 'Premio regularidad mitad partida',
+                                name: 'Mitad partida',
                                 distributionTable: [
                                     25,25,25,25
                                 ]
                             },
                             {
                                 id: 'xxxxxxxxxx',
-                                name: 'Premio regularidad final partida',
+                                name: 'Final partida',
                                 distributionTable: [
                                     10,10,10,10,10,10,10,10,10,10
                                 ]
@@ -262,7 +454,7 @@
                         ]
                     },
                     {
-                        name: 'rankings',
+                        name: 'Rankings',
                         blocks: [
                             {
                                 id: 'xxxxxxxxxx',

@@ -1,0 +1,33 @@
+﻿{
+    "ASSETS": {
+
+    	"PROPERTY": {
+	    	"PATH":				"Ruta",
+	    	"MODIFIED":			"Modificado",
+	    	"SIZE":				"Tamaño"
+    	},
+
+    	"ACTION": {
+	        "NEW_FOLDER":       "Nueva carpeta",
+	        "UPLOAD_FILE":      "Subir archivo",
+	        "DOWNLOAD_FILE":    "Descargar archivo",
+	        "DELETE":           "Eliminar archivo/carpeta"
+    	},
+
+    	"DIALOG": {
+    		"NEW_FOLDER": {
+    			"TITLE":		"Crear carpeta dentro de {{parentFolder}} ?",
+    			"ASKFORNAME":	"Introduce el nombre de la nueva carpeta",
+    			"PLACEHOLDER":	"nombre carpeta",
+    			"OK":			"Crear",
+    			"CANCEL":		"Cancelar"
+    		},
+    		"DELETE": {
+    			"TITLE_FOLDER":	"Borrar carpeta {{currentFolder}} ?",
+    			"TITLE_FILE":	"Borrar archivo {{currentFile}} ?",
+    			"OK":			"Eliminar",
+    			"CANCEL":		"Cancelar"
+    		}
+    	}
+    }
+}

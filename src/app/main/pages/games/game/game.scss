@@ -3,9 +3,9 @@
 
     .header {
 
-        height: 120px;
-        min-height: 120px;
-        max-height: 120px;
+        height: 76px;
+        min-height: 76px;
+        max-height: 76px;
 
         .goto-games-button {
             margin-right: 16px;
@@ -14,6 +14,15 @@
         .subtitle {
             margin: 6px 0 0 0;
         }
+    }
+
+    > .content {
+
+        position: absolute;
+        top: 76px;
+        bottom: 0;
+        left: 0;
+        right: 0;
     }
 
 }

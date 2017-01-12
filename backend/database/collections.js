@@ -7,19 +7,16 @@ var accessLevel 		= require('../configuration/gamification').accessLevels;
 // middleware para la gestión de colecciones (uso general)
 var common              = require('../controllers/common');
 var filesystem          = require('../controllers/utils/filesystem');
+var submodelrest        = require('../controllers/utils/submodelrest.js');
 
 // middleware específico para la gestión de colecciones
 var themes   	        = require('../controllers/themes.js');
 var games 			    = require('../controllers/games.js');
-var kpis                = require('../controllers/kpis.js');
 var users               = require('../controllers/users.js');
 var distributions       = require('../controllers/distributions.js');
 var customers           = require('../controllers/customers.js');
-var teams               = require('../controllers/teams.js');
 
 var collections = {
-
-    // Módulos (opciones de menú de la interfície de la aplicación)
 
     'themes': {
         model:			'theme',
@@ -54,22 +51,6 @@ var collections = {
                                     accessLevel: accessLevel.editor }
         ],
         routes:			games.collectionRoutes,
-        interfaceRest:	true
-    },
-    
-    'kpis': {
-        model:			'kpi',
-        methods:		[
-            { method: 'get', 		before: [common.ensureAuth],
-                                    accessLevel: accessLevel.public },
-            { method: 'post', 		before: [common.ensureAuth, common.prepareData],
-                                    accessLevel: accessLevel.editor },
-            { method: 'put', 		before:	[common.ensureAuth, common.prepareData],
-                                    accessLevel: accessLevel.editor },
-            { method: 'delete',		before:	[common.ensureAuth],
-                                    accessLevel: accessLevel.editor }
-        ],
-        routes:			kpis.collectionRoutes,
         interfaceRest:	true
     },
 
@@ -151,20 +132,42 @@ function makeREST(app, name, definition, model, baseUrl) {
     }
 
     if (definition.routes) {
+
+        // rutas
         definition.routes.forEach(function(route) {          
 
-            const fnHandler = route.detail === undefined ?
-                route.middleware :
-                {
-                    detail:     route.detail,
-                    handler:    route.middleware
-                };
+            if (!route.submodel) {
 
-            model.route( route.path, fnHandler );
+                var fnHandler = route.detail === undefined ?
+                    route.middleware :
+                    {
+                        detail:     route.detail,
+                        handler:    route.middleware
+                    };
+
+                model.route( route.path, fnHandler );
+
+            } else {
+
+                var path = route.path + '/:child([0-9a-fA-F]{0,24}$)?';
+                model.routes[path] = model.routes[path] || {};
+
+                route.methods.forEach(function(method) {
+
+                    model.routes[path][method.method] = {
+                        after: method.after || [],
+                        before: method.before || [],
+                        detail: true,
+                        handler: method.handler || submodelrest[method.method],
+                        accessLevel: method.accessLevel
+                    };
+                });
+
+            }
         });
     }
 
-    const url = baseUrl + '/' + name;
+    var url = baseUrl + '/' + name;
     model.register(app, url);
 
 }
