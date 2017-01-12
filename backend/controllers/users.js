@@ -20,6 +20,7 @@ module.exports = {
     ],
 
     hidePassword: hidePassword,
+    generatePassword: generatePostUserPassword,
 
     localStrategy: new LocalStrategy({
         usernameField: 'email',
@@ -186,6 +187,12 @@ function generatePasword() {
         pass += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     return pass;
+}
+
+function generatePostUserPassword(req, res, next) {
+    var pass = generatePasword();
+    req.body.password = pass;
+    return next();
 }
 
 // --------------------------------------------------------------------------------------
