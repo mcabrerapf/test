@@ -40,12 +40,12 @@
             <div layout="column">
 
                 <!-- CONFIG FORM  -->
-                <div flex="30" class="form-wrapper form-data-wrapper md-whiteframe-1dp">
+                <div class="form-wrapper form-data-wrapper md-whiteframe-1dp">
                     <form name="importUsersForm">
                         <div layout="row">
                             <div flex="50">
 
-                                <md-list class="edit-list">
+                                <md-list class="edit-list ph-16">
                                     <md-list-item>
                                         <p translate="USERS.IMPORT.SHEET" class="text-semibold">HOJA</p>
                                         <select ng-model="vm.selectedSheet"
@@ -65,14 +65,14 @@
                                     </md-list-item>
 
                                     <md-list-item class="md-no-proxy">
-                                        <p translate="USERS.IMPORT.SHEET_RANGE" class="text-semibold">RANGO</p>
-                                        <md-button ng-click="vm.setRange()">
-                                            <span translate="USERS.IMPORT.GET_RANGE"></span>
-                                        </md-button>
+                                        <p translate="USERS.IMPORT.SHEET_RANGE">RANGO</p>
                                         <input type="text"
                                                ng-model="vm.range"
                                                ng-pattern="vm.rangePattern"
                                                required/>
+                                        <md-button class="md-icon-button" ng-click="vm.setRange()">
+                                            <md-icon md-font-icon="icon-table"></md-icon>
+                                        </md-button>
                                     </md-list-item>
 
                                     <md-list-item class="md-no-proxy">
@@ -87,8 +87,7 @@
                             </div>
 
                             <div flex>
-
-                                <md-list class="edit-list">
+                                <md-list class="edit-list ph-16">
                                     <md-list-item class="md-no-proxy">
                                         <p translate="USERS.IMPORT.HEADER_ROW" class="text-semibold">CABECERA</p>
                                         <input type="number"
@@ -99,37 +98,37 @@
 
                                     <md-list-item class="md-no-proxy">
                                         <p translate="USERS.IMPORT.EMAIL_COLUMN" class="text-semibold">EMAIL</p>
-                                        <md-button ng-click="vm.setColumn('emailColumn')">
-                                            <span translate="USERS.IMPORT.GET_COLUMN"></span>
-                                        </md-button>
                                         <input type="text"
                                                ng-model="vm.emailColumn"
                                                ng-pattern="vm.columnPattern"
                                                required/>
+                                        <md-button class="md-icon-button" ng-click="vm.setColumn('emailColumn')">
+                                            <md-icon md-font-icon="icon-table-column-width"></md-icon>
+                                        </md-button>
                                     </md-list-item>
 
                                     <md-list-item class="md-no-proxy">
                                         <p translate="USERS.IMPORT.USER_NAME_COLUMN" class="text-semibold">Puntos último
                                             clasificado</p>
-                                        <md-button ng-click="vm.setColumn('userNameColumn')">
-                                            <span translate="USERS.IMPORT.GET_COLUMN"></span>
-                                        </md-button>
                                         <input type="text"
                                                ng-model="vm.userNameColumn"
                                                ng-pattern="vm.columnPattern"
                                                required/>
+                                        <md-button class="md-icon-button" ng-click="vm.setColumn('userNameColumn')">
+                                            <md-icon md-font-icon="icon-table-column-width"></md-icon>
+                                        </md-button>
                                     </md-list-item>
 
                                     <md-list-item class="md-no-proxy">
                                         <p translate="USERS.IMPORT.SELLER_CODE_COLUMN" class="text-semibold">Total
                                             puntos</p>
-                                        <md-button ng-click="vm.setColumn('sellerCodeColumn')">
-                                            <span translate="USERS.IMPORT.GET_COLUMN"></span>
-                                        </md-button>
                                         <input type="text"
                                                ng-model="vm.sellerCodeColumn"
                                                ng-pattern="vm.columnPattern"
                                                required/>
+                                        <md-button class="md-icon-button" ng-click="vm.setColumn('sellerCodeColumn')">
+                                            <md-icon md-font-icon="icon-table-column-width"></md-icon>
+                                        </md-button>
                                     </md-list-item>
                                 </md-list>
                             </div>

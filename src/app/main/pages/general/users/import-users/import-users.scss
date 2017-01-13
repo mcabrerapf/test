@@ -85,10 +85,19 @@
 
       .edit-list {
 
+        position: relative;
+
+        .md-icon-button {
+          position: absolute;
+          right: 0;
+        }
+
+        font-size: 1.3rem;
+
         input, select {
           border: 1px solid rgb(238, 238, 238);
-          height: 25px;
-          width: 120px;
+          margin-right: 50px;
+          height: 20px;
         }
 
         input {
