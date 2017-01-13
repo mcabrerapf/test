@@ -18,7 +18,6 @@ module.exports = {
 	getCollectionFolder: 		getCollectionFolder,
 	getCollectionFolderByName:	getCollectionFolderByName,
 	getItemFolder: 				getItemFolder,
-	//getSubFolder: 				getSubFolder,
 	getArrayFiles: 				getArrayFiles,
 	getQueryParam: 				getQueryParam,
 	getPostParam: 				getPostParam

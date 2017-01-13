@@ -113,7 +113,7 @@
 
             <!-- Puntos -->
             <!-- <md-tab ng-if="vm.game.status!=='En definición'"> -->
-            <md-tab>
+            <md-tab md-on-select="vm.sendInitMessage($event, 'initPointsView')">
                 <md-tab-label>
                     <span translate="POINTS.TAB_TITLE">Resultones</span>
                 </md-tab-label>
