@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.pages.general.themes')
+        .module('app.pages.games')
         .controller('gameKpisViewController', gameKpisViewController)
         .directive('gameKpisView', gameKpisViewDirective);
 
