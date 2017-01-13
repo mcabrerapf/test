@@ -1,34 +1,4 @@
 
 .game-points-view {
 
-    .list-wrapper {
-
-        position: absolute;
-        top: 24px;
-        left: 24px;
-        right: 80px;
-        bottom: 24px;
-
-        .k-grid-content {
-            position: absolute;
-            top: 30px;
-            left: 0;
-            right: 0;
-            bottom: 45px;
-            height: auto !important;
-        }
-
-        .k-grid-pager {
-            position: absolute;
-            top: auto;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
-
-        .no-results {
-
-            padding: 24px;
-        }
-    }
 }

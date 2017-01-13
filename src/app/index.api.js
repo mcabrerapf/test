@@ -254,6 +254,14 @@
             remove: {method: 'DELETE', params: {}, isArray: false}
         });
 
+        // GAMES.PLAY: KPIDATA
+        api.games.kpidata = $resource(api.baseUrl + 'games/:id/kpidata', {}, {
+            findOne: 	{method: 'GET', 	params: {}, isArray: false},
+            save:   	{method: 'POST', 	params: {}, isArray: false},
+            update: 	{method: 'PUT', 	params: {}, isArray: false},
+            remove: 	{method: 'DELETE', 	params: {}, isArray: false}
+        });
+
         // DISTRIBUTIONS
         api.distributions = $resource(api.baseUrl + 'distributions/:id', {}, {
             find: {method: 'GET', params: {}, isArray: true},
