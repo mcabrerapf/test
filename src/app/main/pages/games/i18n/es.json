@@ -27,8 +27,7 @@
         "TIME_LINE": "Linea de tiempo",
         "PLAYERS": "Jugadores y grupos",
         "PREMIOS": "Premios",
-        "RESULTADOS": "Resultados"
-
+        "CARGADATOS": "Carga de datos"
     },
 
     "KPIS": {
@@ -59,9 +58,10 @@
         "EQUALLEVELPOINTS": "Puntos por mantener la posición",
         "DOWNLEVELPOINTS": "Puntos por bajar de posición",
         "SCOREDISTRIBUTION": "Distribución de puntos"
+    },
+
+    "POINTS": {
+        "TAB_TITLE": "Puntos obtenidos",
+        "NO_INPUT_DATA": "No hay datos de entrada para esta partida"
     }
 }
-
-
-
-
