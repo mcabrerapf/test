@@ -25,6 +25,19 @@
             return kpi.type == 'loaded';
         });
 
+        /* TODO:
+
+            1) Formatear la hoja de cálculo para tener tantas filas como vm.players
+            y tantas columnas como vm.kpis.
+
+            2) Una vez rellena la tabla:
+            
+                2.1) Validar tabla
+                2.2) Calcular kpis calculated.
+                2.3) Guardar en bbdd, en la estructura: game.kpiData.
+
+        */
+
         vm.spreadsheetOptions = {
             sheets: [{
                 name: "",
