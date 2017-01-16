@@ -45,16 +45,16 @@
                         label="USERS.ROLE" />
 
                 <field  type="select"
-                        ng-model="vm.user.customer._id"
+                        ng-model="vm.user.customer"
                         items="vm.customers"
                         display-field="name"
                         value-field="_id"
                         label="USERS.CUSTOMER.NAME" />
 
                 <field  type="select"
-                        ng-model="vm.user.mentor._id"
+                        ng-model="vm.user.mentor"
                         items="vm.users"
-                        display-field="name"
+                        display-field="userName"
                         value-field="_id"
                         label="USERS.MENTOR" />
             </div>

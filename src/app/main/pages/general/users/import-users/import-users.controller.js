@@ -20,16 +20,18 @@
                 home: false
             },
             sheetsbar: false,
-            excelImport: function(e) {
-                e.promise
-                    .progress(function(e) {
-                        console.log(kendo.format("{0:P} complete", e.progress));
-                    })
-                    .done(function() {
-                        setData()
-                    });
+            excelImport: function (e) {
+                e.promise.done(function () {
+                    setData();
+                    $scope.$apply();
+                });
             }
         };
+
+        vm.input = $('.file-input');
+        vm.input.on("change", function () {
+            vm.spreadsheet.fromFile(this.files[0]);
+        });
 
         // Methods
         vm.goBack = goBack;
@@ -43,23 +45,11 @@
         }
 
         function openFile($event) {
-            kendo.destroy($("#spreadsheet"));
-            // $("#spreadsheet").data("kendoSpreadsheet").destroy();
-            $('#spreadsheet').empty();
-            $('#spreadsheet').remove();
-            $('#spreadsheetContainer').append($('<div id="spreadsheet"></div>'));
-            $("#spreadsheet").kendoSpreadsheet(vm.spreadsheetOptions);
-            vm.spreadsheet = $("#spreadsheet").data("kendoSpreadsheet");
-            vm.input = $('.file-input');
             vm.input.click();
-
-            vm.input.on("change", function () {
-                vm.spreadsheet.fromFile(this.files[0]);
-            });
         }
 
         function setRange() {
-            if(vm.sheet){
+            if (vm.sheet) {
                 var r = vm.sheet.selection();
                 var left = getColumn(r._ref.topLeft.col);
                 var top = r._ref.topLeft.row + 1;
@@ -70,7 +60,7 @@
         }
 
         function setColumn(field) {
-            if(vm.sheet){
+            if (vm.sheet) {
                 var r = vm.sheet.selection();
                 vm[field] = getColumn(r._ref.topLeft.col);
             }
@@ -84,10 +74,9 @@
             var userNameIndex = getIndex(vm.userNameColumn);
             var sellerCodeIndex = getIndex(vm.sellerCodeColumn);
 
-            var headers = null
-            if (vm.headerRow) {
-                headers = vm.sheet.range(range).values()[0];
-            }
+            var headerRange = range.replace(/[0-9]+/g, vm.headerRow)
+            var headers = vm.sheet.range(headerRange).values()[0]
+
             var users = [];
             values.forEach(function (value) {
 
@@ -124,7 +113,7 @@
                 promises.push(api.users.import({users: chunk}).$promise);
             }
 
-            $q.all(promises).then(function(data){
+            $q.all(promises).then(function (data) {
                 console.log(data);
                 $mdToast.show(
                     $mdToast.simple()
@@ -132,7 +121,7 @@
                         .position('top right')
                 );
                 goBack();
-            }, function(err) {
+            }, function (err) {
                 console.log(error);
                 $mdToast.show(
                     $mdToast.simple()
@@ -151,10 +140,6 @@
                 }
             }
             return data;
-        }
-
-        function excelImport(e) {
-            // e.promise.done(setData);
         }
 
         function setData() {
@@ -202,21 +187,21 @@
             return columns.charAt(ent - 1) + columns.charAt(mod)
         }
 
-        function reformatString(s){
+        function reformatString(s) {
             s = s || '';
             var r = s.toLowerCase();
-            r = r.replace(new RegExp(/\s/g),"");
-            r = r.replace(new RegExp(/[àáâãäå]/g),"a");
-            r = r.replace(new RegExp(/æ/g),"ae");
-            r = r.replace(new RegExp(/ç/g),"c");
-            r = r.replace(new RegExp(/[èéêë]/g),"e");
-            r = r.replace(new RegExp(/[ìíîï]/g),"i");
-            r = r.replace(new RegExp(/ñ/g),"n");
-            r = r.replace(new RegExp(/[òóôõö]/g),"o");
-            r = r.replace(new RegExp(/œ/g),"oe");
-            r = r.replace(new RegExp(/[ùúûü]/g),"u");
-            r = r.replace(new RegExp(/[ýÿ]/g),"y");
-            r = r.replace(new RegExp(/\W/g),"");
+            r = r.replace(new RegExp(/\s/g), "");
+            r = r.replace(new RegExp(/[àáâãäå]/g), "a");
+            r = r.replace(new RegExp(/æ/g), "ae");
+            r = r.replace(new RegExp(/ç/g), "c");
+            r = r.replace(new RegExp(/[èéêë]/g), "e");
+            r = r.replace(new RegExp(/[ìíîï]/g), "i");
+            r = r.replace(new RegExp(/ñ/g), "n");
+            r = r.replace(new RegExp(/[òóôõö]/g), "o");
+            r = r.replace(new RegExp(/œ/g), "oe");
+            r = r.replace(new RegExp(/[ùúûü]/g), "u");
+            r = r.replace(new RegExp(/[ýÿ]/g), "y");
+            r = r.replace(new RegExp(/\W/g), "");
             return r;
         };
 
@@ -231,7 +216,7 @@
 
         });
 
-        $scope.$on("kendoRendered", function(e) {
+        $scope.$on("kendoRendered", function (e) {
             setData();
         });
     }
