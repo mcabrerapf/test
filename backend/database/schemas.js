@@ -273,10 +273,10 @@ var schemas = {
         userName: {type: String, required: true},
         active: {type: Boolean, required: true, default: true},
         photo: {type: String, required: false},
-        role: {type: [String], required: false},                // admin | player | manager | mentor
+        role: {type: String, required: false},                // admin | player | manager | mentor
         customer: {type: String, required: false},              // id del customer
         lastAccess: {type: Date, required: false},
-        employeeIdField: {String},                                  // Que campo del extraData contiene el código de empleado
+        employeeIdField: {type: String},                                  // Que campo del extraData contiene el código de empleado
         extraData: [Schema.Types.Mixed, {_id:true}]
     }
 }
