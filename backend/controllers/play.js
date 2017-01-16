@@ -13,14 +13,43 @@ const   Game 			= require('../database/database').models['game']
 
 
 // --------------------------------------------------------------------------------------
-// getPartPlayData: Accede a partes de las estructuras tipo playData: game.kpiData, game.points, game.winners
+// PlayData: estructura tipo {idTimelineEvent: {idKpi: {idPlayer1: value1, ... idPlayerN: valueN}}}
 //
-// entrada:             (idTimelineEvent, idKpi, idPlayer)
 //  idTimelineEvent:    evento del Timeline (step o goal)
 //  idKpi:              kpi que se aplica (de los que generan puntos)
 //  idPlayer:           jugador
+
+
+// --------------------------------------------------------------------------------------
+// setItemPlayData
+
+function setItemPlayData(structure, idTimelineEvent, idKpi, idPlayer, value) {
+
+	if (structure === undefined) structure = {};
+	if (structure[idTimelineEvent] === undefined) structure[idTimelineEvent] = {};
+	if (structure[idTimelineEvent][idKpi] === undefined) structure[idTimelineEvent][idKpi] = {};
+
+	structure[idTimelineEvent][idKpi][idPlayer] = value;
+
+	return structure;
+};
+
+
+// --------------------------------------------------------------------------------------
+// getPartPlayData: Accede a partes de las estructuras tipo playData: game.kpiData, game.points, game.winners
+//
 // salida:              Objecto, parte de la estructura playData:
 //                      playData || playData.timelineEvent || playData.timelineEvent.kpi || playData.timelineEvent.kpi.player
+
+function getPartPlayData(structure, idTimelineEvent, idKpi, idPlayer) {
+
+	if (structure === undefined) return undefined;
+	else if (idTimelineEvent === undefined && idKpi === undefined && idPlayer === undefined)	return structure;
+	else if (idKpi === undefined && idPlayer === undefined)	return structure[idTimelineEvent];
+	else if (idPlayer === undefined)	return structure[idTimelineEvent][idKpi];
+	else	return structure[idTimelineEvent][idKpi][idPlayer];
+
+};
 
 
 // --------------------------------------------------------------------------------------

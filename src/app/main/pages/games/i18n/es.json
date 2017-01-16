@@ -26,8 +26,11 @@
         "BASIC_INFO": "Información general",
         "TIME_LINE": "Linea de tiempo",
         "PLAYERS": "Jugadores y grupos",
-        "PREMIOS": "Premios",
-        "CARGADATOS": "Carga de datos"
+        "PREMIOS": "Premios"
+    },
+
+    "START": {
+        "START_GAME": "Iniciar partida"
     },
 
     "KPIS": {
@@ -58,6 +61,10 @@
         "EQUALLEVELPOINTS": "Puntos por mantener la posición",
         "DOWNLEVELPOINTS": "Puntos por bajar de posición",
         "SCOREDISTRIBUTION": "Distribución de puntos"
+    },
+
+    "LOAD": {
+        "TAB_TITLE": "Carga de datos"
     },
 
     "POINTS": {

@@ -1,0 +1,21 @@
+<div class="game-load-view">
+
+    <div class="list-wrapper white-bg md-whiteframe-4dp">
+
+    	<md-input-container>
+        	<label>TimelineEvent</label>
+          	<md-select ng-model="vm.timelineEvent">
+            	<md-option><em>None</em></md-option>
+            	<md-option ng-repeat="tlevent in vm.timelineEvents" ng-value="tlevent._id" ng-disabled="vm.isDisabled(tlevent)">
+            		{{tlevent.title + ' (' + tlevent.end + ')'}}
+            	</md-option>
+          	</md-select>
+        </md-input-container>
+        
+        <kendo-spreadsheet id="spreadsheet"
+			k-options="vm.spreadsheetOptions">
+		</kendo-spreadsheet>
+     
+    </div>
+	
+</div>
