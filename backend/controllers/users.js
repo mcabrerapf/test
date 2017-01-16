@@ -7,6 +7,7 @@
 var Users = require('../database/database').models['user'];
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var Q = require('q');
 
 
 module.exports = {
@@ -19,6 +20,7 @@ module.exports = {
     ],
 
     hidePassword: hidePassword,
+    generatePassword: generatePostUserPassword,
 
     localStrategy: new LocalStrategy({
         usernameField: 'email',
@@ -114,8 +116,9 @@ function logout(req, res, next) {
 
 function importUsers(req, res, next) {
     var users = [];
+    var promises = [];
     req.body.users.forEach(function (userData) {
-        Users.findOne({email: userData.email}, function (err, user) {
+        var p = Users.findOne({email: userData.email}, function (err, user) {
             if(err) {
                return res.status(401).send(err);
             } else {
@@ -123,14 +126,22 @@ function importUsers(req, res, next) {
                     user.update(userData);
                 } else {
                     user = new Users(userData);
-                    user.role = ['player'];
-                    user.save()
+                    user.role = 'player';
+                    user.password = generatePasword();
+                    user.save();
                 }
             }
-            users.push(user)
+            users.push(user);
         });
+        promises.push(p);
     });
-    res.status(200).send(users)
+    Q.all(promises).then(function(data) {
+        console.log(data);
+        res.status(200).send(users);
+    }, function(err){
+        return res.status(401).send(err);
+    });
+
 }
 
 
@@ -164,6 +175,24 @@ function addAttempt(user) {
         user.active = false;
         user.save();
     }
+}
+
+// --------------------------------------------------------------------------------------
+// generador de contraseña (password).
+
+function generatePasword() {
+    var chars = '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
+    var pass = ''
+    for (var i = 0; i < 8; i++) {
+        pass += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return pass;
+}
+
+function generatePostUserPassword(req, res, next) {
+    var pass = generatePasword();
+    req.body.password = pass;
+    return next();
 }
 
 // --------------------------------------------------------------------------------------

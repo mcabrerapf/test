@@ -6,28 +6,12 @@
         .controller('ImportUsersController', ImportUsersController);
 
     /** @ngInject */
-    function ImportUsersController(customers, $rootScope, $scope, translateValues, api, $mdDialog, $state, $filter, $timeout, $element) {
+    function ImportUsersController(customers, $q, $scope, api, $mdToast, $state) {
         var vm = this;
 
         vm.customers = customers;
         vm.columnPattern = /^[a-zA-Z]{1,2}$/
-
-        $rootScope.$on('$viewContentLoaded', function (event) {
-
-            if($("#spreadsheet")) {
-                setData()
-                vm.input = $('.file-input')
-
-                vm.input.on("change", function () {
-                    vm.spreadsheet.fromFile(this.files[0]).then(function (a, b, c) {
-                        console.log(a, b, c)
-                    }, function (err) {
-                        console.log(err);
-                    });
-                });
-            }
-        });
-
+        vm.rangePattern = /^[a-zA-Z]{1,2}[0-9]+:[a-zA-Z]{1,2}[0-9]+$/
 
         vm.spreadsheetOptions = {
             toolbar: {
@@ -36,12 +20,22 @@
                 home: false
             },
             sheetsbar: false,
-            excelImport: excelImport
+            excelImport: function(e) {
+                e.promise
+                    .progress(function(e) {
+                        console.log(kendo.format("{0:P} complete", e.progress));
+                    })
+                    .done(function() {
+                        setData()
+                    });
+            }
         };
 
         // Methods
         vm.goBack = goBack;
         vm.openFile = openFile;
+        vm.setRange = setRange;
+        vm.setColumn = setColumn;
         vm.importUsers = importUsers;
 
         function goBack() {
@@ -49,43 +43,65 @@
         }
 
         function openFile($event) {
+            kendo.destroy($("#spreadsheet"));
+            // $("#spreadsheet").data("kendoSpreadsheet").destroy();
+            $('#spreadsheet').empty();
+            $('#spreadsheet').remove();
+            $('#spreadsheetContainer').append($('<div id="spreadsheet"></div>'));
+            $("#spreadsheet").kendoSpreadsheet(vm.spreadsheetOptions);
+            vm.spreadsheet = $("#spreadsheet").data("kendoSpreadsheet");
+            vm.input = $('.file-input');
             vm.input.click();
+
+            vm.input.on("change", function () {
+                vm.spreadsheet.fromFile(this.files[0]);
+            });
+        }
+
+        function setRange() {
+            if(vm.sheet){
+                var r = vm.sheet.selection();
+                var left = getColumn(r._ref.topLeft.col);
+                var top = r._ref.topLeft.row + 1;
+                var right = getColumn(r._ref.bottomRight.col);
+                var bottom = r._ref.bottomRight.row + 1;
+                vm.range = left + top + ':' + right + bottom;
+            }
+        }
+
+        function setColumn(field) {
+            if(vm.sheet){
+                var r = vm.sheet.selection();
+                vm[field] = getColumn(r._ref.topLeft.col);
+            }
         }
 
         function importUsers($event) {
-            console.log('import');
-            var range = vm.startColumn + vm.startRow + ':' + vm.endColumn + vm.endRow;
+            var range = vm.range;
             var values = vm.sheet.range(range).values();
+            values.shift();
             var emailIndex = getIndex(vm.emailColumn);
             var userNameIndex = getIndex(vm.userNameColumn);
             var sellerCodeIndex = getIndex(vm.sellerCodeColumn);
-            var teamLeaderIndex = getIndex(vm.teamLeaderColumn)
 
             var headers = null
             if (vm.headerRow) {
-                range = vm.startColumn + vm.headerRow + ':' + vm.endColumn + vm.headerRow;
                 headers = vm.sheet.range(range).values()[0];
             }
             var users = [];
             values.forEach(function (value) {
-                var data = {}
-                if (headers) {
-                    data = formatData(headers, value)
-                } else {
-                    data = value
-                }
 
-                var sellerCode = (sellerCodeIndex > -1) ?  value[sellerCodeIndex] : '';
-                var teamLeader = (teamLeaderIndex > -1) ?  value[teamLeaderIndex] : '';
-                var email = (emailIndex > -1) ?  value[emailIndex] : '';
-                var userName = (userNameIndex > -1) ?  value[userNameIndex] : '';
-                var password = generatePasword()
+                var data = formatData(headers, value);
+                var sellerCode = (sellerCodeIndex > -1) ? value[sellerCodeIndex] : '';
+                var email = (emailIndex > -1) ? value[emailIndex] : '';
+                var userName = (userNameIndex > -1) ? value[userNameIndex] : '';
+                var employeeIdField = reformatString(headers[sellerCodeIndex]);
 
-                var user = users.find(function(user){
+                var user = users.find(function (user) {
                     return user.email === value[emailIndex];
                 });
 
-                if(user) {
+                if (user) {
                     user.code.push({
                         sellerCode: sellerCode,
                         teamLeader: teamLeader
@@ -93,38 +109,52 @@
                 } else {
                     users.push({
                         email: email,
-                        password: password,
                         userName: userName,
-                        code: [{
-                            sellerCode: sellerCode,
-                            teamLeader: teamLeader
-                        }],
+                        employeeIdField: employeeIdField,
                         customer: vm.customer,
-                        extraData: data
+                        extraData: [data]
                     });
                 }
             });
 
-            console.log(users.length)
-            for(var i = 0; i < users.length; i += 50){
-                var chunk = users.slice(i, i+50)
-                api.users.import({users: chunk})
+            var promises = [];
+
+            for (var i = 0; i < users.length; i += 50) {
+                var chunk = users.slice(i, i + 50)
+                promises.push(api.users.import({users: chunk}).$promise);
             }
+
+            $q.all(promises).then(function(data){
+                console.log(data);
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent('Operación realizada correctamente')
+                        .position('top right')
+                );
+                goBack();
+            }, function(err) {
+                console.log(error);
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent(error)
+                        .position('top right')
+                );
+            });
         }
 
         function formatData(headers, value) {
             var data = {}
             for (var i = 0; i < headers.length; i++) {
                 if (headers[i]) {
-                    var key = headers[i].replace(' ', '_')
-                    data[headers[i]] = value[i]
+                    var key = reformatString(headers[i])
+                    data[key] = value[i]
                 }
             }
             return data;
         }
 
         function excelImport(e) {
-            e.promise.done(setData);
+            // e.promise.done(setData);
         }
 
         function setData() {
@@ -134,16 +164,12 @@
             vm.sheet = getSheet(vm.selectedSheet);
             vm.columns = vm.sheet.toJSON().columns;
             vm.rows = vm.sheet.toJSON().rows;
-            vm.startRow = '';
-            vm.endRow = '';
-            vm.startColumn = '';
-            vm.endColumn = '';
-            vm.headerRow = null;
+            vm.range = '';
+            vm.headerRow = 1;
             vm.emailColumn = '';
             vm.userNameColumn = '';
             vm.sellerCodeColumn = '';
             vm.customer = '';
-            vm.teamLeaderColumn = '';
             vm.data = {};
         }
 
@@ -164,20 +190,35 @@
             var columns = 'abcdefghijklmnopqrstuvwxyz';
             var index = 0;
             for (var i = 0; i < column.length; i++) {
-                index += i * columns.length + columns.indexOf(column.charAt(i));
+                index += i * columns.length + columns.indexOf(column.charAt(i).toLowerCase());
             }
             return index;
         }
 
-        function generatePasword() {
-            var chars = '1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
-            var pass = ''
-            for(var i = 0; i < 8; i++){
-                pass += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            console.log(pass);
-            return pass;
+        function getColumn(index) {
+            var columns = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            var ent = Math.floor(index / columns.length);
+            var mod = index % columns.length;
+            return columns.charAt(ent - 1) + columns.charAt(mod)
         }
+
+        function reformatString(s){
+            s = s || '';
+            var r = s.toLowerCase();
+            r = r.replace(new RegExp(/\s/g),"");
+            r = r.replace(new RegExp(/[àáâãäå]/g),"a");
+            r = r.replace(new RegExp(/æ/g),"ae");
+            r = r.replace(new RegExp(/ç/g),"c");
+            r = r.replace(new RegExp(/[èéêë]/g),"e");
+            r = r.replace(new RegExp(/[ìíîï]/g),"i");
+            r = r.replace(new RegExp(/ñ/g),"n");
+            r = r.replace(new RegExp(/[òóôõö]/g),"o");
+            r = r.replace(new RegExp(/œ/g),"oe");
+            r = r.replace(new RegExp(/[ùúûü]/g),"u");
+            r = r.replace(new RegExp(/[ýÿ]/g),"y");
+            r = r.replace(new RegExp(/\W/g),"");
+            return r;
+        };
 
         $scope.$watch('vm.selectedSheet', function (newValue, oldValue) {
             if (newValue) {
@@ -188,6 +229,10 @@
 
         $scope.$watch('vm.emailColumn', function (newValue, oldValue) {
 
+        });
+
+        $scope.$on("kendoRendered", function(e) {
+            setData();
         });
     }
 })();

@@ -76,7 +76,7 @@ var collections = {
             { method: 'get', 		before: [common.ensureAuth],
                                     after:  [users.hidePassword],
                                     accessLevel: accessLevel.editor },
-            { method: 'post', 		before: [common.ensureAuth, common.prepareData], accessLevel: accessLevel.admin },
+            { method: 'post', 		before: [common.ensureAuth, common.prepareData, users.generatePassword], accessLevel: accessLevel.admin },
             { method: 'put', 		before: [common.ensureAuth, common.prepareData], accessLevel: accessLevel.admin },
             { method: 'delete',		before: [common.ensureAuth], accessLevel: accessLevel.admin }
         ],
