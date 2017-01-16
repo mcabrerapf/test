@@ -47,7 +47,7 @@
                     <div>General view</div>
 
                     <!--
-                        Elementos de la definición a validar:
+                        Elementos de la definición a VALIDAR:
 
                         * KPIs que puntuan en el ranking sin descripción
                         * KPIs calculados sobre otros KPIs que ya no existen
@@ -58,7 +58,8 @@
                         * Eventos del timeline fuera de rango
                         *       - Antes de la fecha actual
                         *       - 
-                        
+
+                        * Botón de [INICIAR PARTIDA]
                     -->
 
                 </md-tab-body>
@@ -99,24 +100,26 @@
             </md-tab>
 
             <!-- Carga de datos -->
-            <md-tab ng-if="vm.game.status!=='En definición'">
+            <!-- <md-tab ng-if="vm.game.status!=='En definición'"> -->
+            <md-tab>
                 <md-tab-label>
                     <span translate="GAMES.CARGADATOS">Carga datos</span>
                 </md-tab-label>
 
                 <md-tab-body>
-                    <div>Permite cargar EXCELS con los datos de los KPI's para las distintas ETAPAS (solo si la partida está en ejecución)</div>
+                    <div>Permite cargar EXCELS con los tablas {KPIs x Jugadores} (o {Jugadores x KPIs}) para las distintas ETAPAS (solo si la partida está en ejecución)</div>
                 </md-tab-body>
             </md-tab>
 
-            <!-- Resultados -->
-            <md-tab ng-if="vm.game.status!=='En definición'">
+            <!-- Puntos -->
+            <!-- <md-tab ng-if="vm.game.status!=='En definición'"> -->
+            <md-tab md-on-select="vm.sendInitMessage($event, 'initPointsView')">
                 <md-tab-label>
-                    <span translate="GAMES.RESULTADOS">Resultados</span>
+                    <span translate="POINTS.TAB_TITLE">Resultones</span>
                 </md-tab-label>
 
                 <md-tab-body>
-                    <div>Visor de resultados (solo si la partida está en ejecución)</div>
+                    <game-points-view></game-points-view>
                 </md-tab-body>
             </md-tab>
 

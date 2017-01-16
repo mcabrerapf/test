@@ -4,9 +4,9 @@
 
 'use strict';
 
-const filesystem = require('./utils/filesystem');
-var accessLevel  = require('../configuration/gamification').accessLevels;
-var common       = require('../controllers/common');
+const   filesystem 	= require('./utils/filesystem')
+,       accessLevel = require('../configuration/gamification').accessLevels
+,       common 		= require('../controllers/common')
 
 module.exports = {
 
@@ -19,11 +19,6 @@ module.exports = {
 		{ path: 'file.put',			middleware: filesystem.renameEntryFS,	detail: true },
 		{ path: 'file.delete',		middleware: filesystem.deleteFile,		detail: true },
     	
-    	/*
-    	{ path: 'uploadfile', 		middleware: uploadFile,					detail: true },
-		*/
-
-
         {
             path: 'timeline',
             submodel: true,

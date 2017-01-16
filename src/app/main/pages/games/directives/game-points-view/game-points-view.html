@@ -1,0 +1,16 @@
+<div class="game-points-view">
+
+    <div class="list-wrapper white-bg md-whiteframe-4dp">
+
+        <div id="treelist"
+        	kendo-tree-list="vm.treeList.tree"
+        	k-options="vm.treeList.options">
+        </div>
+
+        <div class="no-results" ng-show="!vm.kpiData">
+            <p translate="POINTS.NO_INPUT_DATA">No hay datos de entrada</p>
+        </div>
+        
+    </div>
+	
+</div>
