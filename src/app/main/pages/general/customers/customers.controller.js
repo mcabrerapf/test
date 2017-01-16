@@ -41,20 +41,22 @@
                     customer: customer
                 }
             }).then(function (data) {
-                if(data.error) {
-                    $mdToast.show(
-                        $mdToast.simple()
-                            .textContent(data.error)
-                            .position('top right')
-                    );
-                } else {
-                    $mdToast.show(
-                        $mdToast.simple()
-                            .textContent('Operación realizada correctamente')
-                            .position('top right')
-                    );
+                if(data) {
+                    if (data.error) {
+                        $mdToast.show(
+                            $mdToast.simple()
+                                .textContent(data.error)
+                                .position('top right')
+                        );
+                    } else {
+                        $mdToast.show(
+                            $mdToast.simple()
+                                .textContent('Operación realizada correctamente')
+                                .position('top right')
+                        );
+                    }
+                    loadCustomers()
                 }
-                loadCustomers()
             });
         }
 
