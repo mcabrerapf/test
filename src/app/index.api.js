@@ -186,7 +186,7 @@
             update: {method: 'PUT', params: {}, isArray: false},
             remove: {method: 'DELETE', params: {}, isArray: false},
 
-            import: {method: 'POST', params: {id: 'id', action: 'import'}, isArray: false}
+            import: {method: 'POST', params: {id: 'id', action: 'import'}, isArray: true}
         });
 
 
