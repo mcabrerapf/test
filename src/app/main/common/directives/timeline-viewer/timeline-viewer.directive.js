@@ -19,7 +19,7 @@
             groups: new VisDataSet([
                 { id: 1, content: 'Etapas', type: 'Step' },
                 { id: 2, content: 'Mensajes', type: 'Message' },
-                { id: 3, content: 'Publicaciones en blog', type: 'Post' },
+                { id: 3, content: 'Blog', type: 'Post' },
                 { id: 4, content: 'Retos', type: 'Goal' },
 //                { id: 5, content: 'Premios regularidad', type: 'Regularity' }
             ])
@@ -58,8 +58,28 @@
                 remove: true
             },
             template: function (item) {
-                
-                //moment.locale('es');
+
+                return '<span class="item-text">' + item.title + '</span>';
+
+                var html = "";
+
+                html += '<div><span class="item-text">' + item.title + '</span>';
+
+                var s = vis.moment(item.start);
+                if (item.end !== undefined && item.end !== null) {
+                    var e = vis.moment(item.end);
+                    html += '<md-tooltip>' + s.calendar() + ' al ' + e.calendar() + ' - ' + s.diff(e, 'days') + ' dias</md-tooltip>';
+                } else {
+                    html += '<md-tooltip>' + s.calendar() + '</md-tooltip>';
+                }
+
+                html += '</div>';
+
+                var itemElement = $compile(html)($scope);
+                return itemElement[0];
+
+
+
                 
                 var tooltipHTML = '<div class="vis-item-tooltip">';
                 //var start = moment(item.start).format('L');
@@ -76,9 +96,9 @@
             groupTemplate: function(group, element) {
                 // $(element).addClass('md-accent-fg');
                 var html = '';
-                html += '<div flex layout="row" layout-align="none center">';
-                html += '    <md-icon flex="none" class="m-16 s40 md-accent-fg" md-font-icon="{{\'' + group.type + '\' | timelineIcon}}"></md-icon>';
-                html += '    <div flex>' + group.content + '</div>';
+                html += '<div flex layout="row" layout-align="none center" class="m-10">';
+                html += '    <md-icon flex="none" class="s40 md-accent-fg" md-font-icon="{{\'' + group.type + '\' | timelineIcon}}"></md-icon>';
+                html += '    <div flex class="m-10">' + group.content + '</div>';
                 html += '</div>';
                 var groupLabel = $compile(html)($scope);
                 return groupLabel[0];
