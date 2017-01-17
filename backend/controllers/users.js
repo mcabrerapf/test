@@ -23,34 +23,34 @@ module.exports = {
     generatePassword: generatePostUserPassword,
 
     localStrategy: new LocalStrategy({
-        usernameField: 'email',
-        passwordField: 'password',
-        session: true
-    }, function (email, password, done) {
+            usernameField: 'email',
+            passwordField: 'password',
+            session: true
+        }, function (email, password, done) {
 
-        Users.findOne({email: email}, function (err, user) {
-            if (err) {
-                console.log('Login error! (' + email + ')');
-                done(null, false, {message: 'Incorrect login name or password', code: 1});
-            }
-            else if (!user) {
-                console.log('User not found (' + email + ')');
-                done(null, false, {message: 'Incorrect login name or password', code: 1});
-            }
-            else if (!user.active) {
-                console.log('User: ' + user.email + ' is blocked');
-                done(null, false, {message: 'User is blocked', code: 2});
-            }
-            else if (user.active && md5(user.password) != password) {
-                console.log('Invalid password');
-                addAttempt(user);
-                done(null, false, {message: 'Incorrect login name or password', code: 1});
-            }
-            else {
-                user.password = md5(user.password);
-                done(null, user);
-            }
-        });
+            Users.findOne({email: email}, function (err, user) {
+                if (err) {
+                    console.log('Login error! (' + email + ')');
+                    done(null, false, {message: 'Incorrect login name or password', code: 1});
+                }
+                else if (!user) {
+                    console.log('User not found (' + email + ')');
+                    done(null, false, {message: 'Incorrect login name or password', code: 1});
+                }
+                else if (!user.active) {
+                    console.log('User: ' + user.email + ' is blocked');
+                    done(null, false, {message: 'User is blocked', code: 2});
+                }
+                else if (user.active && md5(user.password) != password) {
+                    console.log('Invalid password');
+                    addAttempt(user);
+                    done(null, false, {message: 'Incorrect login name or password', code: 1});
+                }
+                else {
+                    user.password = md5(user.password);
+                    done(null, user);
+                }
+            });
     }),
 
     serializeUser: function (user, done) {

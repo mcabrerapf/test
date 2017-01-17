@@ -190,8 +190,28 @@
             },
 
             onUpdate: function(item, callback) {
-                console.log('onupdate');
-                callback(item);
+
+                item.type = item.dataType;
+
+                $mdDialog.show({
+                        controller         : item.type  + 'DialogController',
+                        controllerAs       : 'vm',
+                        templateUrl        : 'app/main/dialogs/' + item.type.toLowerCase() + '/' + item.type.toLowerCase() + '-dialog.html',
+                        parent             : angular.element(document.body),
+                        // targetEvent        : ev,
+                        clickOutsideToClose: true,
+                        locals             : {
+                            Element:            item
+                        }
+                    }).then(function(modifiedItem) {
+
+                        if (modifiedItem === undefined) return;
+
+                        modifiedItem.dataType = modifiedItem.type;
+                        delete modifiedItem.type;
+                        modifiedItem.group = item.group;
+                        callback(modifiedItem);
+                });
             }
             
 
@@ -204,7 +224,8 @@
 
                 var item = {
                     _id: event._id,
-                    title: event.title,
+                    title: vis.moment(event.start).calendar(),
+                    content: event.title,
                     start: new Date(event.start),
                     end: event.end ? new Date(event.end) : null,
                     group: 2,

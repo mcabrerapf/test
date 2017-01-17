@@ -263,7 +263,7 @@ var schemas = {
     'customer': {
         name: {type: String, required: true, unique: true},
         logo: {type: String, required: false},
-        admin: {type: String, required: false},           // ??? Id del usuario
+        admin: {type: Schema.Types.ObjectId, ref: 'user', required: false},           // ??? Id del usuario
     },
 
     'user': {
