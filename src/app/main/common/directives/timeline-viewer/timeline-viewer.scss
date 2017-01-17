@@ -16,6 +16,12 @@
         .vis-item {
             background-color: #E8F5E9;
             border-color: #b2c1b3;
+
+            .vis-onUpdateTime-tooltip {
+                width: auto;
+                background: #7f8388;
+                font-size: 12px;
+            }
         }
 
         .vis-selected {

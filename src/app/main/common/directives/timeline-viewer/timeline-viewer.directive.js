@@ -50,48 +50,27 @@
                 var day = 24 * 60 * 60 * 1000;
                 return Math.round(date / day) * day;
             },
+            tooltipOnItemUpdateTime: {
+
+                template: function(item) {
+
+                    var ret = vis.moment(item.start).utc().calendar();
+
+                    if (item.end !== undefined && item.end !== null) {
+                        ret += ' - ' + vis.moment(item.end).utc().calendar();
+                        var diff = vis.moment(item.end).diff(vis.moment(item.start), 'days');
+                        ret += ' (' + diff + ' dias)  ';
+                    }
+
+                    return ret;
+                }
+            },
             selectable: true,
             editable: {
                 add: true,
                 updateTime: true,
                 updateGroup: false,
                 remove: true
-            },
-            template: function (item) {
-
-                return '<span class="item-text">' + item.title + '</span>';
-
-                var html = "";
-
-                html += '<div><span class="item-text">' + item.title + '</span>';
-
-                var s = vis.moment(item.start);
-                if (item.end !== undefined && item.end !== null) {
-                    var e = vis.moment(item.end);
-                    html += '<md-tooltip>' + s.calendar() + ' al ' + e.calendar() + ' - ' + s.diff(e, 'days') + ' dias</md-tooltip>';
-                } else {
-                    html += '<md-tooltip>' + s.calendar() + '</md-tooltip>';
-                }
-
-                html += '</div>';
-
-                var itemElement = $compile(html)($scope);
-                return itemElement[0];
-
-
-
-                
-                var tooltipHTML = '<div class="vis-item-tooltip">';
-                //var start = moment(item.start).format('L');
-                //var end = (item.end ? moment(item.end).format('L') : '');
-
-                tooltipHTML += '<h3 class="vis-tooltip-title">' + item.title + '</h3>';
-                tooltipHTML += '<div>' + (item.end ? 'Del' : 'El') + ' <span class="vis-item-date-start">' + item.start + '</span>';
-                if (item.end) tooltipHTML += ' al <span class="vis-item-date-end">' + item.end + '</span>';
-                tooltipHTML += '</div>';
-
-                return '<span class="item-text">' + item.title + '</span>';
-
             },
             groupTemplate: function(group, element) {
                 // $(element).addClass('md-accent-fg');
@@ -135,8 +114,10 @@
                         if (newItem === undefined) return;
 
                         newItem.dataType = newItem.type;
-                        delete newItem.type;
                         newItem.group = item.group;
+                        newItem.content = newItem.title;
+                        delete newItem.title;
+                        delete newItem.type;
                         callback(newItem);
                 });
             },
@@ -145,9 +126,6 @@
 
                 if (item.start < new Date()) return;
 
-                if (item.group === 1) {
-                    // etapa!
-                }
                 callback(item);
             },
 
@@ -158,8 +136,11 @@
                     }
                 }
                 item.type = item.dataType;
+                item.title = item.content;
                 timelineService.saveItem(item).then(function() {
+                    item.content = item.title;
                     delete item.type;
+                    delete item.title;
                     callback(item);
                 });
             },
@@ -192,6 +173,7 @@
             onUpdate: function(item, callback) {
 
                 item.type = item.dataType;
+                item.title = item.content;
 
                 $mdDialog.show({
                         controller         : item.type  + 'DialogController',
@@ -208,8 +190,10 @@
                         if (modifiedItem === undefined) return;
 
                         modifiedItem.dataType = modifiedItem.type;
-                        delete modifiedItem.type;
                         modifiedItem.group = item.group;
+                        modifiedItem.content = modifiedItem.title;
+                        delete modifiedItem.title;
+                        delete modifiedItem.type;
                         callback(modifiedItem);
                 });
             }
@@ -224,7 +208,6 @@
 
                 var item = {
                     _id: event._id,
-                    title: vis.moment(event.start).calendar(),
                     content: event.title,
                     start: new Date(event.start),
                     end: event.end ? new Date(event.end) : null,

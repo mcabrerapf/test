@@ -35,7 +35,7 @@
                 },
                 columns: [
                     {   field: "name", title: translateValues['CUSTOMERS.GRID.NAME'] },
-                    {   field: "admin", title: translateValues['CUSTOMERS.GRID.ADMIN'] }
+                    {   field: "admin.userName", title: translateValues['CUSTOMERS.GRID.ADMIN'] }
                 ],
                 height: '100%'
             };
