@@ -3,19 +3,33 @@
     <div class="list-wrapper white-bg md-whiteframe-4dp">
 
     	<md-input-container>
-        	<label>TimelineEvent</label>
-          	<md-select ng-model="vm.timelineEvent">
-            	<md-option><em>None</em></md-option>
-            	<md-option ng-repeat="tlevent in vm.timelineEvents" ng-value="tlevent._id" ng-disabled="vm.isDisabled(tlevent)">
+        	<label translate="LOAD.SELECT_LABEL">TimelineEvent</label>
+          	<md-select ng-model="vm.timelineEvent" ng-change="vm.onTimelineEventChanged()">
+          		<md-option></md-option>
+            	<md-option
+            		ng-repeat="tlevent in vm.timelineEvents"
+            		ng-value="tlevent"
+            		ng-disabled="vm.isTimelineEventDisabled(tlevent)">
             		{{tlevent.title + ' (' + tlevent.end + ')'}}
             	</md-option>
           	</md-select>
         </md-input-container>
-        
-        <kendo-spreadsheet id="spreadsheet"
-			k-options="vm.spreadsheetOptions">
-		</kendo-spreadsheet>
-     
+
+		<div ng-show="vm.timelineEvent">
+			<section layout="row">
+		     	<md-button ng-click="vm.validateSpreadsheet()"
+		     	class="md-raised md-primary" translate="LOAD.VALIDATE">Validar datos</md-button>
+
+		     	<md-button ng-disabled="!vm.isSpreadsheetOK" ng-click="vm.saveSpreadsheet()"
+		     	class="md-raised md-primary" translate="LOAD.SAVE">Grabar datos</md-button>
+		     </section>
+
+	        <kendo-spreadsheet id="spreadsheet"
+	        	k-scope-field="vm.spreadsheet"
+				k-options="vm.spreadsheetOptions">
+			</kendo-spreadsheet>	     
+     	</div>
+      
     </div>
 	
 </div>
