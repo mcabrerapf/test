@@ -1,0 +1,217 @@
+<div id="customer-detail" class="page-layout simple fullwidth" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="start center">
+        <div class="white-fg" layout="row" layout-align="start center" flex>
+            <md-button class="goto-list-button md-icon-button" aria-label="Go to customers"
+                       ng-click="vm.gotoList()"
+                       translate translate-attr-aria-label="CUSTOMER.GO_TO_CUSTOMERS">
+                <md-icon md-font-icon="icon-arrow-left"></md-icon>
+            </md-button>
+
+            <div layout="row" layout-align="start center">
+
+                <div layout="column" layout-align="start start">
+                    <div class="h2">
+                        {{vm.customer.name}}
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span translate="CUSTOMER.EDIT_TITLE">Customer Detail</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <md-button  class="md-icon-button"
+                    aria-label="delete"
+                    ng-click="vm.deleteCustomerConfirm()"
+                    translate-attr-aria-label="FORMS.DELETE">
+            <md-icon md-font-icon="icon-delete" class="md-default-theme" aria-label="delete" translate-attr-aria-label="FORMS.DELETE"></md-icon>
+        </md-button>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content widget-group" layout="row" layout-align="start" layout-wrap ms-scroll>
+
+        <ms-widget flippable="true" flex="30" flipped="vm.flipped.definition">
+
+            <ms-widget-front class="md-white-bg">
+
+                <div layout="row" layout-align="space-between center" class="h-55 ph-16">
+                    <div class="h2" translate="CUSTOMER.BASIC_INFO">Definición</div>
+                    <md-button class="md-icon-button" ng-click="vm.editDefinition()" aria-label="edit" translate-attr-aria-label="FORMS.EDIT">
+                        <md-icon class="s16" md-font-icon="icon-pencil"></md-icon>
+                    </md-button>
+                </div>
+
+                <div layout="column" class="ph-16">
+                    <kldform class="md-inline-form" novalidate mode="display">
+                        <field  type="text"
+                                ng-model="vm.customer.name"
+                                required 
+                                label="CUSTOMER.NAME" />
+
+                        <field  type="note"
+                                ng-model="vm.customer.description"
+                                rows="1"
+                                label="CUSTOMER.DESCRIPTION" />
+
+                        <field  type="text"
+                                ng-model="vm.customer.type"
+                                label="CUSTOMER.TYPE"
+                                required />
+
+                    </kldform>
+                </div>
+            </ms-widget-front>
+
+            <ms-widget-back class="md-white-bg">
+
+                <div layout="row" layout-align="space-between center" class="h-55 ph-16">
+                    <div class="h2" translate="CUSTOMER.BASIC_INFO">Definición</div>
+                    <div class="flip-to-front">
+                        <md-button class="md-icon-button" ng-click="vm.flipped.definition=false" aria-label="Cancel" translate-attr-aria-label="FORMS.CANCEL">
+                            <md-icon md-font-icon="icon-close" class="s16"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+
+                <div layout="column" class="ph-16">
+                    <kldform name="customerForm" class="md-inline-form" novalidate mode="edit">
+                        <field  type="text"
+                                ng-model="vm.customerCopy.name"
+                                required 
+                                label="CUSTOMER.NAME" />
+
+                        <field  type="note"
+                                ng-model="vm.customerCopy.description"
+                                rows="7"
+                                label="CUSTOMER.DESCRIPTION" />
+
+                        <field  type="text"
+                                ng-model="vm.customerCopy.type"
+                                label="CUSTOMER.TYPE"
+                                required />
+                    </kldform>
+                </div>
+
+                <div id="save-definition" class="p-16 grey-50-bg border-top" layout="row" layout-align="start center">
+                    <md-button  class="send-button md-accent md-raised"
+                                ng-disabled="customerForm.$invalid"
+                                ng-click="vm.saveDefinition()" 
+                                translate="FORMS.SAVE">Save</md-button>
+                </div>
+
+            </ms-widget-back>
+
+        </ms-widget>
+
+        <ms-widget flippable="true" flex flipped="vm.flipped.customer" class="settings-form">
+
+            <ms-widget-front class="md-white-bg">
+
+                <div layout="row" layout-align="space-between center" class="h-55 ph-16">
+                    <div class="h2" translate="CUSTOMER.CUSTOMER">Distribución</div>
+                    <md-button class="md-icon-button" ng-click="vm.editCustomerParams()" aria-label="edit" translate-attr-aria-label="FORMS.EDIT">
+                        <md-icon class="s16" md-font-icon="icon-pencil"></md-icon>
+                    </md-button>
+                </div>
+
+                <md-list class="display-list ph-16">
+                    <md-list-item>
+                        <p translate="CUSTOMER.PARTICIPANTS">Participantes</p>
+                        <p class="md-secondary" ng-bind="vm.customer.participants"></p>
+                    </md-list-item>
+
+                    <md-list-item>
+                        <p translate="CUSTOMER.POINTS_FIRST">Puntos primer clasificado</p>
+                        <p class="md-secondary" ng-bind="vm.points.first"></p>
+                    </md-list-item>
+
+                    <md-list-item>
+                        <p translate="CUSTOMER.POINTS_LAST">Puntos último clasificado</p>
+                        <p class="md-secondary" ng-bind="vm.points.last"></p>
+                    </md-list-item>
+
+                    <md-list-item>
+                        <p translate="CUSTOMER.TOTAL_POINTS" class="text-semibold">Total puntos</p>
+                        <p class="md-secondary" ng-bind="vm.points.total"></p>
+                    </md-list-item>
+                </md-list>
+
+                <div class="ph-16 k-content wide">
+                    <div kendo-chart="vm.chart"
+                        k-options="vm.options"
+                        style="height: 350px; width: 100%" >
+                    </div>
+                </div>
+                
+            </ms-widget-front>
+
+            <ms-widget-back class="md-white-bg">
+
+                <div layout="row" layout-align="space-between center" class="h-55 ph-16">
+                    <div class="h2" translate="CUSTOMER.CUSTOMER">Definición</div>
+                    <div class="flip-to-front">
+                        <md-button class="md-icon-button" ng-click="vm.flipped.customer=false" aria-label="Cancel" translate-attr-aria-label="FORMS.CANCEL">
+                            <md-icon md-font-icon="icon-close" class="s16"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+
+                <md-list class="edit-list">
+                    <md-list-item>
+                        <p translate="CUSTOMER.PARTICIPANTS">Participantes</p>
+                        <input  type="number"
+                                required
+                                ng-model="vm.customerCopy.participants" />
+                    </md-list-item>
+
+                    <md-list-item>
+                        <p translate="CUSTOMER.POINTS_FIRST">Puntos primer clasificado</p>
+                        <input  type="number"
+                                ng-model="vm.pointsEdit.first" />
+                    </md-list-item>
+
+                    <md-list-item>
+                        <p translate="CUSTOMER.POINTS_LAST">Puntos último clasificado</p>
+                        <input  type="number"
+                                ng-model="vm.pointsEdit.last" />
+                    </md-list-item>
+
+                    <md-list-item>
+                        <p translate="CUSTOMER.TOTAL_POINTS" class="text-semibold">Total puntos</p>
+                        <input  type="number"
+                                ng-model="vm.points.total" 
+                                disabled />
+                    </md-list-item>
+                </md-list>
+
+                <div class="p-16 grey-50-bg border-top" layout="row" layout-align="start center">
+                    <md-button  class="send-button md-accent md-raised"
+                                ng-click="vm.saveCustomerParams()" 
+                                translate="FORMS.APPLY">Aplicar</md-button>
+                </div>
+
+            </ms-widget-back>
+        
+        </ms-widget>
+
+
+                            <!--
+                            <table>
+
+                                <tr ng-repeat="item in vm.customer.customerTable track by $index">
+                                    <td>
+                                        <span class="md-title">{{$index}}</span> <input type="text" ng-model="vm.customer.customerTable[$index]" />
+                                    </td>
+                                </tr>
+
+                            </table>
+                            -->
+
+    </div>
+
+</div>

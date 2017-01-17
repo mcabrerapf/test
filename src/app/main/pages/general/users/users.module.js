@@ -60,7 +60,7 @@
 
         msNavigationServiceProvider.saveItem('general.user', {
             title: 'Distribuciones',
-            icon: 'icon-folder-account',
+            icon: 'icon-account-multiple',
             state: 'app.users',
             translate: 'USERS.MENU.TITLE',
             weight: 1

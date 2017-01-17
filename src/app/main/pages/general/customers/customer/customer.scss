@@ -1,0 +1,29 @@
+#customer-detail {
+
+    .header {
+        height: 76px;
+        min-height: 76px;
+        max-height: 76px;
+
+        .goto-list-button {
+            margin-right: 16px;
+        }
+
+        .subtitle {
+            margin: 6px 0 0 0;
+        }
+    }
+
+    .content {
+
+        position: absolute;
+        top: 76px;
+        bottom: 0;
+        right: 0;
+        left: 0;
+
+        textarea: {
+        }
+
+    }
+}

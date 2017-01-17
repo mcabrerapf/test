@@ -6,71 +6,63 @@
         .controller('CustomersController', CustomersController);
 
     /** @ngInject */
-    function CustomersController(customers, users, $q, api, $mdDialog, $mdToast, $filter, $timeout) {
+    function CustomersController(translateValues, api, $mdDialog, $state) {
+
         var vm = this;
 
-        vm.users = users;
-        vm.customers = [];
+        api.customers.find(function(customers) {
 
-        vm.dtOptions = {
-            dom: '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
-            pagingType: 'simple',
-            autoWidth: false,
-            responsive: true
-        };
+            vm.customers = customers;
 
-        loadCustomers()
+            vm.gridOptions = {
+                dataSource: {
+                    data: vm.customers,
+                    pageSize: 20
+                },
+                scrollable: true,
+                sortable: true,
+                filterable: true,
+                navigatable: true,
+                navigate: function(e) {
+                    if (e.element[0].tagName === 'TH') return;
+                    var id = this.dataItem(e.element.parent())._id;
+                    $state.go('app.customers.detail', {'id': id});
+                },
+                selectable: false, // 'single row',
+                pageable: {
+                    input: true,
+                    numeric: false
+                },
+                columns: [
+                    {   field: "name", title: translateValues['CUSTOMERS.GRID.NAME'] },
+                    {   field: "admin", title: translateValues['CUSTOMERS.GRID.ADMIN'] }
+                ],
+                height: '100%'
+            };
+        });
+
 
         // Methods
-        // vm.createNew = createNew;
-        vm.editCustomer = editCustomer
+        vm.createNew = createNew;
 
 
         //////////
-        function editCustomer(event, customer) {
-            $mdDialog.show({
-                controller: 'NewCustomerDialogController',
-                controllerAs: 'vm',
-                templateUrl: 'app/main/pages/general/customers/new-customer/newcustomer-dialog.html',
-                parent: angular.element(document.body),
-                targetEvent: event,
-                clickOusideToClose: false,
-                locals: {
-                    customers: vm.customers,
-                    users: vm.users,
-                    customer: customer
-                }
-            }).then(function (data) {
-                if(data) {
-                    if (data.error) {
-                        $mdToast.show(
-                            $mdToast.simple()
-                                .textContent(data.error)
-                                .position('top right')
-                        );
-                    } else {
-                        $mdToast.show(
-                            $mdToast.simple()
-                                .textContent('Operación realizada correctamente')
-                                .position('top right')
-                        );
-                    }
-                    loadCustomers()
-                }
-            });
-        }
+        function createNew(event) {
 
-        function loadCustomers() {
-            api.customers.find(function (customers) {
-                customers.forEach(function (customer) {
-                    customer.admin = vm.users.find(function (user) {
-                        return user._id === customer.admin;
-                    });
-                });
-                vm.customers = customers;
-            }, function (error) {
-                vm.customers = [];
-                return error;
+            $mdDialog.show({
+                controller:         'NewCustomerDialogController',
+                controllerAs:       'vm',
+                templateUrl:        'app/main/pages/general/customers/new-customer/newcustomer-dialog.html',
+                parent:             angular.element(document.body),
+                targetEvent:        event,
+                clickOusideToClose: false
+            }).then(function(customer) {
+
+                if (customer === undefined) return;
+                vm.customers.push(customer);
+
+                $state.go('app.customers.detail', {'id': customer._id});
+
             });
         }
 
