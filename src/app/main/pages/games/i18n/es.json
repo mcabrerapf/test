@@ -64,7 +64,10 @@
     },
 
     "LOAD": {
-        "TAB_TITLE": "Carga de datos"
+        "TAB_TITLE": "Carga de datos",
+        "SELECT_LABEL": "Selecciona evento",
+        "VALIDATE": "Validar Datos",
+        "SAVE": "Grabar Datos"
     },
 
     "POINTS": {
