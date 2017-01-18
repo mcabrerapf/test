@@ -23,8 +23,12 @@
 
         vm.players = vm.game.players;
 
-        vm.kpis = vm.game.kpis.filter(function(kpi){
+        vm.kpisLoaded = vm.game.kpis.filter(function(kpi){
             return kpi.type == 'loaded';
+        });
+
+        vm.kpisCalculated = vm.game.kpis.filter(function(kpi){
+            return kpi.type == 'calculated';
         });
 
         vm.kpiData = vm.game.kpiData;
@@ -32,7 +36,7 @@
         vm.spreadsheetOptions = {
             toolbar:    false,
             sheetsbar:  false,
-            columns:    1 + vm.kpis.length,
+            columns:    1 + vm.kpisLoaded.length,
             rows:       1 + vm.players.length
         };
 
@@ -46,13 +50,20 @@
         };
 
         vm.validateSpreadsheet = function() {
-            vm.isSpreadsheetOK = true;
+        	var kpiData = sheet2data( vm.spreadsheet.toJSON().sheets[0] );
+
+			var checkData = checkEveryValue(kpiData, function(value){
+				return Number.isFinite(value) || value === null;
+			});
+
+			vm.isSpreadsheetOK 	= checkData.check;
+			vm.errSpreadsheet 	= checkData.reason;
         };
 
-        vm.saveSpreadsheet = function() {            
-            // Calcular kpis calculated.
-            // Grabar mediante api spreadsheet a game.kpiData
-            saveKpiData( calculateKpis( vm.game.kpis ) );
+        vm.saveSpreadsheet = function() {
+        	var kpiData = sheet2data( vm.spreadsheet.toJSON().sheets[0] );
+
+            saveKpiData( calculateKpis( kpiData, vm.kpisCalculated, vm.kpisLoaded ) );
         };
 
         //////////
@@ -64,23 +75,34 @@
         function loadDataIntoSpreadsheet() {
             vm.spreadsheet.fromJSON({
                 sheets: [ data2sheet(
-                    vm.timelineEvent, vm.players, vm.kpis, vm.kpiData
+                    vm.timelineEvent, vm.players, vm.kpisLoaded, vm.kpiData
                 )]
             });
         };
 
-        function calculateKpis(kpis) {
-            var kpiData = {};
-            /*
-                Calcula los kpis calculated, a partir de los loadeds.
-                Rellena así los huecos vacíos en el array kpis.
-                Crea las propiedades de los nuevos kpis (calculated),
-                en la estructura kpiData.
-            */
+        function calculateKpis(kpiData, kpisCalculated, kpisLoaded) {
+        	var kpiDataItem = kpiData[ vm.timelineEvent._id ];
+
+        	kpisCalculated.forEach(function(kCalc){
+
+        		var numeratorId 	= _.find(kpisLoaded, { _id: kCalc.calculated.numerator }).id
+        		,	denominatorId 	= _.find(kpisLoaded, { _id: kCalc.calculated.denominator }).id
+        		,	divisionId 		= kCalc.id
+
+        		if (kpiDataItem[divisionId] === undefined) kpiDataItem[divisionId] = {};
+
+        		Object.keys(kpiDataItem[numeratorId]).forEach(function(player){
+        			kpiDataItem[divisionId][player] =
+        				kpiDataItem[numeratorId][player] / kpiDataItem[denominatorId][player];
+        		});
+
+        	});
+
             return kpiData;
         };
 
         function saveKpiData(kpiData) {
+        	console.log('saveKpiData:', kpiData);
             /*
                 Graba mediante api.games.kpidata.{post / put}
             */
@@ -121,7 +143,7 @@
                                     null;
 
                     row.cells.push({ value: value });
-                    /*, validation: {type: "reject", allowNulls: true, dataType: "number"} */ 
+                    /*, validation: {type: "reject", allowNulls: true, dataType: "number"} */
                     // console.log('value: ', value);
                 });
 
@@ -131,9 +153,65 @@
             return sheet;
         };
 
-        function sheet2data(spreadsheet) {
-            var kpiData = {};
+        function sheet2data(sheet) {
+
+            var kpiData = {}
+            ,	kpis 	= []
+            ,	player 	= "";
+
+            sheet.rows.forEach(function(row, r){
+                if (r == 0) {	// row 0: header (identificadores de tlevent y kpis)
+
+                	row.cells.forEach(function(cellIdKpi, i){
+		                if (i == 0) {
+		                    kpiData[ sheet.name ] = {};						// crea nivel 1
+		                } else {
+		                    kpiData[ sheet.name ][ cellIdKpi.value ] = {};	// crea nivel 2
+		                    kpis[i] = cellIdKpi.value;
+		                };                		
+                	});
+
+                } else {	// row 1..N: contents (identificadores de player y valor de kpis)
+
+	                row.cells.forEach(function(cellValKpi, j){
+	            		if (j == 0) {
+	            			player = cellValKpi.value;
+	            		} else {
+	            			kpiData[ sheet.name ][ kpis[j] ][ player ] = cellValKpi.value;	// asigna valor (nivel 3)
+
+	            		}
+	                });
+	            }
+            });
+
             return kpiData;
+        };
+
+        // Comprueba que TODOS y cada uno de los valores de la estructura hacen cierta la función test()
+        // Si falla alguno, indica las coordenadas del valor incorrecto.
+        function checkEveryValue(kpiData, test) {
+
+        	var check 	= true
+        	,	value 	= undefined
+        	,	reason 	= {}
+
+        	Object.keys(kpiData).forEach(function(tlevent){
+        		if (!check) return;
+				Object.keys(kpiData[tlevent]).forEach(function(kpi){
+        			if (!check) return;
+					Object.keys(kpiData[tlevent][kpi]).forEach(function(player){
+						if (!check) return;
+
+						value = kpiData[tlevent][kpi][player];
+						check = check && test(value);
+						if (!check) {
+							reason = { tlevent: tlevent, kpi: kpi, player: player, value: value };
+						};
+		        	});
+	        	});
+        	});
+
+        	return {check: check, reason: reason};
         };
 
     };
