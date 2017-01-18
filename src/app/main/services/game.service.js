@@ -20,6 +20,7 @@
             addTimeline: addTimeline,
             removeTimeline: removeTimeline,
             updateTimeline: updateTimeline,
+            saveTimeline: saveTimeline,
             saveBudget: saveBudget,
             remove: remove
         };
@@ -150,6 +151,30 @@
 
                     showOk();
                     def.resolve(response);
+                },
+                function(error) {
+                    showError(error);
+                    def.reject(error);
+                }
+            );
+
+            return def.promise;
+        }
+
+
+        /**
+         * Save timeline
+         */
+        function saveTimeline(timeline) {
+
+            if (service.game === undefined) return $q.reject();
+            var def = $q.defer();
+
+            api.games.update({id: service.game._id}, {timeline: timeline},
+                function(response) {
+                    service.game.timeline = response.timeline;
+                    showOk();
+                    def.resolve();
                 },
                 function(error) {
                     showError(error);

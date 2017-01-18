@@ -124,17 +124,85 @@
 
             onMoving: function(item, callback) {
 
-                if (item.start < new Date()) return;
+                if (item.start < new Date()) return callback(null);
 
-                callback(item);
-            },
-
-            onMove: function(item, callback) {
                 if (item.end !== undefined && item.end !== null) {
                     if (item.end.valueOf() <= item.start.valueOf()) {
                         item.end = vis.moment(item.start).add(1, 'days');
                     }
                 }
+
+                if (item.group === -1) {
+
+                    var selId = vm.timelineControl.getSelection()[0];
+                    var dataItem = vm.data.items.get(selId);
+
+                    var filter;
+                    var diffStart = vis.moment(item.start).diff(vis.moment(dataItem.start), 'days');
+                    var diffEnd = vis.moment(item.end).diff(vis.moment(dataItem.end), 'days');
+
+                    if (diffStart === diffEnd) {
+                        filter = {
+                            filter: function(itemToFilter) {
+                                if (itemToFilter._id === dataItem._id) return false;
+                                return vis.moment(itemToFilter.start).diff(vis.moment(dataItem.start), 'days') >= 0;
+                            }
+                        };
+                    }
+                    /*
+                    if (diffStart !== 0) {
+                        // move by start
+                        console.log('from start: ' + diffStart);
+                    } else {
+                        if (diffEnd !== 0) {
+                            console.log('from end: ' + diffEnd);
+                        }
+                    }
+                    */
+
+//                    start && end --> tot >= start
+//                                  suma a start i a end
+//                    end --> tot que each.start >= end
+//                                  suma a start i a end
+//                            tot que each.end == end
+//                                  suma a end
+//                    start --> tot >= start && < end
+
+                    if (filter !== undefined) {
+                        console.log('-------------------- DIFF ' + diffStart);
+                        vm.data.items.forEach(function(relatedItem) {
+                            console.log(relatedItem.content);
+                            var originalItem = getOriginalItem(relatedItem._id);
+                            relatedItem.start = vis.moment(originalItem.start).add(diffStart, 'days');
+                            if (relatedItem.end !== undefined && diffEnd !== 0) {
+                                relatedItem.end = vis.moment(originalItem.end).add(diffEnd, 'days');
+                            }
+                            vm.data.items.update(relatedItem);
+                        }, filter);
+                    }
+                }
+
+                callback(item);
+            },
+
+            onMove: function(item, callback) {
+                /*
+                // update all timeline dates
+                for(var r=0; r < vm.timeline.length; r++) {
+                    var timelineEvent = vm.timeline[r];
+                    if (timelineEvent._id === item._id) {
+                        timelineEvent.start = item.start;
+                        timelineEvent.end = item.end;
+                    } else {
+                        var dataItem = vm.data.items.get(timelineEvent._id);
+                        timelineEvent.start = dataItem.start;
+                        timelineEvent.end = dataItem.end;
+                    }
+                }
+                timelineService.save(vm.timeline).then(function() {
+                    callback(item);
+                });
+                */
                 item.type = item.dataType;
                 item.title = item.content;
                 timelineService.saveItem(item).then(function() {
@@ -161,8 +229,7 @@
                         .ok(translationValues['FORMS.OK'])
                         .cancel(translationValues['FORMS.CANCEL']);
 
-                    $mdDialog.show(confirm).then(function ()
-                    {
+                    $mdDialog.show(confirm).then(function () {
                         timelineService.deleteItem(item);
                         callback(item);
                     });
@@ -187,7 +254,7 @@
                         }
                     }).then(function(modifiedItem) {
 
-                        if (modifiedItem === undefined) return;
+                        if (modifiedItem === undefined) return callback(null);
 
                         modifiedItem.dataType = modifiedItem.type;
                         modifiedItem.group = item.group;
@@ -200,6 +267,13 @@
             
 
         };
+
+
+        function getOriginalItem(id) {
+            for(var r=0; r < vm.timeline.length; r++) {
+                if (vm.timeline[r]._id === id) return vm.timeline[r];
+            }
+        }
 
 
         function getVisTimelineData() {

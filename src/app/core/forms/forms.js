@@ -636,8 +636,12 @@
 						var index = getIndex(newValue, $scope.items);
 						if (index >= 0) $scope.value = $scope.items[index];
 					}
-				});
 
+					if ($scope.value === "" && !$scope.required) {
+						$scope.value = null;
+					}
+				});
+				
 				//--------------------------------------------------
 
 				function getMode() {
@@ -710,9 +714,9 @@
 
 
 				$scope.getDisplayValue = function() {
-					if ($scope.valueField !== undefined) {
+					if ($scope.valueField !== undefined && $scope.valueField !== null) {
 						var idx = getIndex($scope.value, $scope.items);
-						return $scope.items[idx][$scope.displayField]
+						return idx !== -1 ? $scope.items[idx][$scope.displayField] : '';
 					} else {
 						return $scope.value;
 					}

@@ -17,7 +17,15 @@
             vm.gridOptions = {
                 dataSource: {
                     data: vm.customers,
-                    pageSize: 20
+                    pageSize: 20,
+                    model: {
+                        id: "_id",
+                        fields: {
+                            _id: { type: "string" },
+                            name: { type: "string" },
+                            adminname: { type: 'string', from: "admin.userName" }
+                        }
+                    }
                 },
                 scrollable: true,
                 sortable: true,
@@ -35,7 +43,8 @@
                 },
                 columns: [
                     {   field: "name", title: translateValues['CUSTOMERS.GRID.NAME'] },
-                    {   field: "admin.userName", title: translateValues['CUSTOMERS.GRID.ADMIN'] }
+                    {   field: null, title: translateValues['CUSTOMERS.GRID.ADMIN'],
+                        template: '#= typeof admin == "undefined" || admin == null ? "" : admin.userName #' }
                 ],
                 height: '100%'
             };

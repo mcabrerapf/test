@@ -60,7 +60,7 @@
          * Save
          */
         function save() {
-            console.log('save ...??');
+            return dataService.saveTimeline(service.timeline);
         }
 
 

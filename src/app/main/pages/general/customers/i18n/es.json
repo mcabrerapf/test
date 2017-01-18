@@ -9,7 +9,6 @@
             "ADMIN": "Administrador"
         },
         "DIALOG": {
-            "SAVE": "Guardar",
             "ADD": "Crear",
             "DELETE": "Eliminar"
         },
@@ -17,10 +16,14 @@
         "SEARCH": "Buscar un cliente",
         "NO_RESULTS": "No se han encontrado clientes",
 
-        "NEW_TITLE": "Nuevo cliente",
+        "EDIT_TITLE": "Detalle del cliente",
+        "GO_TO_CUSTOMERS": "Volver a la lista",
+        "BASIC_INFO": "Definición",
+
         "NAME": "Nombre del cliente",
         "ADMIN": "Administrador",
         "STATUS": "Estado del cliente",
+        "LOGO": "Logo",
 
         "SAVE": "Guardar cliente",
         "ADD_NEW": "Crear cliente",

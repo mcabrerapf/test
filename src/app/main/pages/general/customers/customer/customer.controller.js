@@ -7,15 +7,15 @@
         .controller('CustomerController', CustomerController);
 
     /** @ngInject */
-    function CustomerController($scope, $state, customer, api, $translate, $mdDialog, $timeout)
+    function CustomerController($scope, $state, customer, users, api, $translate, $mdDialog, $timeout)
     {
         var vm = this;
 
         // Data
         vm.customer = customer;
+        vm.users = users;
 
         vm.flipped = {
-            definition: false,
             customer: false
         };
         
@@ -23,10 +23,8 @@
         vm.gotoList = gotoList;
         vm.saveCustomer = saveCustomer;
         vm.deleteCustomerConfirm = deleteCustomerConfirm;
-        vm.editDefinition = editDefinition;
-        vm.saveDefinition = saveDefinition;
-        vm.editCustomerParams = editCustomerParams;
-        vm.saveCustomerParams = saveCustomerParams;
+        vm.editCustomer = editCustomer;
+        vm.saveCustomer = saveCustomer;
 
 
         /////////////////
@@ -46,40 +44,12 @@
         /**
          * Edit customer
          */
-        function editCustomerParams() {
+        function editCustomer() {
 
-            vm.flipped.definition = false;
             vm.customerCopy = angular.copy(vm.customer);
             vm.flipped.customer = true;
         }
 
-        /** 
-         * Save customer 
-         * */
-        function saveCustomerParams() {
-
-            vm.customer = angular.extend(vm.customer, vm.customerCopy);
-            vm.saveCustomer();
-        }
-        
-        /**
-         * Edit definition
-         */
-        function editDefinition() {
-
-            vm.flipped.customer = false;
-            vm.customerCopy = angular.copy(vm.customer);
-            vm.flipped.definition = true;
-        }
-
-        /** 
-         * Save definition 
-         * */
-        function saveDefinition() {
-
-            vm.customer = angular.extend(vm.customer, vm.customerCopy);
-            vm.saveCustomer();
-        }
 
         /**
          * Save customer
@@ -88,12 +58,14 @@
         {
             var id = vm.customer._id;
 
-            api.customers.update({id: id}, vm.customer,
-                function(updatedCustomer) {
+            api.customers.update({id: id}, vm.customerCopy,
+                function() {
 
                     angular.forEach(vm.flipped, function(value, key) {
                         vm.flipped[key] = false;
                     });
+
+                    vm.customer = angular.extend(vm.customer, vm.customerCopy);
                 },
                 function(error) {
                     alert(error.data.errmsg);

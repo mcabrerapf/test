@@ -92,6 +92,13 @@ var timelineevent = {
     type:                       { type: String, required: true, enum: ['Step', 'Goal', 'Message', 'Post', 'Quiz', 'Game']},
     start:                      { type: Date, required: true },
     end:                        { type: Date, required: false },
+    /*
+    linkTo:                     {
+        id:                         { type: String, required: false },
+        type:                       { type: String, required: false, enum: ['start', 'end'], default: 'start' },
+        offset:                     { type: Number, required: false, default: 0 }
+    },
+    */
     data:                       { type: Schema.Types.Mixed, required: true }
 };
 

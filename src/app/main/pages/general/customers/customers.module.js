@@ -46,6 +46,9 @@
                     customer: function (apiResolver, $stateParams)
                     {
                         return apiResolver.resolve('customers@findOne', {'id': $stateParams.id});
+                    },
+                    users: function(apiResolver, $stateParams) {
+                        return apiResolver.resolve('users@find', {customer: $stateParams.id});
                     }
                 }
             });
