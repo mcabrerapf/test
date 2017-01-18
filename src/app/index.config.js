@@ -20,7 +20,16 @@
         $mdDateLocaleProvider.shortDays = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'];
 
 
-        moment.locale('es');
+        moment.locale('es', {
+            calendar: {
+                lastDay : '[Ayer]',
+                sameDay : '[Hoy]',
+                nextDay : '[Mañana]',
+                lastWeek : '[Ultimo] dddd',
+                nextWeek : 'dddd',
+                sameElse : 'L'
+            }
+        });
 
         // angular-translate configuration
         $translateProvider.useLoader('$translatePartialLoader', {

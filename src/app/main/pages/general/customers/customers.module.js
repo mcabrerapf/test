@@ -23,17 +23,35 @@
                     roles: ['Admin']
                 },
                 resolve: {
-                    customers: function (apiResolver) {
-                        return apiResolver.resolve('customers@find');
-                    },
-                    users: function (apiResolver)
+                    translateValues: function($translate) {
+                        return $translate([
+                            'CUSTOMERS.GRID.NAME',
+                            'CUSTOMERS.GRID.ADMIN'
+                        ]);
+                    }
+                }
+            })
+            .state('app.customers.detail', {
+                url: '/:id',
+                views  : {
+                    'content@app': {
+                        templateUrl: 'app/main/pages/general/customers/customer/customer.html',
+                        controller : 'CustomerController as vm'
+                    }
+                },
+                data: {
+                    roles: ['Admin']
+                },
+                resolve: {
+                    customer: function (apiResolver, $stateParams)
                     {
-                        return apiResolver.resolve('users@find');
+                        return apiResolver.resolve('customers@findOne', {'id': $stateParams.id});
+                    },
+                    users: function(apiResolver, $stateParams) {
+                        return apiResolver.resolve('users@find', {customer: $stateParams.id});
                     }
                 }
             });
-
-        console.log('app.pages.general.customers');
 
         // Translation
         $translatePartialLoaderProvider.addPart('app/main/pages/general/customers');
@@ -48,7 +66,7 @@
 
         msNavigationServiceProvider.saveItem('general.customer', {
             title    : 'Clientes',
-            icon     : 'icon-hand-pointing-right',
+            icon     : 'icon-factory',
             state    : 'app.customers',
             translate: 'CUSTOMERS.MENU.TITLE',
             weight   : 1

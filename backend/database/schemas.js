@@ -92,6 +92,13 @@ var timelineevent = {
     type:                       { type: String, required: true, enum: ['Step', 'Goal', 'Message', 'Post', 'Quiz', 'Game']},
     start:                      { type: Date, required: true },
     end:                        { type: Date, required: false },
+    /*
+    linkTo:                     {
+        id:                         { type: String, required: false },
+        type:                       { type: String, required: false, enum: ['start', 'end'], default: 'start' },
+        offset:                     { type: Number, required: false, default: 0 }
+    },
+    */
     data:                       { type: Schema.Types.Mixed, required: true }
 };
 
@@ -112,7 +119,7 @@ var player = {
     alias: {type: String, required: false},
     level: {type: String, required: true, default: 0},
     points: {type: Number, required: true, default: 0},
-    results: {type: Schema.Types.Mixed, required: false},
+    awards: {type: Schema.Types.Mixed, required: false},
     agreement: {
         accepted: {type: Boolean, required: true, default: false},
         date: {type: Date, required: false}
@@ -130,7 +137,8 @@ var team = {
 }
 
 
-var kpiData = {
+/*
+game.kpiData = {
 
     "58775bb9f57de40261f48021": {   // e1
 
@@ -218,7 +226,7 @@ var kpiData = {
 
     }
 }
-
+*/
 
 
 var schemas = {
@@ -229,7 +237,6 @@ var schemas = {
         status:                 { type: String, required: true, enum: ['En definición', 'Iniciado', 'Finalizado'], default: 'En definición'},
         budget:                 { type: Number, required: false },
         budgetDistribution:     { type: Schema.Types.Mixed, required: false },
-        // desempate
         start:                  { type: Date, required: true },
         end:                    { type: Date, required: false },
         customer:               { type: String, required: true },
@@ -241,7 +248,6 @@ var schemas = {
         kpiData:                { type: Schema.Types.Mixed, required: false },
         points:                 { type: Schema.Types.Mixed, required: false },
         winners:                { type: Schema.Types.Mixed, required: false }
-
     },
 
     'distribution': {   // de reparto de puntos y premios
@@ -264,7 +270,7 @@ var schemas = {
     'customer': {
         name: {type: String, required: true, unique: true},
         logo: {type: String, required: false},
-        admin: {type: String, required: false},           // ??? Id del usuario
+        admin: {type: Schema.Types.ObjectId, ref: 'user', required: false},           // ??? Id del usuario
     },
 
     'user': {

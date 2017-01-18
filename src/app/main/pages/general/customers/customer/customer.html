@@ -1,0 +1,128 @@
+<div id="customer-detail" class="page-layout simple fullwidth" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="start center">
+        <div class="white-fg" layout="row" layout-align="start center" flex>
+            <md-button class="goto-list-button md-icon-button" aria-label="Go to customers"
+                       ng-click="vm.gotoList()"
+                       translate translate-attr-aria-label="CUSTOMERS.GO_TO_CUSTOMERS">
+                <md-icon md-font-icon="icon-arrow-left"></md-icon>
+            </md-button>
+
+            <div layout="row" layout-align="start center">
+
+                <div layout="column" layout-align="start start">
+                    <div class="h2">
+                        {{vm.customer.name}}
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span translate="CUSTOMERS.EDIT_TITLE">Customer Detail</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <md-button  class="md-icon-button"
+                    aria-label="delete"
+                    ng-click="vm.deleteCustomerConfirm()"
+                    translate-attr-aria-label="FORMS.DELETE">
+            <md-icon md-font-icon="icon-delete" class="md-default-theme" aria-label="delete" translate-attr-aria-label="FORMS.DELETE"></md-icon>
+        </md-button>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content widget-group" layout="row" layout-align="start" layout-wrap ms-scroll>
+
+        <ms-widget flippable="true" flex="50" flipped="vm.flipped.customer">
+
+            <ms-widget-front class="md-white-bg">
+
+                <div layout="row" layout-align="space-between center" class="h-55 ph-16">
+                    <div class="h2" translate="CUSTOMERS.BASIC_INFO">Definición</div>
+                    <md-button class="md-icon-button" ng-click="vm.editCustomer()" aria-label="edit" translate-attr-aria-label="FORMS.EDIT">
+                        <md-icon class="s16" md-font-icon="icon-pencil"></md-icon>
+                    </md-button>
+                </div>
+
+                <div layout="column" class="ph-16">
+                    <kldform class="md-inline-form" novalidate mode="display">
+                        <field  type="text"
+                                ng-model="vm.customer.name"
+                                required 
+                                label="CUSTOMERS.NAME" />
+
+                        <field  type="select"
+                                ng-model="vm.customer.admin"
+                                items="vm.users"
+                                value-field="_id"
+                                display-field="userName"
+                                label="CUSTOMERS.ADMIN" />
+
+                        <field  type="text"
+                                ng-model="vm.customer.logo"
+                                label="CUSTOMERS.LOGO"
+                                required />
+
+                    </kldform>
+                </div>
+            </ms-widget-front>
+
+            <ms-widget-back class="md-white-bg">
+
+                <div layout="row" layout-align="space-between center" class="h-55 ph-16">
+                    <div class="h2" translate="CUSTOMERS.BASIC_INFO">Definición</div>
+                    <div class="flip-to-front">
+                        <md-button class="md-icon-button" ng-click="vm.flipped.customer=false" aria-label="Cancel" translate-attr-aria-label="FORMS.CANCEL">
+                            <md-icon md-font-icon="icon-close" class="s16"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+
+                <div layout="column" class="ph-16">
+                    <kldform name="customerForm" class="md-inline-form" novalidate mode="edit">
+                        <field  type="text"
+                                ng-model="vm.customerCopy.name"
+                                required 
+                                label="CUSTOMERS.NAME" />
+                                    
+                        <field  type="select"
+                                ng-model="vm.customerCopy.admin"
+                                items="vm.users"
+                                value-field="_id"
+                                display-field="userName"
+                                label="CUSTOMERS.ADMIN" />
+
+                        <field  type="text"
+                                ng-model="vm.customerCopy.logo"
+                                label="CUSTOMERS.LOGO" />
+                    </kldform>
+                </div>
+
+                <div id="save-definition" class="p-16 grey-50-bg border-top" layout="row" layout-align="start center">
+                    <md-button  class="send-button md-accent md-raised"
+                                ng-disabled="customerForm.$invalid"
+                                ng-click="vm.saveCustomer()" 
+                                translate="FORMS.SAVE">Save</md-button>
+                </div>
+
+            </ms-widget-back>
+
+        </ms-widget>
+
+        <ms-widget flippable="false" flex="50" class="settings-form">
+
+            <ms-widget-front class="md-white-bg">
+
+                <div>Número de jugadores (con botón para importar)</div>
+                <div>Lista de partidas (con detalle de tema+estado)</div>
+                
+            </ms-widget-front>
+
+        
+        </ms-widget>
+
+    </div>
+
+</div>

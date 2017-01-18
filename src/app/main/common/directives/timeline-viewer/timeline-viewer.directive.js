@@ -19,7 +19,7 @@
             groups: new VisDataSet([
                 { id: 1, content: 'Etapas', type: 'Step' },
                 { id: 2, content: 'Mensajes', type: 'Message' },
-                { id: 3, content: 'Publicaciones en blog', type: 'Post' },
+                { id: 3, content: 'Blog', type: 'Post' },
                 { id: 4, content: 'Retos', type: 'Goal' },
 //                { id: 5, content: 'Premios regularidad', type: 'Regularity' }
             ])
@@ -50,6 +50,21 @@
                 var day = 24 * 60 * 60 * 1000;
                 return Math.round(date / day) * day;
             },
+            tooltipOnItemUpdateTime: {
+
+                template: function(item) {
+
+                    var ret = vis.moment(item.start).utc().calendar();
+
+                    if (item.end !== undefined && item.end !== null) {
+                        ret += ' - ' + vis.moment(item.end).utc().calendar();
+                        var diff = vis.moment(item.end).diff(vis.moment(item.start), 'days');
+                        ret += ' (' + diff + ' dias)  ';
+                    }
+
+                    return ret;
+                }
+            },
             selectable: true,
             editable: {
                 add: true,
@@ -57,28 +72,12 @@
                 updateGroup: false,
                 remove: true
             },
-            template: function (item) {
-                
-                //moment.locale('es');
-                
-                var tooltipHTML = '<div class="vis-item-tooltip">';
-                //var start = moment(item.start).format('L');
-                //var end = (item.end ? moment(item.end).format('L') : '');
-
-                tooltipHTML += '<h3 class="vis-tooltip-title">' + item.title + '</h3>';
-                tooltipHTML += '<div>' + (item.end ? 'Del' : 'El') + ' <span class="vis-item-date-start">' + item.start + '</span>';
-                if (item.end) tooltipHTML += ' al <span class="vis-item-date-end">' + item.end + '</span>';
-                tooltipHTML += '</div>';
-
-                return '<span class="item-text">' + item.title + '</span>';
-
-            },
             groupTemplate: function(group, element) {
                 // $(element).addClass('md-accent-fg');
                 var html = '';
-                html += '<div flex layout="row" layout-align="none center">';
-                html += '    <md-icon flex="none" class="m-16 s40 md-accent-fg" md-font-icon="{{\'' + group.type + '\' | timelineIcon}}"></md-icon>';
-                html += '    <div flex>' + group.content + '</div>';
+                html += '<div flex layout="row" layout-align="none center" class="m-10">';
+                html += '    <md-icon flex="none" class="s40 md-accent-fg" md-font-icon="{{\'' + group.type + '\' | timelineIcon}}"></md-icon>';
+                html += '    <div flex class="m-10">' + group.content + '</div>';
                 html += '</div>';
                 var groupLabel = $compile(html)($scope);
                 return groupLabel[0];
@@ -115,31 +114,101 @@
                         if (newItem === undefined) return;
 
                         newItem.dataType = newItem.type;
-                        delete newItem.type;
                         newItem.group = item.group;
+                        newItem.content = newItem.title;
+                        delete newItem.title;
+                        delete newItem.type;
                         callback(newItem);
                 });
             },
 
             onMoving: function(item, callback) {
 
-                if (item.start < new Date()) return;
+                if (item.start < new Date()) return callback(null);
 
-                if (item.group === 1) {
-                    // etapa!
-                }
-                callback(item);
-            },
-
-            onMove: function(item, callback) {
                 if (item.end !== undefined && item.end !== null) {
                     if (item.end.valueOf() <= item.start.valueOf()) {
                         item.end = vis.moment(item.start).add(1, 'days');
                     }
                 }
+
+                if (item.group === -1) {
+
+                    var selId = vm.timelineControl.getSelection()[0];
+                    var dataItem = vm.data.items.get(selId);
+
+                    var filter;
+                    var diffStart = vis.moment(item.start).diff(vis.moment(dataItem.start), 'days');
+                    var diffEnd = vis.moment(item.end).diff(vis.moment(dataItem.end), 'days');
+
+                    if (diffStart === diffEnd) {
+                        filter = {
+                            filter: function(itemToFilter) {
+                                if (itemToFilter._id === dataItem._id) return false;
+                                return vis.moment(itemToFilter.start).diff(vis.moment(dataItem.start), 'days') >= 0;
+                            }
+                        };
+                    }
+                    /*
+                    if (diffStart !== 0) {
+                        // move by start
+                        console.log('from start: ' + diffStart);
+                    } else {
+                        if (diffEnd !== 0) {
+                            console.log('from end: ' + diffEnd);
+                        }
+                    }
+                    */
+
+//                    start && end --> tot >= start
+//                                  suma a start i a end
+//                    end --> tot que each.start >= end
+//                                  suma a start i a end
+//                            tot que each.end == end
+//                                  suma a end
+//                    start --> tot >= start && < end
+
+                    if (filter !== undefined) {
+                        console.log('-------------------- DIFF ' + diffStart);
+                        vm.data.items.forEach(function(relatedItem) {
+                            console.log(relatedItem.content);
+                            var originalItem = getOriginalItem(relatedItem._id);
+                            relatedItem.start = vis.moment(originalItem.start).add(diffStart, 'days');
+                            if (relatedItem.end !== undefined && diffEnd !== 0) {
+                                relatedItem.end = vis.moment(originalItem.end).add(diffEnd, 'days');
+                            }
+                            vm.data.items.update(relatedItem);
+                        }, filter);
+                    }
+                }
+
+                callback(item);
+            },
+
+            onMove: function(item, callback) {
+                /*
+                // update all timeline dates
+                for(var r=0; r < vm.timeline.length; r++) {
+                    var timelineEvent = vm.timeline[r];
+                    if (timelineEvent._id === item._id) {
+                        timelineEvent.start = item.start;
+                        timelineEvent.end = item.end;
+                    } else {
+                        var dataItem = vm.data.items.get(timelineEvent._id);
+                        timelineEvent.start = dataItem.start;
+                        timelineEvent.end = dataItem.end;
+                    }
+                }
+                timelineService.save(vm.timeline).then(function() {
+                    callback(item);
+                });
+                */
                 item.type = item.dataType;
+                item.title = item.content;
                 timelineService.saveItem(item).then(function() {
+                    item.content = item.title;
                     delete item.type;
+                    delete item.title;
                     callback(item);
                 });
             },
@@ -160,8 +229,7 @@
                         .ok(translationValues['FORMS.OK'])
                         .cancel(translationValues['FORMS.CANCEL']);
 
-                    $mdDialog.show(confirm).then(function ()
-                    {
+                    $mdDialog.show(confirm).then(function () {
                         timelineService.deleteItem(item);
                         callback(item);
                     });
@@ -170,12 +238,42 @@
             },
 
             onUpdate: function(item, callback) {
-                console.log('onupdate');
-                callback(item);
+
+                item.type = item.dataType;
+                item.title = item.content;
+
+                $mdDialog.show({
+                        controller         : item.type  + 'DialogController',
+                        controllerAs       : 'vm',
+                        templateUrl        : 'app/main/dialogs/' + item.type.toLowerCase() + '/' + item.type.toLowerCase() + '-dialog.html',
+                        parent             : angular.element(document.body),
+                        // targetEvent        : ev,
+                        clickOutsideToClose: true,
+                        locals             : {
+                            Element:            item
+                        }
+                    }).then(function(modifiedItem) {
+
+                        if (modifiedItem === undefined) return callback(null);
+
+                        modifiedItem.dataType = modifiedItem.type;
+                        modifiedItem.group = item.group;
+                        modifiedItem.content = modifiedItem.title;
+                        delete modifiedItem.title;
+                        delete modifiedItem.type;
+                        callback(modifiedItem);
+                });
             }
             
 
         };
+
+
+        function getOriginalItem(id) {
+            for(var r=0; r < vm.timeline.length; r++) {
+                if (vm.timeline[r]._id === id) return vm.timeline[r];
+            }
+        }
 
 
         function getVisTimelineData() {
@@ -184,7 +282,7 @@
 
                 var item = {
                     _id: event._id,
-                    title: event.title,
+                    content: event.title,
                     start: new Date(event.start),
                     end: event.end ? new Date(event.end) : null,
                     group: 2,

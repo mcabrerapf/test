@@ -17,6 +17,7 @@
             addTimeline: addTimeline,
             removeTimeline: removeTimeline,
             updateTimeline: updateTimeline,
+            saveTimeline: saveTimeline,
             remove: remove
         };
 
@@ -155,6 +156,29 @@
             return def.promise;
         }
 
+
+        /**
+         * Save timeline
+         */
+        function saveTimeline(timeline) {
+
+            if (service.theme === undefined) return $q.reject();
+            var def = $q.defer();
+
+            api.themes.update({id: service.theme._id}, {timeline: timeline},
+                function(response) {
+                    service.theme.timeline = response.timeline;
+                    showOk();
+                    def.resolve();
+                },
+                function(error) {
+                    showError(error);
+                    def.reject(error);
+                }
+            );
+
+            return def.promise;
+        }
 
         /**
          * Rename theme

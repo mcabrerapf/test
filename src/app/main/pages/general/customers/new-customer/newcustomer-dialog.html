@@ -30,13 +30,15 @@
                         required
                         label="CUSTOMERS.NAME" />
 
-                <field  type="select"
-                        ng-model="vm.customer.admin._id"
-                        items="vm.users"
-                        display-field="userName"
-                        value-field="_id"
-                        label="CUSTOMERS.ADMIN" />
-
+                <div ng-if="!vm.isNew">
+                    <field  type="select"
+                            ng-model="vm.customer.admin"
+                            items="vm.users"
+                            display-field="userName"
+                            value-field="_id"
+                            label="CUSTOMERS.ADMIN" />
+                </div>
+                
             </div>
 
         </md-dialog-content>
@@ -46,14 +48,7 @@
 
         <md-dialog-actions layout="row" layout-align="space-between center">
             <div layout="row" layout-align="start center">
-                <md-button type="submit" ng-if="!vm.isNew" ng-click="vm.updateCustomer()"
-                           class="send-button md-accent md-raised"
-                           ng-disabled="customerForm.$invalid"
-                           aria-label="SAVE" translate="CUSTOMERS.DIALOG.SAVE" translate-attr-aria-label="CUSTOMERS.DIALOG.SAVE">
-                    SAVE
-                </md-button>
-
-                <md-button type="submit" ng-if="vm.isNew" ng-click="vm.addNewCustomer()"
+                <md-button type="submit" ng-click="vm.addNewCustomer()"
                            class="send-button md-accent md-raised"
                            ng-disabled="customerForm.$invalid"
                            aria-label="Add Task" translate="CUSTOMERS.DIALOG.ADD"
@@ -61,15 +56,6 @@
                     ADD CUSTOMER
                 </md-button>
 
-            </div>
-
-            <div layout="row">
-                <md-button ng-if="!vm.isNew" class="md-icon-button" ng-click="vm.deleteCustomer($event)" aria-label="Delete"
-                           translate
-                           translate-attr-aria-label="CUSTOMERS.DIALOG.DELETE">
-                    <md-icon md-font-icon="icon-delete"></md-icon>
-                    <md-tooltip><span translate="CUSTOMERS.DIALOG.DELETE">DELETE</span></md-tooltip>
-                </md-button>
             </div>
         </md-dialog-actions>
         <!-- / DIALOG ACTIONS -->

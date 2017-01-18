@@ -273,7 +273,7 @@
 
         // COSTUMERS
         api.customers = $resource(api.baseUrl + 'customers/:id', {id: '@_id'}, {
-            find: {method: 'GET', params: {}, isArray: true},
+            find: {method: 'GET', params: {populate:'admin'}, isArray: true},
             findOne: {method: 'GET', params: {}, isArray: false},
             save: {method: 'POST', params: {}, isArray: false},
             update: {method: 'PUT', params: {}, isArray: false},

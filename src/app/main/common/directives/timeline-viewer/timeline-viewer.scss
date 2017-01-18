@@ -1,47 +1,32 @@
 .timeline {
 
-    
+    background-color: #EEF0F2;
+    top: 24px;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    overflow: hidden;
+    position: absolute;
+    box-shadow: 0 1px .5px rgba(0, 0, 0, .13);
 
-    .ms-timeline {
+    .vis-timeline {
 
-        padding: 0px;
-        list-style: none;
-        z-index: 20;
+        background-color: white;
 
+        .vis-item {
+            background-color: #E8F5E9;
+            border-color: #b2c1b3;
 
-        .ms-timeline-item {
-
-            border:1px solid rgba(0, 0, 0, 0.08);
-            margin: 20px 0;
-
-            > div {
-
-                width: 300px;
-                background-color: white;
-
-                .drag-handle {
-                    margin: 8px;
-                    cursor: pointer;
-                }
-
-                .actions {
-
-                    visibility: hidden;
-
-                }
-            }
-
-            &.dndDraggingSource {
-                display: none;
-            }
-
-
-
-            &:hover {
-                .actions {
-                    visibility: visible;
-                }
+            .vis-onUpdateTime-tooltip {
+                width: auto;
+                background: #7f8388;
+                font-size: 12px;
             }
         }
+
+        .vis-selected {
+            background-color: #FFFDE7!important;
+        }
     }
+
 }
