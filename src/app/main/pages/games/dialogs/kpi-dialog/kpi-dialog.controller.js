@@ -10,43 +10,59 @@
     function KpiDialogController($scope, $mdDialog, $translate, mode, Kpi, gameService) {
 
         var vm = this;
-        vm.kpiTypes = [
-            { value: 'calculated', text: 'Calculada' },
-            { value: 'loaded', text: 'Cargada' }
-        ];
-        vm.agregatedTypes = [
-            { value: 'sum', text: 'Suma' },
-            { value: 'avg', text: 'Media' }
-        ];
-        vm.scoreTypes = [
-            { value: 'levels', text: 'Niveles de ranking' },
-            { value: 'distribution', text: 'Distribución de puntos' },
-            { value: 'formula', text: 'Formula' }
-        ];
 
-        // Data
-        vm.TITLEKEY = 'KPIS.EDIT_TITLE';
-        vm.kpi = angular.copy(Kpi);
-        vm.newItem = false;
-        vm.mode = mode || 'edit';
+        $translate([
+            "KPIS.TYPES.CALCULATED",
+            "KPIS.TYPES.LOADED",
+            "KPIS.TYPES.USERMESSAGES",
+            "KPIS.AGREGATEDTYPES.SUM",
+            "KPIS.AGREGATEDTYPES.AVG",
+            "KPIS.SCORETYPES.LEVELS",
+            "KPIS.SCORETYPES.DISTRIBUTION",
+            "KPIS.SCORETYPES.FORMULA"]).then(function(translateValues) {
 
-        if ( !vm.kpi )
-        {
-            vm.kpi = {
-                name: '',
-                id: '',
-                type: 'loaded',
-                displayformat: '#.##0,0',
-                score: {
-                    type: 'no'
-                }
-            };
+            vm.kpiTypes = [
+                { value: 'calculated', text: translateValues['KPIS.TYPES.CALCULATED'] },
+                { value: 'loaded', text: translateValues['KPIS.TYPES.LOADED'] },
+                { value: 'usermessages', text: translateValues['KPIS.TYPES.USERMESSAGES']}
+            ];
+            vm.agregatedTypes = [
+                { value: 'sum', text: translateValues['KPIS.AGREGATEDTYPES.SUM'] },
+                { value: 'avg', text: translateValues['KPIS.AGREGATEDTYPES.AVG'] }
+            ];
+            vm.scoreTypes = [
+                { value: 'levels', text: translateValues['KPIS.SCORETYPES.LEVELS'] },
+                { value: 'distribution', text: translateValues['KPIS.SCORETYPES.DISTRIBUTION'] },
+                { value: 'formula', text: translateValues['KPIS.SCORETYPES.FORMULA'] }
+            ];
 
-            vm.TITLEKEY = 'KPIS.NEW_TITLE';
-            vm.newItem = true;
-        }
+            // Data
+            vm.TITLEKEY = 'KPIS.EDIT_TITLE';
+            vm.kpi = angular.copy(Kpi);
+            vm.newItem = false;
+            vm.mode = mode || 'edit';
 
-        vm.score = (vm.kpi.score.type !== 'no');
+            if ( !vm.kpi )
+            {
+                vm.kpi = {
+                    name: '',
+                    id: '',
+                    type: 'loaded',
+                    displayformat: '#.##0,0',
+                    score: {
+                        type: 'no'
+                    }
+                };
+
+                vm.TITLEKEY = 'KPIS.NEW_TITLE';
+                vm.newItem = true;
+            }
+
+            vm.score = (vm.kpi.score.type !== 'no');
+
+        });
+
+
 
 
         // Methods

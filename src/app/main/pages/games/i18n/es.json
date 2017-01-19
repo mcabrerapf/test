@@ -50,6 +50,20 @@
         "GENERAL": "Definición",
         "ID": "Identificador",
         "DEFINITION": "Definición de la métrica",
+        "TYPES": {
+            "CALCULATED": "Calculada",
+            "LOADED": "Cargada",
+            "USERMESSAGES": "Comunicaciones del usuario"
+        },
+        "AGREGATEDTYPES": {
+            "SUM": "Suma",
+            "AVG": "Media"
+        },
+        "SCORETYPES": {
+            "LEVELS": "Niveles de ranking",
+            "DISTRIBUTION": "Distribucion de puntos",
+            "FORMULA": "Formula"
+        },
         "AGREGATE_FORMULA": "Método de agregación",
         "DISPLAY_FORMAT": "Formato de visualización",
         "NUMERATOR": "Cálculo",

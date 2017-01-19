@@ -55,7 +55,7 @@
                         </div>
 
                         <div flex>
-                            <div ng-if="vm.kpi.type=='loaded'">
+                            <div ng-if="vm.kpi.type=='loaded' || vm.kpi.type=='usermessages'">
                                 <field  type="select"
                                         ng-model="vm.kpi.loaded.aggregateformula"
                                         required 
