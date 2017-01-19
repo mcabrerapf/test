@@ -3,9 +3,9 @@
 var Schema = require('mongoose').Schema;
 
 var kpi = {
-    id:   {type: String, required: true, unique: true },
-    name: {type: String, required: true, unique: true },
-    type: {type: String, required: true, enum: ['calculated', 'loaded']},
+    id:   {type: String, required: true, unique: false },
+    name: {type: String, required: true, unique: false },
+    type: {type: String, required: true, enum: ['calculated', 'loaded', 'usermessages']},
     calculated: {
         numerator: {type: String, required: true},        // id del KPI que se utilizará para el cálculo
         denominator: {type: String, required: true}         // id del KPI que se utilizará para el cálculo
@@ -51,25 +51,19 @@ var notification = {
 
 var goal = {
     description:    { type: String, required: false },
-    body:           { type: String, required: false },
-    slider:         { type: String, required: false },
-    notifications:  [ notification, { _id: true }],
     metric:         { type: String, required: true },                       // id de la métrica a la que va asociada el reto
-    winmessage:     { type: String, required: false },
-    endmessage:     { type: String, required: false },
+    startstep:      { type: String, required: true },
+    endstep:        { type: String, required: true },
     type:           { type: String, required: true, enum: ['Points', 'Money']},
     points:         {
-        // aqui va una tabla de distribución de puntos!!!!
-        topplayers: { type: Number, required: false },
-        points:     { type: Number, required: false }
+        distributionTable: [ Number ]
     },
     money:        {
-        // aqui va una tabla de distribución de premios!!!!
-        budget:             { type: Number, required: false },
-        participants:       { type: Number, required: true },
-        formula:            { type: String, required: false },
         distributionTable:  [ Number ]
     },
+    
+    winmessage:     { type: String, required: false },
+    endmessage:     { type: String, required: false },
     team:           { type: String, required: false },                      // id del equipo al que va dirigido el reto
     thumbnail:      { type: String, required: false, default: '' }
 };

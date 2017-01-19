@@ -30,9 +30,11 @@
 
             * KPIs que puntuan en el ranking sin descripción
             * KPIs calculados sobre otros KPIs que ya no existen
+            * KPIs con nombres o id's duplicados
             * Equipos de jugadores que no están en el último nivel
-            * Presupuesto sobrepasado
             * Equipos sin jugadores
+            * Jugadores sin equipos
+            * Presupuesto sobrepasado
             * Etapas solapadas
             * Eventos del timeline fuera de rango
             *       - Antes de la fecha actual
