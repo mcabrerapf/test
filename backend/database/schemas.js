@@ -228,7 +228,7 @@ var schemas = {
     'game': {
         name:                   { type: String, required: true, unique: true },
         theme:                  { type: String, required: true },           // id del theme
-        status:                 { type: String, required: true, enum: ['En definición', 'Iniciado', 'Finalizado'], default: 'En definición'},
+        status:                 { type: String, required: true, enum: ['definition', 'started', 'finished'], default: 'definition'},
         budget:                 { type: Number, required: false },
         budgetDistribution:     { type: Schema.Types.Mixed, required: false },
         start:                  { type: Date, required: true },

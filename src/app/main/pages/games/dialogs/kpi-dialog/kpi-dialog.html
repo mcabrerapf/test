@@ -149,7 +149,7 @@
 
         <!-- DIALOG ACTIONS -->
         <md-dialog-actions layout="row" layout-align="space-between center">
-            <div layout="row" layout-align="start center">
+            <div layout="row" layout-align="start center" ng-if="vm.mode=='edit'">
                 <md-button type="submit" ng-if="vm.newItem" ng-click="vm.addNew()"
                            class="send-button md-accent md-raised"
                            ng-disabled="kpiForm.$invalid"
@@ -165,7 +165,7 @@
                 </md-button>
             </div>
 
-            <div layout="row">
+            <div layout="row" ng-if="vm.mode=='edit'">
                 <md-button ng-if="!vm.newItem" class="md-icon-button" ng-click="vm.deleteKpi($event)" aria-label="Delete"
                            translate
                            translate-attr-aria-label="FORMS.DELETE">
