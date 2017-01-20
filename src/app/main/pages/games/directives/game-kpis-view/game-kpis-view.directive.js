@@ -28,7 +28,12 @@
             "KPIS.TYPE",
             "KPIS.SCORE",
             "KPIS.PARTICIPANTS",
-            "KPIS.TOTAL_POINTS"]).then(function (translateValues) {
+            "KPIS.TOTAL_POINTS",
+            "KPIS.AGREGATEDTYPES.SUM",
+            "KPIS.AGREGATEDTYPES.AVG",
+            "KPIS.SCORETYPES.LEVELS",
+            "KPIS.SCORETYPES.DISTRIBUTION",
+            "KPIS.SCORETYPES.FORMULA"]).then(function (translateValues) {
 
                 vm.gridOptions = {
                     dataSource: {
@@ -51,8 +56,10 @@
                     },
                     columns: [
                         { field: "name", title: translateValues['KPIS.NAME'] },
-                        { field: "type", title: translateValues['KPIS.TYPE'], filterable: { multi: true, search: false }},
-                        { field: "score.type", title: translateValues['KPIS.SCORE'] },
+                        { field: "type", title: translateValues['KPIS.TYPE'],
+                          template: '<span translate="KPIS.TYPES.#= type.toUpperCase() #"></span>'  },
+                        { field: "score.type", title: translateValues['KPIS.SCORE'],
+                            template: '<span translate="KPIS.SCORETYPES.#= score.type.toUpperCase() #"></span>'},
                         { 
                             field: null,
                             title: translateValues['KPIS.PARTICIPANTS'],
@@ -106,7 +113,7 @@
                 clickOutsideToClose: false,
                 locals             : {
                     Kpi: kpi,
-                    mode: (gameService.game.status==='En definición' ? 'edit' : 'display')
+                    mode: (gameService.game.status==='definition' ? 'edit' : 'display')
                 }
             }).then(function(result) {
 
