@@ -66,6 +66,8 @@
     "LOAD": {
         "TAB_TITLE": "Carga de datos",
         "SELECT_LABEL": "Selecciona evento",
+        "FROM_DB":  "Cargar desde datos",
+        "NEW":  "Nueva hoja",
         "VALIDATE": "Validar Datos",
         "SAVE": "Grabar Datos"
     },

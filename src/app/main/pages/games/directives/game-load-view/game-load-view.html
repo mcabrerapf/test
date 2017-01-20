@@ -10,23 +10,32 @@
             		ng-repeat="tlevent in vm.timelineEvents"
             		ng-value="tlevent"
             		ng-disabled="vm.isTimelineEventDisabled(tlevent)">
-            		{{tlevent.title + ' (' + tlevent.end + ')'}}
+            		{{tlevent.title}} -- {{ tlevent.end | date }}
             	</md-option>
           	</md-select>
         </md-input-container>
 
 		<div ng-show="vm.timelineEvent">
-			<section layout="row">
-		     	<md-button ng-click="vm.validateSpreadsheet()"
+			<div layout="row">
+			<!--
+		     	<md-button ng-click="vm.newSpreadsheet()"
+		     	class="md-raised md-primary" translate="LOAD.NEW">Nueva hoja</md-button>
+			-->
+
+		     	<md-button ng-click="vm.loadSpreadsheet()"
+		     	class="md-raised md-primary" translate="LOAD.FROM_DB">Cargar desde bbdd</md-button>
+
+		     	<md-button ng-disabled="!vm.existSpreadsheet" ng-click="vm.validateSpreadsheet()"
 		     	class="md-raised md-primary" translate="LOAD.VALIDATE">Validar datos</md-button>
 
 		     	<md-button ng-disabled="!vm.isSpreadsheetOK" ng-click="vm.saveSpreadsheet()"
 		     	class="md-raised md-primary" translate="LOAD.SAVE">Grabar datos</md-button>
-		     </section>
+		     </div>
 
 	        <kendo-spreadsheet id="spreadsheet"
 	        	k-scope-field="vm.spreadsheet"
-				k-options="vm.spreadsheetOptions">
+				k-options="vm.spreadsheetOptions"
+				k-rebind="vm.spreadsheetOptions">
 			</kendo-spreadsheet>	     
      	</div>
       
