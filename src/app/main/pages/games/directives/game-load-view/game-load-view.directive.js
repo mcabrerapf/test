@@ -12,6 +12,7 @@
     {
         var vm = this;
 
+        vm.existSpreadsheet = true; //false;
         vm.isSpreadsheetOK = false;
 
         vm.gameService = gameService;
@@ -31,17 +32,24 @@
             return kpi.type == 'calculated';
         });
 
-        vm.kpiData = vm.game.kpiData;
+        vm.kpiDataDB = vm.game.kpiData;
+
+		vm.onSpreadsheetChange = function(event) {
+			$scope.$apply(function() {
+				vm.isSpreadsheetOK = false;
+				console.log('change');
+			});
+		};
 
         vm.spreadsheetOptions = {
-            toolbar:    false,
+        	change: 	vm.onSpreadsheetChange,
+            toolbar:    true,
             sheetsbar:  false,
             columns:    1 + vm.kpisLoaded.length,
             rows:       1 + vm.players.length
         };
 
         vm.onTimelineEventChanged = function() {
-            loadDataIntoSpreadsheet();
         };
 
         vm.isTimelineEventDisabled = function(tlevent) {
@@ -49,35 +57,62 @@
             return Date.now() > Date.parse(tlevent.end);
         };
 
+/*
+        vm.newSpreadsheet = function() {
+        	vm.existSpreadsheet = true;
+        	vm.isSpreadsheetOK = false;
+        	var kpiData0 = newKpiData( vm.timelineEvent, vm.players, vm.kpisLoaded );
+        	loadDataIntoSpreadsheet( kpiData0 );
+        };
+*/
+
+        vm.loadSpreadsheet = function() {
+        	vm.existSpreadsheet = true;
+        	vm.isSpreadsheetOK = false;
+        	loadDataIntoSpreadsheet( vm.kpiDataDB );
+        };
+
         vm.validateSpreadsheet = function() {
-        	var kpiData = sheet2data( vm.spreadsheet.toJSON().sheets[0] );
 
-			var checkData = checkEveryValue(kpiData, function(value){
-				return Number.isFinite(value) || value === null;
-			});
+        	var sheet = vm.spreadsheet.activeSheet();
 
-			vm.isSpreadsheetOK 	= checkData.check;
-			vm.errSpreadsheet 	= checkData.reason;
+        	vm.isSpreadsheetOK = checkKpisHeader(sheet,
+        							function(kpi){
+										return _.find( vm.kpisLoaded, {id: kpi} );
+									}
+  								) &&
+        						 checkPlayersHeader(sheet,
+        							function(player){
+										return _.find( vm.players, function(p){ return p.user.employeeId == player } );
+									}
+  								) &&
+        						 checkContents(sheet,
+        							function(value){
+										return Number.isFinite(value) || value === null;
+									}
+								);
         };
 
-        vm.saveSpreadsheet = function() {
-        	var kpiData = sheet2data( vm.spreadsheet.toJSON().sheets[0] );
+        vm.saveSpreadsheet = function() {        	
+        	var kpiData  	= sheet2data( vm.spreadsheet.toJSON().sheets[0] )
+        	,	kpiData0 	= newKpiData( vm.timelineEvent, vm.players, vm.kpisLoaded )
 
-            saveKpiData( calculateKpis( kpiData, vm.kpisCalculated, vm.kpisLoaded ) );
+            saveKpiData( angular.merge( kpiData0, kpiData ) );
         };
 
         //////////
 
-        // $scope.$on('initLoadView', null);
+        $scope.$on('initLoadView', initLoadView());
 
         //////////
 
-        function loadDataIntoSpreadsheet() {
-            vm.spreadsheet.fromJSON({
-                sheets: [ data2sheet(
-                    vm.timelineEvent, vm.players, vm.kpisLoaded, vm.kpiData
-                )]
-            });
+        function initLoadView() {
+        };
+
+        function loadDataIntoSpreadsheet(kpiData) {
+            vm.spreadsheet.fromJSON({ sheets: [ data2sheet(
+            	vm.timelineEvent, vm.players, vm.kpisLoaded, kpiData
+            )] });
         };
 
         function calculateKpis(kpiData, kpisCalculated, kpisLoaded) {
@@ -92,8 +127,11 @@
         		if (kpiDataItem[divisionId] === undefined) kpiDataItem[divisionId] = {};
 
         		Object.keys(kpiDataItem[numeratorId]).forEach(function(player){
-        			kpiDataItem[divisionId][player] =
-        				kpiDataItem[numeratorId][player] / kpiDataItem[denominatorId][player];
+
+        			var numerator 	= kpiDataItem[numeratorId][player]
+        			,	denominator = kpiDataItem[denominatorId][player]
+
+        			kpiDataItem[divisionId][player] = denominator ? numerator / denominator : null;
         		});
 
         	});
@@ -110,41 +148,38 @@
         
         function data2sheet(timelineEvent, players, kpis, kpiData) {
 
+        	function getDataValue(kpi, player) {
+    			return 	timelineEvent._id &&
+			            kpiData[ timelineEvent._id ] &&
+			            kpiData[ timelineEvent._id ][ kpi.id ] ?
+			            kpiData[ timelineEvent._id ][ kpi.id ][ player.user.employeeId ] :
+			            null;
+        	};
+
             // header: row 0, column 0
             var sheet = {
                 name: timelineEvent._id,
-                frozenRows: 1,
-                frozenColumns: 1,
                 rows: [{
                     cells: [{
-                        value: timelineEvent.title, bold: true, enable: false 
+                        value: timelineEvent.title, bold: true
                     }]
                 }]
             };
 
             // header: row 0
             kpis.forEach(function(kpi){
-                sheet.rows[0].cells.push({ value: kpi.id, bold: true, enable: false });
+                sheet.rows[0].cells.push({ value: kpi.id, bold: true });
             });
 
             // contents: row 1 ... players.length
-            players.forEach(function(player, i){
+            players.forEach(function(player){
 
                 // header: column 0
-                var row = { cells: [{ value: player.user.employeeId, bold: true, enable: false }] };
+                var row = { cells: [{ value: player.user.employeeId, bold: true }] };
 
                 // contents: column 1 ... kpis.length
                 kpis.forEach(function(kpi){
-
-                    const value =   timelineEvent._id &&
-                                    kpiData[ timelineEvent._id ] &&
-                                    kpiData[ timelineEvent._id ][ kpi.id ] ?
-                                    kpiData[ timelineEvent._id ][ kpi.id ][ player.user.employeeId ] :
-                                    null;
-
-                    row.cells.push({ value: value });
-                    /*, validation: {type: "reject", allowNulls: true, dataType: "number"} */
-                    // console.log('value: ', value);
+                    row.cells.push({ value: getDataValue(kpi, player) });
                 });
 
                 sheet.rows.push( row );
@@ -159,26 +194,29 @@
             ,	kpis 	= []
             ,	player 	= "";
 
-            sheet.rows.forEach(function(row, r){
-                if (r == 0) {	// row 0: header (identificadores de tlevent y kpis)
+            sheet.rows.forEach(function(row){
+                if (row.index == 0) {	// row.index 0: header (identificadores de tlevent y kpis)
 
-                	row.cells.forEach(function(cellIdKpi, i){
-		                if (i == 0) {
+                	row.cells.forEach(function(cellIdKpi){
+                		var index = cellIdKpi.index;
+
+		                if (index == 0) {
 		                    kpiData[ sheet.name ] = {};						// crea nivel 1
 		                } else {
 		                    kpiData[ sheet.name ][ cellIdKpi.value ] = {};	// crea nivel 2
-		                    kpis[i] = cellIdKpi.value;
+		                    kpis[ index+1 ] = cellIdKpi.value;
 		                };                		
                 	});
 
                 } else {	// row 1..N: contents (identificadores de player y valor de kpis)
 
-	                row.cells.forEach(function(cellValKpi, j){
-	            		if (j == 0) {
+	                row.cells.forEach(function(cellValKpi){
+	                	var index = cellValKpi.index;
+
+	            		if (index == 0) {
 	            			player = cellValKpi.value;
 	            		} else {
-	            			kpiData[ sheet.name ][ kpis[j] ][ player ] = cellValKpi.value;	// asigna valor (nivel 3)
-
+	            			kpiData[ sheet.name ][ kpis[index+1] ][ player ] = cellValKpi.value;	// asigna valor (nivel 3)
 	            		}
 	                });
 	            }
@@ -213,6 +251,122 @@
 
         	return {check: check, reason: reason};
         };
+
+        function newKpiData(timelineEvent, players, kpis) {
+
+            var kpiData = {};
+
+            kpiData[ timelineEvent._id ] = {};
+
+            kpis.forEach(function(kpi){
+            	kpiData[ timelineEvent._id ][ kpi.id ] = {};
+
+	            players.forEach(function(player){
+	            	kpiData[ timelineEvent._id ][ kpi.id ][ player.user.employeeId ] = null;
+	            });            	
+            });
+
+            return kpiData;
+        };
+
+        var minSheetRow 		= 0
+        ,	minSheetColumn 		= 0
+        ,	maxSheetRow 		= 1000
+        ,	maxSheetColumn 		= 50
+        ,	kpiHeaderRow		= minSheetRow
+        ,	playerHeaderColumn	= minSheetColumn
+
+        ,	KPI_HEADER_RANGE 	= 'B1:AA1'
+        ,	PLAYER_HEADER_RANGE = 'A2:A100'
+        ,	CONTENTS_RANGE 		= 'B2:AA100'
+
+/*
+        ,	KPI_HEADER_RANGE 	= rc(kpiHeaderRow, playerHeaderColumn + 1, kpiHeaderRow, maxSheetColumn)
+        ,	PLAYER_HEADER_RANGE = rc(kpiHeaderRow + 1, playerHeaderColumn, maxSheetRow, playerHeaderColumn)
+        ,	CONTENTS_RANGE 		= rc(kpiHeaderRow + 1, playerHeaderColumn + 1, maxSheetRow, maxSheetColumn)
+*/
+
+        function checkKpisHeader(sheet, test) {
+
+        	var badKpis 	= []
+        	,	colorOK		= "white"
+        	,	colorERROR 	= "yellow"
+
+			sheet.range(KPI_HEADER_RANGE).forEachCell(function (r, c, cell) {
+				var rcCoords = rc(r, c);
+				if (cell.value) {
+					!test(cell.value) && badKpis.push({rcCoords: rcCoords, value: cell.value});
+				} else {
+					badKpis.push({rcCoords: rcCoords, value: undefined});
+				}
+		    });
+
+			sheet.range(KPI_HEADER_RANGE).background(colorOK);
+
+			badKpis.forEach(function(bKpi){
+				//sheet.range( rc(kpiHeaderRow, bKpi, maxSheetRow, bKpi) ).background(colorERROR);
+				sheet.range( bKpi.rcCoords ).background(colorERROR);
+			});
+
+			return badKpis.length == 0;
+        };
+
+        function checkPlayersHeader(sheet, test) {
+
+        	var badPlayers 	= []
+        	,	colorOK		= "white"
+        	,	colorERROR 	= "orange"
+
+			sheet.range(PLAYER_HEADER_RANGE).forEachCell(function (r, c, cell) {
+				var rcCoords = rc(r, c);
+				if (cell.value) {
+					!test(cell.value) && badPlayers.push({rcCoords: rcCoords, value: cell.value});
+				} else {
+					badPlayers.push({rcCoords: rcCoords, value: undefined});
+				};
+		    });
+
+			sheet.range(PLAYER_HEADER_RANGE).background(colorOK);
+
+			badPlayers.forEach(function(bPlayer){
+				//sheet.range( rc(bPlayer, playerHeaderColumn, bPlayer, maxSheetColumn) ).background(colorERROR);
+				sheet.range( bPlayer.rcCoords ).background(colorERROR);
+			});
+
+			return badPlayers.length == 0;
+        };
+
+        function checkContents(sheet, test) {
+
+        	var badValues 	= []
+        	,	colorOK		= "white"
+        	,	colorERROR 	= "red"
+
+			sheet.range(CONTENTS_RANGE).forEachCell(function (r, c, cell) {
+				var rcCoords = rc(r, c);
+				cell.value && !test(cell.value) && badValues.push({rcCoords: rcCoords, value: cell.value});
+		    });
+
+			sheet.range(CONTENTS_RANGE).background(colorOK);
+
+			badValues.forEach(function(bval){
+				sheet.range( bval.rcCoords ).background(colorERROR);
+			});
+
+        	return badValues.length == 0;
+        };
+
+    	function rc(row, column, rowEnd, columnEnd) {
+
+    		function numToAZ(x) {
+    			// 0 -> A, 1 -> B, ..., 25 -> Z, 26 -> AA, 26 -> AB, ...
+    			var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    			return (x > 25 ? letters[parseInt(x / 26) - 1] : '')+ letters[x % 26]
+    		};
+
+    		return 	numToAZ(column) + (row + 1)
+    				+ (rowEnd && columnEnd ? ':' + numToAZ(columnEnd) + (rowEnd + 1) : '');
+    	};
 
     };
 
